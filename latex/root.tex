@@ -1,0 +1,35 @@
+% vim: set spell:
+
+\documentclass[a4paper,oneside]{book}
+
+\usepackage[fancy]{template}
+\usepackage{survival-pack}
+
+\setup{%
+  subject={Master's Thesis},%
+  assignment={Working Title},%
+  date={December 11, 2014.}%
+}
+\setupLocation[short=DIKU]{Datalogisk institut, Copenhagen University}
+\setupAuthor[addendum={\email{oleks@oleks.info}}]{Oleksandr Shturmov}
+
+\newtheorem{notion}{Notion}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{first} % no fancy header on first page (just a fancy footer).
+
+\setcounter{chapter}{-1}
+
+\input{preface/root}
+
+\input{background/root}
+
+\input{appendix/root}
+
+\input{references}
+
+\end{document}

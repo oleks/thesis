@@ -1,0 +1,54 @@
+% vim: set spell:
+
+\chapter{Complexity}
+
+\begin{quotation}
+
+\footnotesize\sffamily\itshape
+
+\begin{flushright}
+
+This may be a good point to metion that, although I have so far been tacitly
+equating computational difficulty with time and storage requirements, I don't
+mean to commit myself to either of these measures. It may turn out that some
+measure related to the physical notion of work will lead to the most
+satisfactory analysis; or we may ultimately find that no single measure
+adequately reflects our intuitive concept of difficulty.
+
+\smallbreak
+
+\upshape
+
+--- ALAN COBHAM, {\itshape Logic, Methodology and Philosophy of Science} (1964)
+
+\end{flushright}
+
+\end{quotation}
+
+\section{Time}
+
+\subsection{Polynomial Time}
+
+\begin{itemize}
+
+\item Problems computable in polynomial time on a TM lie in the second level of
+the Grzegorczyk hierarchy (Cobham'1965 - definition of feasibility, proven in Rose'1984). 
+
+\item 
+
+\end{itemize}
+
+\subsection{Subpolynomial Time}
+
+Some problems, although computable in polynomial time, are still hard to
+compute in practice (ICALP'2014, Amir Abboud).
+
+\begin{description}
+
+\item[$\bigOh{1}$ --- Constant]
+
+\item[$\bigOh{\alpha\p{n}}$ --- Inverse Ackermann]
+
+\end{description}
+
+\subsection{Space}
