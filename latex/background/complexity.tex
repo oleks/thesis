@@ -62,9 +62,20 @@ THE POLYTIME FUNCTIONS
 
 \item Niel Jones paper.
 
+\item Caporaso
+
+\item Upper bounds (algorithms) can be produced by expressing the property of
+interest in one of our languages. Lower bounds proven elsewhere can be used as
+a proof that the language is expressive enough.
+
 \end{itemize}
 
 \subsection{Subpolynomial Time}
+
+In what follows, we delineate a hierarchy of complexity classes, strictly under
+polynomial time. That is, we present a sequence $C_1(n),$ $t(n)=o\p{n^{\bigOh{1}}}$. For each
+complexity class $C$, we present a representative problem $P_C$. We aim to find
+problems which are known to be $t(n)=\Theta\p{C\p{n}}$.
 
 \begin{itemize}
 
@@ -101,6 +112,8 @@ the proceeding, and exhibit some ``complete'' problems for these classes.
 \item[$\bigOh{n\log{\log{\p{n}}}}$ --- n log-log]
 
 \item[$\bigOh{n\log{\p{n}}}$ --- n log n]
+
+Comparison-based sorting $o\p{n\log{n}}$.
 
 \item[$\bigOh{n^2}$ --- quadratic]
 

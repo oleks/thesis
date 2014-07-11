@@ -2,12 +2,26 @@
 
 \documentclass[a4paper,oneside]{book}
 
+\PassOptionsToPackage{backref=page}{hyperref}
+
 \usepackage[fancy]{template}
 \usepackage{survival-pack}
 
+\backrefparscanfalse
+
+\renewcommand*{\backrefalt}[4]{%
+  \ifcase #1 %
+    No citations.%
+  \or
+    Cited on page #2.%
+  \else
+    Cited on pages #2.%
+  \fi
+}
+
 \setup{%
   subject={Master's Thesis},%
-  assignment={Working Title},%
+  assignment={Implicit Guarantees of the Computational Complexity of Feasible Programs},%
   date={December 11, 2014.}%
 }
 \setupLocation[short=DIKU]{Datalogisk institut, Copenhagen University}
