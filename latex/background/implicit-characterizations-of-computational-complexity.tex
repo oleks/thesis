@@ -1,0 +1,92 @@
+% vim: set spell:
+
+\chapter{Implicit Characterizations of P}
+
+\section{Primitive Recursion on Notation}
+
+When dealing with the manipulation of symbolic strings, there is a natural
+total order on the values of the formal parameters --- the length of their
+representing string. Primitive recursion on notation utilizes this order,
+requiring that the length of the input string be decreased before a recursive
+call.
+
+\begin{definition} A function $f$ is defined by primitive recursion on notation
+from functions $g$, $h_1$, $h_2$, \ldots, $h_{\card{\Sigma}}$ iff 
+
+\begin{align}
+f\p{\varepsilon, \vect{y}}  &= g\p{\vect{y}} \\
+f\p{s_i \cdot x,\vect{y}} &= h_i\p{x,\vect{y},f\p{x,\vect{y}}} & \forall s_i: \Sigma
+\end{align}
+
+\end{definition}
+
+We say that a function is primitive recursive on notation (PRN), if it is defined by
+primitive recursion on notation from non-recursive or PRN functions.
+
+Unfortunately, not all PRN functions take polynomial time.
+
+\begin{theorem} There exist PRN functions which do a superpolynomial amount of
+work.\end{theorem} 
+
+\begin{proof}
+Consider a function $g$, which duplicates every symbol in the input string:
+
+\begin{align}
+g\p{\varepsilon} &= \varepsilon \\
+g\p{\mathtt{0} \cdot s} &= \mathtt{0} \cdot \mathtt{0} \cdot g\p{s}
+\end{align}
+
+Consider furthermore a function $h$, which calls $g$ iteratively, the same
+number of times as the length of the input string.
+
+\begin{align}
+h\p{\varepsilon} &= \mathtt{0} \cdot \varepsilon \\
+h\p{\mathtt{0} \cdot s} &= g\p{h\p{s}}
+\end{align}
+
+Calling $g$ with a string of length $n$, we obtain a string of length $2^n$ due
+to iterated duplication. It follows that $g$ does a superpolynomial amount of
+work. \end{proof}
+
+\section{Bounded Primitive Recursion on Notation}
+
+With reference to the ``extended rudimentary functions'' of
+\cite{bennett-1962}, \cite{cobham-1965} defined bounded primitive recursion on
+integers in decimal notation. For a similar definition on binary notation, see
+\cite[p.  127]{rose-1984}.
+
+We generalize this to an arbitrary alphabet $\Sigma$, building upon PRN above:
+
+\begin{definition}
+
+A function $f$ is defined by bounded primitive recursion on notation from
+functions $g$, $h_1,h_2,\ldots,h_{\card{\Sigma}}$, and $i$ iff
+
+\begin{align}
+f\p{\varepsilon, \vect{y}}  &= g\p{\vect{y}} \\
+f\p{s_i \cdot x,\vect{y}} &= h_i\p{x,\vect{y},f\p{x,\vect{y}}} & \forall s_i : \Sigma \\
+f\p{x,\vect{y}} &\leq i\p{x,\vect{y}}\label{def-brn-poly-bound}
+\end{align}
+
+\end{definition}
+
+We say that a function is bounded primitive recursive (BPRN) if it is defined
+by bounded primitive recursion from non-recursive, or BPRN functions. The
+scheme is also known as limited primitive recursion on notation.
+
+The addition that we make to PRN is that the function $f$ must be bounded from
+above by function $i$. Letting $i$ characterize polynomial time functions, we
+obtain perhaps the earliest implicit characterization of P due to
+\cite{cobham-1965}.
+
+This straight-forward approach has an obvious limitation: it requires defining
+an ordering relation on our functions --- a problem that is undecidable in
+general. Furthermore 
+
+\section{Finite Model Theory}
+
+\section{Ramification}
+
+\subsection{Safe Recursion}
+
+\subsection{Tiering}

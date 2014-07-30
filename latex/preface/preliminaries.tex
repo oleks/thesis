@@ -1,0 +1,137 @@
+% vim: set spell:
+
+\section{Preliminaries}
+
+\begin{definition} Let $\mathbb{N}$ denote the type of natural numbers,
+starting with $0$.\end{definition}
+
+\begin{definition} Given a type $\Sigma$, let $\Sigma^*$ be the type of
+\textbf{symbolic strings} over $\Sigma$, formed using either the \textbf{empty
+string} or the \textbf{string concatenation} operator:
+\begin{align*}\label{def:empty-string}
+\judgement{}{\varepsilon_\Sigma:\Sigma^*}
+\quad
+\judgement{s_0:\Sigma \quad s:\Sigma^*}{s_0 \cdot s:\Sigma^*}
+\end{align*}
+We refer to $\Sigma$ as an \textbf{alphabet}, and to its
+terms as \textbf{symbols}.
+\end{definition}
+
+We omit $\Sigma$ in $\varepsilon_\Sigma$, when it is clear from context, e.g.
+$\varepsilon:\Sigma^*$.
+
+\begin{definition} We say that a term $s\equiv s_0 \cdot s_1 \cdots s_{n-1}
+\cdot \varepsilon : \Sigma^*$  is a string of length $n:\mathbb{N}$ over the
+alphabet $\Sigma$.\end{definition}
+
+\begin{definition} Let $\card{\Sigma}$ be the number of symbols in alphabet
+$\Sigma$, called it's \textbf{cardinality}. \end{definition}
+
+If the cardinality of a alphabet is finite, strings over the alphabet are
+\textbf{recursively enumerable}, i.e. there exists a bijection
+$f:\Sigma^*\rightarrow\mathbb{N}$.
+
+\begin{theorem} If $\card{\Sigma} = n$ for some $n\in\mathbb{N}$, then
+$\card{\Sigma^*}=\card{\mathbb{N}}$.\end{theorem}
+
+\begin{proof} We have $\card{\Sigma} = n$. The terms of $\Sigma$ can be
+arranged in a sequence such that for each $s:\Sigma$ we assign a unique natural
+number $g(s)$, such that $1 \leq g(s) \leq \card{\Sigma}$. We now inductively
+define the function $f:\Sigma^*\rightarrow \mathbb{N}$.
+
+\begin{align}
+f\p{\varepsilon} &= 0 \\
+f\p{s_0\cdot s} &= g\p{s_0} + f\p{s} \cdot \card{\Sigma}
+\end{align}
+
+To show that the function is a bijection, we also define its inverse by
+induction:
+
+\begin{align}
+f^{-1}\p{0} &= \varepsilon \\
+f^{-1}\p{n} &= g^{-1}\p{n \mod \card{\Sigma}} \cdot f^{-1}\p{\floor{n/\card{\Sigma}}} & \text{for $n>0$}
+\end{align}
+
+\end{proof}
+
+This means that strings over any finite alphabet can be used to represent
+strings over any other finite alphabet. One such basic alphabet that has proven
+useful in practice is the binary alphabet, consisting of e.g. the symbols
+\texttt{0} and \texttt{1}.
+
+\begin{definition} Let $\mathbb{B}$ denote the type of booleans.\end{definition}
+
+Define the set $\mathbb{B}$, and the usual boolean connectives.
+
+\begin{definition} An infix function $\leq : A\times A \rightarrow \mathbb{B}$ defines a
+\textbf{total order} on the type $A$ iff for all $x,y,z : A$:
+\begin{align}
+x \leq y \wedge y \leq x \Rightarrow y = x  & \quad \text{(antisymmetry)} \\
+x \leq y \wedge y \leq z \Rightarrow x \leq z & \quad \text{(transitivity)} \\
+x \leq y \vee y \leq x & \quad \text{(totality)}
+\end{align}
+\end{definition}
+
+\begin{definition} Given a total order on $\Sigma$, we define the
+\textbf{lexicographic order} on $\Sigma^*$ as follows:
+\begin{align}
+\judgement{}{\varepsilon \leq s_0\cdot s}
+\quad
+\judgement{s_0 = t_0 \quad s \leq t}{s_0\cdot s \leq t_0 \cdot t}
+\quad
+\judgement{s_0 \neq t_0 \quad s_0 \leq t_0}{s_0 \cdot s \leq t_0 \cdot t}
+\end{align}
+\end{definition}
+
+\begin{theorem} A lexicographic order is a total order. \end{theorem}
+
+\begin{proof} \end{proof}
+
+\begin{definition} An infix function $<:A\times A \rightarrow \mathbb{B}$
+defines a \textbf{strict total order} on the type $A$, iff 
+\begin{align}
+\judgement[F-Less]{\neg \p{y \leq x}}{x < y}
+\end{align}
+\end{definition} 
+
+We say that $y$ has a higher \textbf{value} than $x$, whenever $x<y$, and equal
+in value whenever $x=y$.
+
+\begin{definition} A function $f$ is defined by \textbf{primitive recursion}
+from the functions $h,g_1,g_2,\ldots,g_n$ for $n:\mathbb{N}$, iff
+\begin{align}
+f\p{\varepsilon, \vect{y}} &= h\p{\vect{y}} \\
+f\p{s_i\p{x}, \vect{y}} &= g_i\p{x,\vect{y},f\p{x,\vect{y}}} \\
+x &< s_i\p{x}
+\end{align}
+\end{definition}
+
+That is, a function is defined by primitive recursion, if on every invocation
+of the function, we recurse on at most one formal parameter, and only recurse
+after the actual parameter has been decreased in value. It follows that
+primitive recursion demands a strict total order on the value type in question.
+
+\begin{definition} A function is \textbf{primitive recursive} if it is
+non-recursive, or defined by primitive recursion from non-recursive, or
+primitive recursive functions.  \end{definition}
+
+Primitive recursive functions are not necessarily polytime functions.
+
+\begin{example}
+Unary addition over binary notation is primitive recursive, but not polytime.
+
+Let $\leq$ be the lexicographic order on binary notation.
+
+We now define unary addition over binary notation using primitive recursion:
+
+\begin{align}
+add'\p{0,0,0} = \p{0,0} \\
+add'\p{1,0,0} = \p{1,0} \\
+add'\p{0,1,0} = \p{1,0} \\
+add'\p{0,0,1} = \p{1,0} \\
+add'\p{0,0,1} = \p{1,0} \\
+add'\p{1,1,0} = \p{0,1} \\
+add'\p{1,1,1} = \p{1,1}
+\end{align}
+
+\end{example}

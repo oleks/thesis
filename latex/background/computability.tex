@@ -21,11 +21,25 @@ followed by solving a computable problem $R$, then $P$ itself is computable.
 performed, other than to solve the problems $Q$ and $R$, $P$ itself is
 computable.\end{proof}
 
-Thus we arrive at the common notion of an algorithm:
+Thus we arrive at the folklore notion of an algorithm:
 
 \begin{notion} An ``algorithm'' is a specification of how a problem can be
-solved by performing a finite sequence of finite-time transformations of a
-mathematical object, without ingenuity. \end{notion}
+solved by solving a finite sequence of computable problems.\end{notion}
+
+Such indefinite notions are useful for little else. We are left to take a
+philosophical leap of faith and define some notion of mathematical object, and
+transformation without ingenuity.
+
+\section{Function Algebras}
+
+\begin{definition} A \textbf{function algebra} is a tuple
+$\mathcal{A}=\chev{\mathcal{A}_B,\mathcal{A}_C}$, where $\mathcal{A}_B$ is a
+set of \textbf{base functions} and $\mathcal{A}_C$ is a set of
+\textbf{constructors}. \end{definition}
+
+\section{Machines}
+
+\pagebreak
 
 TODO:
 

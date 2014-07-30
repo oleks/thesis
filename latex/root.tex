@@ -2,13 +2,14 @@
 
 \documentclass[a4paper,oneside]{book}
 
-\PassOptionsToPackage{backref=page}{hyperref}
+\PassOptionsToPackage{backref=page}{hyperref} % backrefs in references
 
 \usepackage[fancy]{template}
 \usepackage{survival-pack}
 
-\backrefparscanfalse
+\backrefparscanfalse % don't automatically add backrefs to references
 
+% custom layout for backrefs in references
 \renewcommand*{\backrefalt}[4]{%
   \ifcase #1 %
     No citations.%
@@ -21,7 +22,8 @@
 
 \setup{%
   subject={Master's Thesis},%
-  assignment={Implicit Guarantees of the Computational Complexity of Feasible Programs},%
+  assignment={Programming Languages for Feasible Programs},%
+%  assignment={Implicit Guarantees of the Computational Complexity of Feasible Programs},%
   date={December 11, 2014.}%
 }
 \setupLocation[short=DIKU]{Datalogisk institut, Copenhagen University}
@@ -30,6 +32,12 @@
 \newtheorem{notion}{Notion}
 \newtheorem{definition}{Definition}
 \newtheorem{theorem}{Theorem}
+\newtheorem{example}{Example}
+
+\DeclareDocumentCommand{\judgement}{O{}mm}{%
+  \ifthenelse{\equal{#1}{}}{}{\text{\textsc{#1:}}}%
+  \frac{\displaystyle #2}{\displaystyle #3}%
+}
 
 \begin{document}
 
