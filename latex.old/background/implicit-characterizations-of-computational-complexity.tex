@@ -14,8 +14,8 @@ call.
 from functions $g$, $h_1$, $h_2$, \ldots, $h_{\card{\Sigma}}$ iff 
 
 \begin{align}
-f\p{\varepsilon, \vect{t}}  &= g\p{\vect{t}} \\
-f\p{s_i \cdot s,\vect{t}} &= h_i\p{s,\vect{t},f\p{s,\vect{t}}} & \forall s_i: \Sigma
+f\p{\varepsilon, \vect{y}}  &= g\p{\vect{y}} \\
+f\p{s_i \cdot x,\vect{y}} &= h_i\p{x,\vect{y},f\p{x,\vect{y}}} & \forall s_i: \Sigma
 \end{align}
 
 \end{definition}
@@ -37,31 +37,16 @@ g\p{\mathtt{0} \cdot s} &= \mathtt{0} \cdot \mathtt{0} \cdot g\p{s}
 \end{align}
 
 Consider furthermore a function $h$, which calls $g$ iteratively, the same
-number of times as the length of its input string:
+number of times as the length of the input string.
 
 \begin{align}
-h\p{\varepsilon} &= \mathtt{0} \\
+h\p{\varepsilon} &= \mathtt{0} \cdot \varepsilon \\
 h\p{\mathtt{0} \cdot s} &= g\p{h\p{s}}
 \end{align}
 
 Calling $g$ with a string of length $n$, we obtain a string of length $2^n$ due
 to iterated duplication. It follows that $g$ does a superpolynomial amount of
 work. \end{proof}
-
-\begin{example}
-We illustrate the above proof with an example:
-\begin{align}
-h\p{\mathtt{0} \cdot \mathtt{0}}
-  &\leadsto g\p{h\p{\mathtt{0}}} \\
-  &\leadsto g\p{g\p{h\p{\varepsilon}}} \\
-  &\leadsto g\p{g\p{\mathtt{0}}} \\
-  &\leadsto g\p{\mathtt{0} \cdot \mathtt{0} \cdot g\p{\varepsilon}} \\
-  &\leadsto g\p{\mathtt{0} \cdot \mathtt{0}} \\
-  &\leadsto \mathtt{0} \cdot \mathtt{0} \cdot g\p{\mathtt{0}} \\
-  &\leadsto \mathtt{0} \cdot \mathtt{0} \cdot \mathtt{0} \cdot \mathtt{0} \cdot g\p{\varepsilon} \\
-  &\leadsto \mathtt{0} \cdot \mathtt{0} \cdot \mathtt{0} \cdot \mathtt{0}
-\end{align}
-\end{example}
 
 \section{Bounded Primitive Recursion on Notation}
 
@@ -75,20 +60,19 @@ We generalize this to an arbitrary alphabet $\Sigma$, building upon PRN above:
 \begin{definition}
 
 A function $f$ is defined by bounded primitive recursion on notation from
-functions $g$, $h_1,h_2,\ldots,h_{\card{\Sigma}}$, and $k$ iff
+functions $g$, $h_1,h_2,\ldots,h_{\card{\Sigma}}$, and $i$ iff
 
 \begin{align}
 f\p{\varepsilon, \vect{y}}  &= g\p{\vect{y}} \\
 f\p{s_i \cdot x,\vect{y}} &= h_i\p{x,\vect{y},f\p{x,\vect{y}}} & \forall s_i : \Sigma \\
-f\p{x,\vect{y}} &\leq k\p{x,\vect{y}}\label{def-brn-poly-bound}
+f\p{x,\vect{y}} &\leq i\p{x,\vect{y}}\label{def-brn-poly-bound}
 \end{align}
 
 \end{definition}
 
-We say that a function is bounded primitive recursive on notation (BPRN) if it
-is defined by bounded primitive recursion on notation from non-recursive, or
-BPRN functions. The scheme is also known as limited primitive recursion on
-notation.
+We say that a function is bounded primitive recursive (BPRN) if it is defined
+by bounded primitive recursion from non-recursive, or BPRN functions. The
+scheme is also known as limited primitive recursion on notation.
 
 The addition that we make to PRN is that the function $f$ must be bounded from
 above by function $i$. Letting $i$ characterize polynomial time functions, we
@@ -100,8 +84,6 @@ an ordering relation on our functions --- a problem that is undecidable in
 general. Furthermore 
 
 \section{Finite Model Theory}
-
-Finite model theory is 
 
 \section{Ramification}
 

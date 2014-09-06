@@ -1,0 +1,129 @@
+% vim: set spell:
+
+\chapter{Complexity}
+
+\begin{quotation}
+
+\footnotesize\sffamily\itshape
+
+\begin{flushright}
+
+This may be a good point to mention that, although I have so far been tacitly
+equating computational difficulty with time and storage requirements, I don't
+mean to commit myself to either of these measures. It may turn out that some
+measure related to the physical notion of work will lead to the most
+satisfactory analysis; or we may ultimately find that no single measure
+adequately reflects our intuitive concept of difficulty.
+
+\smallbreak
+
+\upshape
+
+--- ALAN COBHAM, {\itshape Logic, Methodology and Philosophy of Science} (1964)
+
+\end{flushright}
+
+\end{quotation}
+
+\begin{quotation}
+
+\footnotesize\sffamily\itshape
+
+\begin{flushright}
+
+In practice, the length of computer computations must be restricted, otherwise
+the cost in time and money would be prohibitive.
+
+\smallbreak
+
+\upshape
+
+--- H. E. ROSE, {\itshape Subrecursion: functions and hierarchies} (1984)
+
+\end{flushright}
+
+\end{quotation}
+
+\begin{definition} The computational complexity of a function $f$, wrt. a
+particular resource, quantifies the use of that resource as a function of the
+length of the input string.\end{definition}
+
+\section{Time}
+
+\subsection{Polynomial Time}
+
+\begin{itemize}
+
+\item Recursive characterization of polytime functions in \cite{rose-1984},
+proving certain claims by \cite{cobham-1965}. Both question the relation to the
+Grzegorczyk hierarchy \cite{grzegorczyk-1953}.
+
+\item Leivant's paper - A Foundational Delineation of Computational Feasibility.
+
+\item Bellantoni and Cook paper - A NEW RECURSION-THEORETIC CHARACTERIZATION OF
+THE POLYTIME FUNCTIONS
+
+\item Niel Jones paper.
+
+\item Caporaso
+
+\item Upper bounds (algorithms) can be produced by expressing the property of
+interest in one of our languages. Lower bounds proven elsewhere can be used as
+a proof that the language is expressive enough.
+
+\end{itemize}
+
+\subsection{Subpolynomial Time}
+
+In what follows, we delineate a hierarchy of complexity classes, strictly under
+polynomial time. That is, we present a sequence $C_1(n),$ $t(n)=o\p{n^{\bigOh{1}}}$. For each
+complexity class $C$, we present a representative problem $P_C$. We aim to find
+problems which are known to be $t(n)=\Theta\p{C\p{n}}$.
+
+\begin{itemize}
+
+\item Some problems, although computable in polynomial time, are still hard to
+compute in practice (ICALP'2014, Amir Abboud).
+
+\item Remind of the definitions of $O$, $\Omega$, etc.
+
+\item For each of the below show that every subsequent class is distinct from
+the proceeding, and exhibit some ``complete'' problems for these classes.
+
+\end{itemize}
+
+\begin{description}
+
+\item[$\bigOh{1}$ --- Constant]
+
+\item[$\bigOh{\alpha\p{n}}$ --- Inverse Ackermann]
+
+\item[$\bigOh{\log^*{\p{n}}}$ --- Log star]
+
+\item[$\bigOh{\log{\log{\p{n}}}}$ --- Log-log]
+
+\item[$\bigOh{\log{\p{n}}}$ --- Log]
+
+\item[$\bigOh{\log{\p{n}^{\bigOh{1}}}}$ --- Polylog]
+
+\item[$\bigOh{n^c}$, for $0<c<1$ --- Fractional power]
+
+\item[$\bigOh{n}$ --- Linear time]
+
+\item[$\bigOh{n\log^*{\p{n}}}$ --- n log star]
+
+\item[$\bigOh{n\log{\log{\p{n}}}}$ --- n log-log]
+
+\item[$\bigOh{n\log{\p{n}}}$ --- n log n]
+
+Comparison-based sorting $o\p{n\log{n}}$.
+
+\item[$\bigOh{n^2}$ --- quadratic]
+
+\item[$\bigOh{n^3}$ --- cubic]
+
+\item[$\bigOh{n^O(1)}$ --- polynomial]
+
+\end{description}
+
+\subsection{Space}

@@ -1,0 +1,54 @@
+Descriptive complexity
+
+Sublinear complexity classess.
+Completeness - how to prove completeness.
+Decidability - are undecidable programs noncombinatorial?
+
+Number theory vs. combinatorics.
+
+https://complexityzoo.uwaterloo.ca/Complexity_Zoo
+
+mutual iteration - the problem with loop programs is that you can't write e.g.
+merge sort, with mutual iteration, this is feasible; so with mutual itearation,
+can we do more?
+
+Convert to a single loop with a branch. Can all functional programs be
+converted to loop programs like this?
+
+Problems as set membership.
+
+Classical proofs, such as closure of regular languages.
+
+Type-theory is more general than set theory, but the constructivism in type
+theory confines it to computable processes. Is set theory then equivalent to
+type theory?
+
+---
+
+Provide examples for each complexity class, which when implemented (and proven
+to solve the problem) must be using \Theta(f(n)) time. E.g. with sorting, we
+know that we can solve it using comparison-based sorting, e.g. merge sort in
+\Theta(nlog(n)) time.
+
+Size-change characterization of P: size reduced to a base case in a polynomial
+number of steps. Natural to define a hierarchy. Requires quite elaborate "type
+checking". Also, problems with loop unrolling as it is actuall unclear what a
+``step'' is.
+
+There might be some functions in P which are "P-universal", or perhaps the
+notion of "P-complete" is sufficient.
+
+---
+
+syntactic property.
+
+completeness is necessary
+
+linear computation - access a variable at most once pr function call - think
+volatile memory - doesn't make sense to access a variable multiple times as the
+data in the variable need not be the same as before.
+
+---
+
+Complexity theory introduces a difference between the expressivity of
+programming languages.

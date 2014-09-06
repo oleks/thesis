@@ -3,7 +3,7 @@
 \section{Preliminaries}
 
 \begin{definition} Let $\mathbb{N}$ denote the type of natural numbers,
-including $0$. \end{definition}
+starting with $0$.\end{definition}
 
 \begin{definition} Given a type $\Sigma$, let $\Sigma^*$ be the type of
 \textbf{symbolic strings} over $\Sigma$, formed using either the \textbf{empty
@@ -13,8 +13,9 @@ string} or the \textbf{string concatenation} operator:
 \quad
 \judgement{s_0:\Sigma \quad s:\Sigma^*}{s_0 \cdot s:\Sigma^*}
 \end{align*}
-We refer to $\Sigma$ as an \textbf{alphabet}, and to the terms of $\Sigma$ as
-\textbf{symbols}. \end{definition}
+We refer to $\Sigma$ as an \textbf{alphabet}, and to its
+terms as \textbf{symbols}.
+\end{definition}
 
 We omit $\Sigma$ in $\varepsilon_\Sigma$, when it is clear from context, e.g.
 $\varepsilon:\Sigma^*$.
@@ -26,7 +27,7 @@ alphabet $\Sigma$.\end{definition}
 \begin{definition} Let $\card{\Sigma}$ be the number of symbols in alphabet
 $\Sigma$, called it's \textbf{cardinality}. \end{definition}
 
-If the cardinality of an alphabet is finite, strings over the alphabet are
+If the cardinality of a alphabet is finite, strings over the alphabet are
 \textbf{recursively enumerable}, i.e. there exists a bijection
 $f:\Sigma^*\rightarrow\mathbb{N}$.
 
