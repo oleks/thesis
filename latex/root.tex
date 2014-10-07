@@ -7,6 +7,8 @@
 \usepackage[fancy]{template}
 \usepackage{survival-pack}
 
+\usepackage{tikz}
+
 \backrefparscanfalse % don't automatically add backrefs to references
 
 % custom layout for backrefs in references
@@ -37,6 +39,19 @@
 \DeclareDocumentCommand{\judgement}{O{}mm}{%
   \ifthenelse{\equal{#1}{}}{}{\text{\textsc{#1:}}}%
   \frac{\displaystyle #2}{\displaystyle #3}%
+}
+
+\DeclareDocumentCommand{\ruleref}{m}{%
+  \ensuremath{\text{\textsc{#1}}}%
+}
+
+\DeclareDocumentCommand{\sequent}{O{}mm}{%
+  \ifthenelse{\equal{#1}{}}{}{\text{\textsc{#1:}}}%
+  \frac{\displaystyle #2}{\displaystyle #3}%
+}
+
+\DeclareDocumentCommand{\symb}{m}{%
+  \ensuremath{\mathtt{#1}}%
 }
 
 \begin{document}
