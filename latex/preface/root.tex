@@ -9,6 +9,344 @@
 %notions that our precise definitions build upon, we state the fundamental
 %system belief which we deal within.
 
+\section{Formal systems}
+
+\begin{notion}
+
+A \textbf{formal system} is a system of symbols and rules governing their
+manipulation.
+
+\end{notion}
+
+A formal system is a purely mental construct. To be used to any effect in the
+real world, a formal system must be realised by a physical system.
+
+\begin{notion}
+
+A \textbf{physical system} is a system of physical symbols and processes
+manipulating them. 
+
+\end{notion}
+
+For instance, this document was typeset by a physical system. The symbols in
+question are typographical symbols, and the process of typesetting is the
+process of their typographic composition.
+
+Out of considerations for the reader, the formal systems presented in this
+document deal in the same typographical symbols, and govern their typographical
+composition.
+
+The reader, equipped with a writing instrument is another physical system. The
+reader is welcomed to realise the formal systems in question, in attempt to
+falsify the correctness of their physical realisations in this document. 
+
+\section{Basic definitions and notation}
+
+We begin by introducing some notation for sets, objects, and judgements,
+leading to a definition of a formal system, as regarded in this document. The
+matters of notation address the typesetting of this document, and bear no
+logical significance otherwise.
+
+\subsection{Sets}
+
+\begin{definition}
+
+A \textbf{set} is a collection of distinct elements.
+
+\end{definition}
+
+\begin{notation}
+
+A typographical symbol is \textbf{distinct} from another, if the reader
+can at a glance tell a difference between them.
+
+\end{notation}
+
+If the elements of a set can be typeset by distinct typographical symbols, the
+set can be typeset elementarily by denoting the elements in a sequence. 
+
+\begin{notation}
+
+The elements of a set are denoted by distinct typographical symbols, which fit
+inside the following box: \framebox{\vbox to 12pt {\vfil \hbox to 48pt {} \vfil
+}}.
+
+\end{notation}
+
+\begin{notation}
+
+A set is denoted elementarily by denoting the elements in a sequence,
+left-to-right, top-to-bottom, separated by commas($,$), and enclosed in
+braces($\set{}$).
+
+\end{notation}
+
+For instance, $\set{a,b,c}$ elementarily denotes the set containing exactly the
+elements $a$, $b$, and $c$. This notational convention superimposes an order on
+the elements of a set. This order bears no logical significance.
+
+\begin{notational-corollary}
+
+The elements of a set, when denoted elementarily in a different order, do not
+denote a distinguished set.
+
+\end{notational-corollary}
+
+This notation is useful as it permits the reader to confirm that the elements
+are distinct by considering the elements in sequence, and confirming, for each
+symbol, that it does not appear more than once in the sequence. That is,
+provided that the set is finite.
+
+\begin{notion}
+
+A set is \textbf{finite} if it can eventually be denoted elementarily.
+
+\end{notion}
+
+This notation does not permit to denote an infinite set, and is fairly
+impractical for denoting large finite sets. To that end, the reader will be
+presented with a procedure by which the elements of the set could be denoted
+elementarily, had we the typographical tools and the (possibly infinite) time
+to do so. The reader is then welcomed to elementarily denote the set at their
+leisure. When reasoning about sets denoted by such a ``generating procedure'',
+we will reason about the procedure rather than elements themselves.
+
+\subsection{Objects}
+
+\begin{definition}
+
+An \textbf{alphabet} is a set.
+
+\end{definition}
+
+\begin{definition}
+
+An \textbf{object} is some elements drawn from an alphabet, put in relation.
+
+\end{definition}
+
+\begin{notation}
+
+An object is denoted as a typographical composition of the elements in
+question, which fits within the following box:
+
+\begin{center}
+\framebox{\vbox to 48pt {\vfil \hbox to 48pt {} \vfil }}
+\end{center}
+
+\end{notation}
+
+For instance, given the alphabet $\set{a,b,c}$, we may consider, among
+others, the following objects:
+
+\begin{center}
+$abc$
+\quad\quad\quad
+$\begin{matrix}
+  & a &   \\
+a & a & a \\
+  & a &
+\end{matrix}$
+\quad\quad\quad
+\begin{tikzpicture}
+\draw (-0.5,0.0) node {$a$};
+\draw (-0.7,0.2) node {$a$};
+\draw (-0.3,0.2) node {$a$};
+\draw (-0.5,0.4) node {$a$};
+\draw (0.0,0.9) node {$b$};
+\draw (0.2,0.7) node {$b$};
+\draw (-0.2,0.7) node {$b$};
+\draw (0.0,0.5) node {$b$};
+\draw (0.5,0.0) node {$c$};
+\draw (0.7,0.2) node {$c$};
+\draw (0.3,0.2) node {$c$};
+\draw (0.5,0.4) node {$c$};
+\end{tikzpicture}
+
+\end{center}
+
+\begin{definition}
+
+An object is \textbf{empty} if no symbols are drawn from the alphabet.
+
+\end{definition}
+
+\begin{notation}
+
+For alphabets not containing the element $\varepsilon$, we denote the empty
+object by $\varepsilon$ out of considerations for readability.
+
+\end{notation}
+
+\subsection{Judgements}
+
+\begin{definition}
+
+A \textbf{variable} is an object which is a placeholder for another object.
+
+\end{definition}
+
+\begin{definition}
+
+An object is \textbf{concrete} if it is not a variable.
+
+\end{definition}
+
+\begin{definition}
+
+A \textbf{judgement} is a number of concrete objects, put in relation.
+
+\end{definition}
+
+\begin{notation}
+
+A judgement is a typographical combination of concrete objects, which fits
+within the following box:
+
+\begin{center}
+\framebox{\vbox to 48pt {\vfil \hbox to 48pt {} \vfil }}
+\end{center}
+
+\end{notation}
+
+Judgements come in various forms. For instance, given the objects \symb{0} and
+\symb{1}, we may consider, among others, the following judgements:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Judgement} & \textbf{Reading} \\
+\hline
+$\symb{0}\;\text{nat}$ & \symb{0} is a natural number. \\
+\hline
+$\symb{1}=\symb{0}+\symb{1}$ & \symb{1} is the sum of \symb{0} and \symb{1}.\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{definition}
+
+A \textbf{judgement form} is a number of objects, put in relation, some of
+which may be variables.
+
+\end{definition}
+
+\begin{notation}
+
+A \textbf{judgement form} is denoted as a typographical combination of the
+objects in question, which fits within the following box:
+
+\begin{center}
+\framebox{\vbox to 48pt {\vfil \hbox to 48pt {} \vfil }}
+\end{center}
+
+\end{notation}
+
+For instance, given the variables $n$, $n_1$, and $n_2$, we may consider, among
+others, the following judgement forms:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Judgement form} & \textbf{Reading} \\
+\hline
+$n\;\text{nat}$ & $n$ is a natural number. \\
+\hline
+$n=n_1+n_2$ & $n$ is the sum of $n_1$ and $n_2$.\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{definition}
+
+An \textbf{inference rule} is a collection of judgement forms called its
+\textbf{premises} and a judgement form called its \textbf{conlusion}.
+
+\end{definition}
+
+\begin{notation}
+
+An inference rule is denoted by denoting the premises in a sequence, separated
+by due whitespace, over a denotation of the conclusion. The premises and
+conclusion are separated by a horizontal bar.
+
+\end{notation}
+
+For instance, we may consider an inference rule with the single premise
+$n\;\text{nat}$ and the conclusion $\symb{s}(n)\;\text{nat}$. This rule reads:
+a successor of a natural number is also a natural number.
+
+$$
+\judgement[Nat-Rec]{
+  n\;\text{nat}
+}{
+  \symb{s}(n)\;\text{nat}
+}
+$$
+
+\begin{definition}
+
+An \textbf{axiom} is an inference rule with no premises.
+
+\end{definition}
+
+For instance, we may consider an axiom with the conclusion
+$\symb{z}\;\text{nat}$. This rules reads: zero is a natural number.
+
+$$
+\judgement[Nat-Z]{
+}{
+  \symb{z}\;\text{nat}
+}
+$$
+
+\begin{definition}
+
+A \textbf{judgement form} is defined by a collection of inference rules.
+
+\end{definition}
+
+For instance, the judgement form $n\;\text{nat}$, which reads: $n$ is a natural
+number, to be defined by the rules \ruleref{Nat-Rec} and \ruleref{Nat-Z}.
+
+\pagebreak
+
+
+
+The procedure by which a set is elementarily denoted, is a matter of exhibiting
+a procedure by which distinguished visual symbols are generated for the
+elements of the set.
+
+For instance, the natural numbers are generated from the finite alphabet
+$\set{0,1,2,3,4,5,6,7,8,9}$. The first 10 symbols of $\mathbb{N}$, are just the symbols in order. The 11th symbol
+
+
+\begin{definition}
+
+A formal system $F=\chev{A,J}$ is a finite set of symbols $A$, and a finite set
+of judgements $J$.
+
+\end{definition}
+
+% A formal system with a finite number of symbols can simulate a formal system
+% with an infinite (but enumerable) number of symbols.
+
+\begin{definition}
+
+
+
+\end{definition}
+
+\pagebreak
+
+A set can be denoted elementarily, by denoting all the elements of the set, or
+by exhibiting a procedure by which the elements can be denoted.
+
+
+\pagebreak
+
 \input{preface/formal-systems}
 
 \input{preface/audience}

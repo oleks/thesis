@@ -26,23 +26,26 @@
   subject={Master's Thesis},%
   assignment={Programming Languages for Feasible Programs},%
 %  assignment={Implicit Guarantees of the Computational Complexity of Feasible Programs},%
-  date={December 11, 2014.}%
+  date={February 11, 2015.}%
 }
 \setupLocation[short=DIKU]{Datalogisk institut, Copenhagen University}
 \setupAuthor[addendum={\email{oleks@oleks.info}}]{Oleksandr Shturmov}
 
 \newtheorem{notion}{Notion}
+\newtheorem{notation}{Notation}
+\newtheorem{notational-corollary}{Notational Corollary}
+\newtheorem{remark}{Remark}
 \newtheorem{definition}{Definition}
 \newtheorem{theorem}{Theorem}
 \newtheorem{example}{Example}
 
-\DeclareDocumentCommand{\judgement}{O{}mm}{%
-  \ifthenelse{\equal{#1}{}}{}{\text{\textsc{#1:}}}%
-  \frac{\displaystyle #2}{\displaystyle #3}%
-}
-
 \DeclareDocumentCommand{\ruleref}{m}{%
   \ensuremath{\text{\textsc{#1}}}%
+}
+
+\DeclareDocumentCommand{\judgement}{O{}mm}{%
+  \frac{\displaystyle #2}{\displaystyle #3}%
+  \ifthenelse{\equal{#1}{}}{}{\;\ruleref{#1}}%
 }
 
 \DeclareDocumentCommand{\sequent}{O{}mm}{%
