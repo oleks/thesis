@@ -97,10 +97,10 @@ We say that $y$ has a higher \textbf{value} than $x$, whenever $x<y$, and equal
 in value whenever $x=y$.
 
 \begin{definition} A function $f$ is defined by \textbf{primitive recursion}
-from the functions $h,g_1,g_2,\ldots,g_n$ for $n:\mathbb{N}$, iff
+from the functions $g,h_1,h_2,\ldots,h_n$ for $n:\mathbb{N}$, iff
 \begin{align}
-f\p{\varepsilon, \vect{y}} &= h\p{\vect{y}} \\
-f\p{s_i\p{x}, \vect{y}} &= g_i\p{x,\vect{y},f\p{x,\vect{y}}} \\
+f\p{\varepsilon, \vect{y}} &= g\p{\vect{y}} \\
+f\p{s_i\p{x}, \vect{y}} &= h_i\p{x,\vect{y},f\p{x,\vect{y}}} \\
 x &< s_i\p{x}
 \end{align}
 \end{definition}

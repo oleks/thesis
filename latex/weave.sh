@@ -29,7 +29,7 @@ mkdir -p $OUTDIR
 if [ "$BASENAME" = "standalone" ]
 then
   COMMAND="\\newcommand\\content[0]{\\input{$2}}\\input{$BASENAME}"
-  JOBNAME="${2%.*}"
+  JOBNAME="$JOBNAME-$(echo ${2%.*} | sed -e 's/\//-/g')"
 # Optional, other else-ifs.
 else
   COMMAND="\\input{$BASENAME}"
