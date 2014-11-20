@@ -27,3 +27,29 @@ complexity class.
 The systems that we will consider here will be subsystems of a larger base
 system, in which other functions, besides those in the complexity class of the
 system can be represented.
+
+\begin{definition} (Intentional soundness)
+
+All programs representable with the ICC subsystem lie within the given
+complexity class. Proven by simulating the ICC subsystem on a machine with
+limited resources.
+
+\end{definition}
+
+\begin{definition} (Intensional completeness)
+
+All programs in the base system that lie within the complexity class, can be
+represented in the ICC subsystem.
+
+\end{definition}
+
+\begin{definition} (Extensional completeness)
+
+All programs in the complexity class are representable in the base system.
+Proven by constructing universal machines for that class in the base system.
+
+\end{definition}
+
+a system that is both intensionally sound and complete is not recursively
+enumerable think, EQ(TM) which is neither Turing-recognisable, nor
+co-Turing-recognisable.
