@@ -1,0 +1,465 @@
+\chapter{Polytime}
+
+Better title: Implicit Computational Complexity
+
+% Also, better suited as an introduction as it doesn't really say anything
+% about the choice of polynomial time from the get go. That's more a
+% coincidence, the following definitions will hold regardless. Perhaps it is
+% worth it calling this a Part I: Introduction and Background
+
+% Fragment of a logic means that we are restricted to a subset of the syntax,
+% but retain the same semantics. If we choose the combination of words -
+% subsystem of system, we are perhaps a little more free, but in either case,
+% we probably have to further specify what we keep and what we take out.
+
+% for the purposes of this thesis, we may regard logical systems equivalent to
+% programming languages - draw inspiration from Types of Crash Prevention - it
+% has a nice, human readable introduction to the whole thing.
+
+The correspondence between an ICC system and a complexity class is extensional,
+i.e. the class of function (or problems) representable in the system equals the
+complexity class.
+
+% by this point we should have more precisely defined the notions of function
+% and problem.
+
+The systems that we will consider here will be subsystems of a larger base
+system, in which other functions, besides those in the complexity class of the
+system can be represented.
+
+\begin{definition} \textit{Intensional soundness}
+
+Any program representable in the ICC system, is within the given complexity
+class. Proven by showing equivalence of the class of problems to a complexity
+class.
+
+\end{definition}
+
+\begin{definition} \textit{Intensional completeness}
+
+All functions in the complexity class are representable in the ICC system.
+
+\end{definition}
+
+\begin{definition} \textit{Extensional soundness}
+
+All functions in the complexity class are representable in the base system.
+
+\end{definition}
+
+\section{Natural numbers}
+
+We begin by defining a theory of natural numbers, $\mathcal{N}$. This is
+distinct from the set of natural numbers, $\mathbb{N}$, which may form the
+universe of a model of $\mathcal{N}$.
+
+\begin{definition} \textit{The theory of natural numbers, $\mathcal{N}$.}
+
+Let the language
+$\mathcal{L}_{\mathcal{N}}=\chev{\set{0},\set{s(x)},\set{x<y,x=y}}$, consist of
+a constant symbol $0$ (read: zero), a unary function $s$ (read: successor), and
+a binary relation $<$ (read: less than). The class of natural numbers is
+axiomatized by the $\mathcal{L}_{\mathcal{N}}$-sentences
+
+\begin{align}
+&\vdash 0 < s(x) \\
+x < y &\vdash s(x) < s(y)
+\end{align}
+
+\end{definition}
+
+\begin{example} \textit{A model $\mathcal{M}$ of $\mathcal{N}$.}
+
+Let the universe be the set of natural numbers, $\mathbb{N}$. Let the constant
+zero be the numeral $0$, and the successor function be the mathematical
+function $s(x)=x+1$. Let the less than relation be the usual $<$ relation on
+$\mathbb{N}$.
+
+Notably, if $\mathcal{M}$ is a model of $\mathcal{N}$, satisfying the above
+axioms, $s$ is an \emph{injective} function, and $<$ is an \emph{irreflexive}
+and \emph{transitive} relation.
+
+\end{example}
+
+\begin{remark}
+
+The theory of natural numbers as defined above, closely resembles the notion of
+natural numbers as originally given by Dedekind\cite{beman-1901,joyce-2005}.
+Unlike the more conventional Peano/Dedekind axioms, which you might be familiar
+with, this notion focuses on the ordered nature of the natural numbers.
+
+\end{remark}
+
+\begin{definition} \emph{The theory of strings over an alphabet $\Sigma$}
+
+Let the language
+$\mathcal{L}_\Sigma=\chev{\set{\varepsilon}\cup\Sigma,\set{x\cdot y},\set{}}$,
+consist of the constant symbols $\Sigma$, the empty symbol $\varepsilon \notin
+\Sigma$, and a binary function $\cdot$ (read: concatenate). The class of
+strings over an alphabet $\Sigma$ is axiomatized by the
+$\mathcal{L}_\Sigma$-sentences
+
+\begin{align}
+&\vdash \varepsilon \cdot x = x & \text{(left identity)} \\
+&\vdash x \cdot \varepsilon = x & \text{(right identity)} \\
+&\vdash \p{ x \cdot y } \cdot z = x \cdot \p{ y \cdot z } & \text{(associativity)}
+\end{align}
+
+\end{definition}
+
+% we want natural numbers, but we don't want the successor and predecessor
+% operations to always be blindly permitted.
+
+% primitive recursion is really defined in terms of a predecessor operation, at
+% least if we assume the successor operation to merely be something that can
+% construct a "bigger" value. otherwise, it is undefined how in primitive
+% recursion we first compute the lower-order value.
+
+% we run into the same problem with s_1 and s_0! Does it at all make sense to
+% define a successor without a predecessor? At least not if we want to be able
+% to define functions recursively! Any time we define a function computing a
+% bigger value having a lower value, we need to specify it in terms of
+% predecessors!
+
+% decrement on binary notation is a polynomial-time operation if we only assume
+% s_0 and s_1 (or rather, their predecessors). We can assume dec to be a
+% unit-cost operation, and that is where the problems of primitive recursion
+% creep up.
+
+% although we can always convert a unique string to a unique natural number, it
+% may take a long time to do so. Furthermore, the successor operation is a polynomial time oper
+
+Any more definite attempt at a definition of the natural numbers seems to
+arrive at a philosophical impasse.
+
+The natural numbers have never-the-less shown to be of prime importance due to
+the concept of recursive enumerability.
+
+Use sets rather than ``language'' to avoid mixing up inputs/outputs of machines
+and the programming languages that we design. Languages refer specifically to
+sets of strings.
+
+\begin{definition}
+
+Define enumerator.
+
+\end{definition}
+
+\begin{definition}
+
+Define recursively enumerable sets.
+
+\end{definition}
+
+Dealing with natural numbers is bad as we would quickly regard the successor
+(and predecessor) operations to be paired and unit-cost operations.
+
+% You cannot take the successor operation to be a unit-cost operation, nor can
+% you assume that it is paired with a predecessor.
+
+% we are dealing with words? basic data elements on any machine model?
+
+% an element of state in a machine model. it has an initial state, and some
+% succeeding states - preceding states don't really make sense.
+
+% a successor does not lead you to another state
+
+% at least size is not defined in terms of the number states that you've passed.
+
+% for all classical machine models, the class of polynomial-time computable
+% functions is equivalent.
+
+% the values of any practical data structure can be recursively enumerated; so
+% although the fact that a set is recursively enumerable opens a pandoras box,
+% only a practical subset of it will be used in practice.
+
+% this is an explanation of godel encoding.
+
+% strings or states of a data structure?
+
+% due to godel encoding, it is okay to deal in natural numbers, provided that
+% we do not (necessarily) permit a unit-cost unique successor operation.
+
+% so we're actually redefining natural numbers again? - yes.
+
+% the natural numbers that you do have in any programming language, depend on
+% the constructs available in your language. indeed, due to godel encoding, any
+% practical programming languages comes with manifolds of ways of defining
+% natural numbers.
+
+This makes it enticive to accept the natural numbers as a basic primitive
+
+% is all this because we want to deal in the natural numbers?
+
+Our choice of available successor and predecessor
+
+In practice, we often deal with recursively enumerable sets, as by the Church-Turing
+thesis, these are exactly the computable functions. This makes it attractive to
+deal merely in the natural numbers as introduced above. Although this is
+perhaps a useful definition of natural numbers, the pairing of a recursively
+enumerable set with the natural numbers can be a rather complex procedure.
+
+We intend to model this complexity by permitting a more elaborate definition of
+natural numbers:
+
+\begin{notion}
+
+A \textbf{value} is either $0$, a successor, or a predecessor of a value. A
+successor and predecessor need not take $O(1)$ to compute.
+
+\end{notion}
+
+The notions of successor and predecessor are defined below.
+
+% It is intentional that we do not denote the syntax of $x$.
+
+% what is a data type?
+
+\begin{definition}
+
+The \textbf{notation} of a particular data type is a specification of how
+values of that data type may be constructed and deconstructed.
+
+\end{definition}
+
+\section{Successors}
+
+% multiple possible successor and predecessor functions.
+
+% TODO: define <, =, \vdash
+
+% to define <, we need to define size; so < is defined for some measure of size.
+
+% The rules with < occurring so early is not a problem as it is a statement
+% that these rules must hold, either as part of the definition of a successor
+% s, or as an admissible rule.
+
+\begin{definition}
+
+A function $s$ is a \textbf{successor} function iff
+
+\begin{align}
+&\vdash 0 < s(x) \\
+x < y &\vdash s(x) < s(y)
+\end{align}
+
+\end{definition}
+
+Successor functions play a key role in the remainder of the thesis, as they
+form the basis of our measure of the size of a value.
+
+\begin{definition}
+
+The \textbf{size} of a value $x$, the minimum number of successor applications
+necessary to construct $x$.
+
+\end{definition}
+
+For instance, a language $\mathcal{B}$ that uses binary notation may have two
+successors, one that doubles the value, $s_0$, and another that doubles the
+value and adds a one, $s_1$. The value $5$ is then represented in $\mathcal{B}$
+as $s_1\p{s_0\p{s_1\p{0}}}$, and so the size of the value $5$ in $\mathcal{B}$
+is $3$. Analytically, the size of a value $x$ in $\mathcal{B}$ is
+$\ceil{\log_2\p{x}}$.
+
+\section{Predecessors}
+
+\begin{definition}
+
+A function $p$ is a \textbf{predecessor} function iff
+
+% no cycles?
+
+\begin{align}
+&\vdash p\p{0} = 0 \\
+&\vdash p\p{x} < x & x \neq 0 \\
+x < y &\vdash p\p{x} < p\p{y}
+\end{align}
+
+\end{definition}
+
+For instance, the language $\mathcal{B}$ above, may have a predecessor function
+$dec$ (read: decrement) defined as follows:
+
+\begin{align}
+dec'\p{x}=y, trim\p{y}=z &\vdash dec\p{x} = z \\
+dec'\p{x} = y &\vdash dec'\p{s_1\p{x}} = s_1\p{y} \\
+dec''\p{x} = y &\vdash dec'\p{s_1\p{x}} = s_0\p{y} \\
+dec'\p{x} = y &\vdash dec'\p{s_0\p{x}} = s_0\p{y} \\
+dec''\p{x} = y &\vdash dec''\p{s_0\p{x}} = s_1\p{y} \\
+&\vdash dec''\p{s_0\p{0}} = s_1\p{0} \\
+&\vdash dec'\p{s_1\p{0}} = s_0\p{0} \\
+&\vdash dec'\p{0} = 0 \\
+trim\p{y} = z &\vdash trim\p{s_0\p{y}} = z \\
+&\vdash trim\p{s_1\p{y}} = s_1\p{y} \\
+&\vdash trim\p{0} = 0
+\end{align}
+
+For instance, $s_1\p{s_0\p{s_1\p{0}}}$, i.e. 5, decremented, is
+$s_1\p{s_0\p{s_0\p{0}}}$, i.e. 4:
+
+$$
+\judgement{
+  \judgement{
+    \judgement{
+      \axiom{
+        dec'\p{s_1\p{0}} = s_0\p{0}
+      }
+    }{
+      dec'\p{s_0\p{s_1\p{0}}} = s_0\p{s_0\p{0}}
+    }
+  }{
+    dec'\p{s_1\p{s_0\p{s_1\p{0}}}} = s_1\p{s_0\p{s_0\p{0}}}
+  }
+  \quad
+  \axiom{
+    trim\p{s_1\p{s_0\p{s_0\p{0}}}} = s_1\p{s_0\p{s_0\p{0}}}
+  }
+}{
+  dec\p{s_1\p{s_0\p{s_1\p{0}}}} = s_1\p{s_0\p{s_0\p{0}}}
+}
+$$
+
+and $s_1\p{s_0\p{s_0\p{0}}}$, i.e. 4, decremented, is $s_1\p{s_1\p{0}}$, i.e. $3$:
+
+$$
+\judgement{
+  \judgement{
+    \judgement{
+      \axiom{
+        dec''\p{s_0\p{0}} = s_1\p{0}
+      }
+    }{
+      dec''\p{s_0\p{s_0\p{0}}} = s_1\p{s_1\p{0}}
+    }
+  }{
+    dec'\p{s_1\p{s_0\p{s_0\p{0}}}} = s_0\p{s_1\p{s_1\p{0}}}
+  }
+  \quad
+  \judgement{
+    \axiom{
+      trim\p{s_1\p{s_1\p{0}}} = s_1\p{s_1\p{0}}
+    }
+  }{
+    trim\p{s_0\p{s_1\p{s_1\p{0}}}} = s_1\p{s_1\p{0}}
+  }
+}{
+  dec\p{s_1\p{s_0\p{s_0\p{0}}}} = s_1\p{s_1\p{0}}
+}
+$$
+
+\section{Successors and predecessors}
+
+\begin{definition}
+
+A predecessor function $p$ is \textbf{paired} with a successor function $s$ iff
+
+\begin{align}
+\vdash p\p{s\p{x}} &= x
+\end{align}
+
+\end{definition}
+
+It is not a requirement for a predecessor to be paired with a successor. A
+language may have predecessors more powerful than any of its successors.
+
+\begin{remark}
+
+A successor or predecessor function may or may not take $O(1)$ time. This
+depends on the machine model.
+
+\end{remark}
+
+\section{Primitive recursion}
+
+\begin{definition}
+
+A function is defined by \textbf{primitive recursion} (PR), from PR functions
+$g$ and $h$, and a PR predecessor function $p$, iff
+
+\begin{align}
+f\p{0,\vect{y}} &= g\p{\vect{y}} \\
+f\p{x, \vect{y}} &= h\p{x, \vect{y}, f\p{p\p{x},\vect{y}}}
+\end{align}
+
+\end{definition}
+
+The running time of a PR function $f$, depends on the running times of $g$,
+$h$, and $p$, as well as how quickly $p$ decreases $x$ to $0$.
+
+Mere primitive recursion is not confined to polytime computation.
+
+\begin{theorem}
+PR is not confined to polytime computation.
+\end{theorem}
+
+\begin{proof} Assume that $g$, $h$, and $p$ are all computed in $O(1)$ time.
+Consider the language $\mathcal{B}$ above, having just the successors $s_0$ and
+$s_1$. Let $p$ be the function $dec$ above.\end{proof}
+
+The trouble is that $p$ does not decrease $x$ fast enough throughout the
+recursion --- the number of times $p$ has to be applied to $x$ to reach $0$, is
+superpolynomial in $x$.
+
+One attempt to mitigate for this could be to have $p$ decrease the value
+faster. For instance, sticking with the language $\mathcal{B}$ above, we could
+let $p$ be a function that halves $x$. This would pair $p$ with $s_0$.
+
+\begin{theorem}
+
+Primitive recursion defined with a predecessor function which is paired with a
+successor function is not confined to polytime computation.
+
+\end{theorem}
+
+\begin{proof} Let a predecessor function $p$ be paired with a successor
+function $s$.
+
+Consider a function $dbl$, which doubles its input:
+
+\begin{align}
+dbl\p{0} &= 0 \\
+dbl\p{x} &= s\p{s\p{dbl\p{p\p{x}}}}
+\end{align}
+
+Consider furthermore a function $iterdbl$, which calls $dbl$ iteratively, the
+same number of times as the length of its input:
+
+\begin{align}
+iterdbl\p{0} &= s\p{0} \\
+iterdbl\p{x} &= dbl\p{iterdbl\p{p\p{x}}}
+\end{align}
+
+Calling $iterdbl$ with a string of length $n$, we obtain a string of length
+$2^n$ due to iterated doubling of the input. It follows that $iterdbl$ does a
+superpolynomial amount of work in the size of its input.\end{proof}
+
+\begin{example}
+We illustrate the above proof with an example:
+\begin{align}
+\underline{iterdbl\p{s\p{s\p{0}}}}
+  &\leadsto dbl\p{iterdbl\p{\underline{p\p{s\p{s\p{0}}}}}} \\
+  &\leadsto dbl\p{\underline{iterdbl\p{s\p{0}}}} \\
+  &\leadsto dbl\p{dbl\p{iterdbl\p{\underline{p\p{s\p{0}}}}}} \\
+  &\leadsto dbl\p{dbl\p{\underline{iterdbl\p{0}}}} \\
+  &\leadsto dbl\p{\underline{dbl\p{s\p{0}}}} \\
+  &\leadsto dbl\p{s\p{s\p{dbl\p{\underline{p\p{s\p{0}}}}}}} \\
+  &\leadsto dbl\p{s\p{s\p{\underline{dbl\p{0}}}}} \\
+  &\leadsto \underline{dbl\p{s\p{s\p{0}}}} \\
+  &\leadsto s\p{s\p{dbl\p{\underline{p\p{s\p{s\p{0}}}}}}} \\
+  &\leadsto s\p{s\p{\underline{dbl\p{s\p{0}}}}} \\
+  &\leadsto s\p{s\p{s\p{s\p{dbl\p{\underline{p\p{s\p{0}}}}}}}} \\
+  &\leadsto s\p{s\p{s\p{s\p{\underline{dbl\p{0}}}}}} \\
+  &\leadsto s\p{s\p{s\p{s\p{0}}}} \\
+\end{align}
+\end{example}
+
+In the proof above, we fall prey to the admission for the function $h$ in a
+primitive recursive function $f$ to generate value larger in size than its
+input.
+
+We could try to mitigate for this, but this would be getting ahead of
+ourselves. Bounded primitive recursion bounds the primitive recursion in a more
+general way, by bounding $f$ itself.
+
+\section{Bounded primitive recursion}
