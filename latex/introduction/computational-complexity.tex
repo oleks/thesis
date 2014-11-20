@@ -1,0 +1,59 @@
+\chapter{Computational Complexity}
+
+% Also known as Complexity, as in Computability & Complexity, and hence
+% Complexity Theory
+
+% Some complexity classes are interesting in their own right, as they are (more
+% or less) the same, regardless of the choice of classical machine model.
+% Perhaps the discussion of machine models really should be integrated with the
+% discussion of complexity.
+
+% It is perhaps at this point (in the discussion of machine models) that we
+% mention our assumptions that a logical system is indifferent to a programming
+% language.
+
+\section{Machine models}
+
+Although the Church-Turing thesis permits us to specify algorithms by means of
+pseudo-code, this admits a pitfall. There is no guarantee that all the steps
+involved in our algorithm are, in fact, computable.
+
+To make sure that our algorithms are always computable (as by the Church-Turing
+thesis), we have to formally specify our algorithm description language, aka.
+our programming language, and show that it can be simulated by a Turing
+machine.
+
+...
+
+% it is even better wrt. talking about complexity to specify the machine model,
+% show it simulateable by a Turing machine.
+
+% so it is okay to write crazy stuff? what you would really do, is show that
+% your formal system can be simulated by a turing machine.
+
+% maybe not as we survey other work.
+
+% simulation
+
+\section{Complexity}
+
+...
+
+\begin{notion} \emph{The Cobham-Edmonds thesis.}
+
+The feasible functions are those which can be computed in time polynomial in
+the size of the input.
+
+\end{notion}
+
+...
+
+% measure of size is machine dependent.
+% basic instructions are machine dependent.
+
+In what follows, we refrain from quantification over (countably, or otherwise)
+infinite domains. This is out of the consideration that there is no mechanical
+procedure to check a property quantified over an infinite domain within a
+finite amount of time.
+
+.

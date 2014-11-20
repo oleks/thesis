@@ -1,0 +1,76 @@
+\chapter{Computability}
+
+% Aka. Computability Theory
+
+We begin with an intuitive notion of computation, calling for a formal
+definition of Turing machines and an exposition of the Church-Turing thesis.
+
+\begin{notion} A problem is ``computable'' if it can be solved by transforming
+a mathematical object, without ingenuity.
+\end{notion}
+
+Any attempt at a more definite notion of computability seems to arrive at a
+philosophical impasse, where the notions of ``mathematical object'',
+``transformation'', and ``ingenuity'' form a philosophical conundrum. The
+indefinite notion however, is sufficient to make the following statement:
+
+\begin{statement} If a problem $P$ can be solved by solving a computable
+problem $Q$, followed by solving a computable problem $R$, then $P$ itself is
+computable. \end{statement}
+
+The statement holds vacuously\footnote{Although this too, can be a
+philosophical conundrum.} as no transformations are performed other than to
+solve the two computable problems. Consequently, any problem which can be
+solved by solving a finite sequence of computable problems, is itself
+computable. Thus we arrive at an intuitive notion of an algorithm:
+
+\begin{notion} An ``algorithm'' is a specification of how a problem can be
+solved by solving a finite sequence of computable problems, called
+steps.\end{notion}
+
+Such indefinite notions are useful for little else. We are left to take a
+philosophical leap of faith, and fall prey to some choice of formalism. To this
+end, the notion of a Turing machine, due to Alan Turing\cite{turing-1937},
+forms perhaps the most well-founded, classical, and intuitive notion of
+computation.
+
+\begin{definition} \emph{Turing machine (TM).}
+
+A Turing machine is a 7-tuple
+$\chev{Q,\Sigma,\Gamma,\delta,q_0,q_{\text{accept}},q_{\text{reject}}}$, where $Q$, $\Sigma$,
+and $\Gamma$ are all finite sets and
+
+\begin{enumerate}
+
+\item $Q$ is a set of states,
+
+\item $\Sigma$ is an alphabet not containing the \textbf{blank symbol}
+\textvisiblespace,
+
+\item $\Gamma$ is the tape alphabet, $\text{\textvisiblespace}\in\Gamma$ and
+$\Sigma\subseteq\Gamma$,
+
+\item $\delta:Q\times\Gamma \rightarrow Q\times\Gamma\times\set{L,R}$, is the
+transformation function,
+
+\item $q_0$ is the starting state,
+
+\item $q_{\text{accept}}$ is the accept state.
+
+\item $q_{\text{accept}}$ is the reject state, and $q_{\text{accept}}\neq q_{\text{reject}}$.
+
+\end{enumerate}
+
+\end{definition}
+
+\begin{notion} \textit{The Church-Turing thesis.}
+
+No intuitive notion of an algorithm can compute a problem that a Turing
+machine cannot compute.
+
+\end{notion}
+
+The Church-Turing thesis does not lend itself to mathematical proof. It has
+however, a notational significance: to show that a problem P can be computed
+by a Turing machine M, it is sufficient to informally describe an algorithm for
+computing P.
