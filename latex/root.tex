@@ -6,6 +6,7 @@
 \usepackage{survival-pack}
 
 \usepackage{tikz}
+\usepackage{enumitem} % fixed-width description items
 
 \backrefparscanfalse % don't automatically add backrefs to references
 
@@ -33,13 +34,24 @@
 \newtheorem{notational-corollary}{Notational Corollary}
 
 \theoremstyle{theorem}
+\newtheorem{textaxiom}{Axiom}
 \newtheorem{theorem}{Theorem}
-\newtheorem{statement}{Statement}
+\newtheorem{hypothesis}{Hypothesis}
+
+\numberwithin{textaxiom}{section}
+\numberwithin{theorem}{section}
+\numberwithin{hypothesis}{section}
 
 \theoremstyle{definition}
-\newtheorem{definition}{Definition}
-\newtheorem{example}{Example}
 \newtheorem{notion}{Notion}
+\newtheorem{primitive-notion}{Primitive Notion}
+\newtheorem{example}{Example}
+\newtheorem{definition}{Definition}
+
+\numberwithin{primitive-notion}{section}
+\numberwithin{notion}{section}
+\numberwithin{example}{section}
+\numberwithin{definition}{section}
 
 \theoremstyle{remark}
 \newtheorem{remark}{Remark}
@@ -75,7 +87,7 @@
 
 %\input{preface/root}
 
-\input{preliminaries/root}
+\input{preface/root}
 
 \input{introduction/root}
 

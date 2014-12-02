@@ -69,20 +69,19 @@
 
 % references
 
-\NewDocumentCommand\referToSection{m}%
+\NewDocumentCommand\fancyRef{mmm}%
 {%
-  \textsection\ \ref{section:#1}/\pageref{section:#1}%
+  \mbox{#1~\ref{#2:#3}/\pageref{#2:#3}}%
 }%
 
-\NewDocumentCommand\referToFigure{m}%
-{%
-  Figure \ref{figure:#1}/\pageref{figure:#1}%
-}%
+\NewDocumentCommand\refSection{m}{\fancyRef{\textsection}{sec}{#1}}
 
-\NewDocumentCommand\referToTable{m}%
-{%
-  Table \textsection\ref{table:#1}/\pageref{table:#1}%
-}%
+\NewDocumentCommand\refProof{m}{\fancyRef{Proof}{thm}{#1}}
+\NewDocumentCommand\refNotion{m}{\fancyRef{Notion}{ntn}{#1}}
+\NewDocumentCommand\refThesis{m}{\fancyRef{Hypothesis}{ths}{#1}}
+
+\NewDocumentCommand\refFigure{m}{\fancyRef{Figure}{fig}{#1}}
+\NewDocumentCommand\refTable{m}{\fancyRef{Table}{tbl}{#1}}
 
 % sections
 

@@ -2,8 +2,11 @@
 
 % Aka. Computability Theory
 
-We begin with an intuitive notion of computation, calling for a formal
-definition of Turing machines and an exposition of the Church-Turing thesis.
+We begin with a brief discussion about the intuitive notion of computation.
+This will motivate our choice of mathematical foundations, enabling a formal
+definition of a model of computation with Turing machines. We conclude with an
+exposition of the Church-Turing thesis, which proposes that the Turing
+machine model captures the natural phenomena of computation.
 
 \begin{notion} A problem is ``computable'' if it can be solved by transforming
 a mathematical object, without ingenuity.
@@ -12,65 +15,280 @@ a mathematical object, without ingenuity.
 Any attempt at a more definite notion of computability seems to arrive at a
 philosophical impasse, where the notions of ``mathematical object'',
 ``transformation'', and ``ingenuity'' form a philosophical conundrum. The
-indefinite notion however, is sufficient to make the following statement:
+indefinite notion however, is sufficient to state the following hypothesis:
 
-\begin{statement} If a problem $P$ can be solved by solving a computable
-problem $Q$, followed by solving a computable problem $R$, then $P$ itself is
-computable. \end{statement}
+\begin{hypothesis} \label{ths:problem-composition} If a problem $P$ can be
+solved by solving a computable problem $Q$, immediately followed by solving a
+computable problem $R$, then $P$ itself is computable. \end{hypothesis}
 
-The statement holds vacuously\footnote{Although this too, can be a
-philosophical conundrum.} as no transformations are performed other than to
-solve the two computable problems. Consequently, any problem which can be
-solved by solving a finite sequence of computable problems, is itself
-computable. Thus we arrive at an intuitive notion of an algorithm:
+The hypothesis clearly holds as nothing is done other than solve the two
+computable problems\footnote{Although, doing nothing, is also a philosophical
+conundrum.}.  So any problem which can be solved by solving a finite sequence
+of computable problems, is itself computable. We now arrive at an intuitive
+notion of an algorithm:
 
-\begin{notion} An ``algorithm'' is a specification of how a problem can be
-solved by solving a finite sequence of computable problems, called
-steps.\end{notion}
+\begin{notion} \label{ntn:problem-algorithm} An ``algorithm'' is a
+specification of how a problem can be solved by solving a finite sequence of
+computable problems, called ``steps''.\end{notion}
+
+As we are dealing with the transformation of mathematical objects, we can
+characterise the solution of a problem by a mathematical function.
+
+\begin{notion} A ``mathematical function'' is a relation between two
+collections of mathematical objects, called its ``domain'' and ``range'', with
+the property that each element of the domain is related to exactly one element
+of the range. \end{notion}
+
+\begin{notation} A function $f$ with domain $X$ and range $Y$ is denoted as
+$f:X\rightarrow Y$. \end{notation}
+
+\begin{notation} Given an object $x$ of domain $X$ of $f:X\rightarrow Y$, we
+denote the corresponding (wrt. $f$) element of range $Y$ as $f\p{x}$.
+\end{notation}
+
+Unlike an algorithm, a mathematical function does not dictate how to compute a
+solution to the problem --- it is a characterisation of all the possible
+algorithms which compute it.
+
+\begin{notion}
+
+An algorithm $A$ ``computes'' a mathematical function $f:X\rightarrow Y$, if
+for all $x$ in $X$, the sequence of steps involved in $A$, transform a
+representation of $x$, into a representation of $f\p{x}$.
+
+\end{notion}
+
+\begin{notion} To ``compute a solution a problem'' means to compute a
+mathematical function.  \end{notion}
+
+We can now recast \refThesis{problem-composition} in terms of functions,
+forming a notion of function composition:
+
+\begin{hypothesis} A function $f:X\rightarrow Y$ is computable if for all $x$,
+$f\p{x}=h\p{g\p{x}}$, where $g:X\rightarrow Z$ and $h:Z\rightarrow Y$ are both
+computable functions. \end{hypothesis}
+
+Similarly, we can recast \refNotion{problem-algorithm} in terms of functions:
+
+\begin{notion} An ``algorithm'' for computing a function $f:X\rightarrow Y$, is
+a finite sequence of compositions of computable functions, $f_n \circ f_{n-1}
+\circ f_0$, where $f_0$ has domain $X$, and $f_n$ has range $Y$. \end{notion}
+
+We say that an algorithm, which computes a mathematical function $f$, is a
+``computational interpretation'' of $f$. Depending on our choice of
+mathematical foundations (the language we use to state mathematical functions),
+a mathematical function may or may not have a computational interpretation,
+i.e.  may or may not be computable. In the interests of the theory of
+computability, we state the following axiom:
+
+\begin{textaxiom} A mathematical function is either computable, not computable,
+or it is not known whether it is computable or not. \end{textaxiom}
+
+In some foundations of mathematics, a mathematical function may be known to be
+computable, but we may not know an algorithm for computing it. For instance,
+within classical mathematics, we can state a function which decides whether the
+Goldbach conjecture\cite{dickson-1919-goldbach} holds or not. The conjecture is
+that every even integer greater than 2 is a sum of two primes.  Consider now a
+function $g:\mathbb{N}\rightarrow\set{0,1}$:
+
+$$g\p{x} = \left\{
+\begin{array}{l l}
+1 & \text{the Goldbach conjecture is true} \\
+0 & \text{otherwise}
+\end{array}
+\right.$$
+
+The conjecture remains unproven, but an algorithm computing $g$ must exist as
+every even integer $x$ greater than $2$ either is a sum of two primes, or it is
+not. We can check this for any such $x$, by checking if the sum of any (of the
+finitely many) pairs of primes less than $x$, equals $x$.
+
+This is an example of an application of the so-called ``law of excluded
+middle'' (LEM), which, in classical mathematics, is assumed as a universal
+axiom. Roughly, LEM states that a property ranging over any domain, either
+holds for the entire domain, or there's an element for which it doesn't. The
+trouble with such a law is that if the domain is infinite, there is no finite
+sequence of steps, which can verify, for every element, whether the property
+holds or not.
+
+We intend to refrain from applying LEM when dealing with infinite domains, and
+subsume the following axiom:
+
+\begin{textaxiom} A mathematical function is computable iff we know an
+algorithm that computes it. \end{textaxiom}
+
+This axiom does not disable us in defining functions which are not computable,
+or functions which we do not know whether are computable or not. For instance,
+it is now unknown whether $g$ is computable or not.
+
+In general, a computable function, may have infinitely many algorithms which
+compute it. For instance, an algorithm that computes $x*y$ (the product of two
+integers, $x$ and $y$), is also computed by an algorithm that computes $x*y*1$,
+or $x*y*1*1$, etc. Despite this, as will be shown more formally below, it is
+not computable in general, to decide whether one algorithm computes the exact
+same function as another.
+
+\subsection{Turing Machines}
 
 Such indefinite notions are useful for little else. We are left to take a
-philosophical leap of faith, and fall prey to some choice of formalism. To this
-end, the notion of a Turing machine, due to Alan Turing\cite{turing-1937},
-forms perhaps the most well-founded, classical, and intuitive notion of
-computation.
+philosophical leap of faith, and fall prey to some choice of formalism.
+
+To this end, the concept of a Turing machine, due to Alan
+Turing\cite{turing-1936-7}, forms perhaps the most well-founded, classical, and
+intuitive conceptualization of computation. The conceptualization below is
+heavily inspired by \cite{jones-1997}, \cite{homer-selman-2011}, and
+\cite{sipser-2013}.
+
+A Turing machine is a symbol-manipulating machine, working with a 1-dimensional
+tape divided into discrete, equally sized squares, each occupied by one of the
+symbols in a tape alphabet, $\Gamma$. The tape has a left edge, but extends
+into infinity to the right.
+
+A Turing machine is always in one of a finite set of states, $Q$, and has a
+tape head, always overlooking a particular square on the tape. The transition
+from one state to the next is uniquely determined by the current state, and the
+symbol read off the overlooked square. A state transition bears with it writing
+a new symbol to the overlooked square, and moving the tape head one square to
+the left, or one square to the right.
+
+\def\qstart{\ensuremath{q_{\text{start}}}}
+\def\qhalt{\ensuremath{q_{\text{halt}}}}
+
+A Turing machine has 2 distinguished states, the starting state, \qstart, and
+the halting state, \qhalt. A Turing machine computes by starting in state
+\qstart, with the tape head on the left edge of the tape, and transitioning
+states until the state \qhalt is reached. A Turing machine does not halt, i.e.
+continues transitioning states forever, if \qhalt is never reached.
+
+The input of a Turing machine is a string of symbols $w$, from an
+``input/output alphabet'', $\Sigma$. To facilitate computation with Turing
+machine, the tape alphabet is the union of $\Sigma$, and a singleton set,
+containing just the special ``blank symbol'', \textvisiblespace. $w$ is then
+written on tape in the obvious way, starting at the left edge of the tape, and
+followed by an infinite sequence of blank symbols.  The output of a Turing
+machine is the string of symbols on tape, starting at the current position of
+the head when $\qhalt$ is reached, extending to the right, until the first
+blank symbol is reached.
 
 \begin{definition} \emph{Turing machine (TM).}
 
-A Turing machine is a 7-tuple
-$\chev{Q,\Sigma,\Gamma,\delta,q_0,q_{\text{accept}},q_{\text{reject}}}$, where $Q$, $\Sigma$,
-and $\Gamma$ are all finite sets and
+A Turing machine is a 5-tuple $\chev{Q,\Gamma,\delta,\qstart,\qhalt}$, where
 
 \begin{enumerate}
 
-\item $Q$ is a set of states,
+\item $Q$ is a finite set of states,
 
-\item $\Sigma$ is an alphabet not containing the \textbf{blank symbol}
-\textvisiblespace,
+\item $\Gamma=\Sigma\cup\set{\text{\textvisiblespace}}$ is the tape alphabet,
+where $\Sigma$ is the input/output alphabet,
 
-\item $\Gamma$ is the tape alphabet, $\text{\textvisiblespace}\in\Gamma$ and
-$\Sigma\subseteq\Gamma$,
+\item $\delta:Q\setminus\set{\qhalt}\times\Gamma \rightarrow
+Q\times\Gamma\times\set{L,R}$, is the transformation function,
 
-\item $\delta:Q\times\Gamma \rightarrow Q\times\Gamma\times\set{L,R}$, is the
-transformation function,
+\item $\qstart$ is the starting state, and
 
-\item $q_0$ is the starting state,
-
-\item $q_{\text{accept}}$ is the accept state.
-
-\item $q_{\text{accept}}$ is the reject state, and $q_{\text{accept}}\neq q_{\text{reject}}$.
+\item $\qhalt$ is the halting state.
 
 \end{enumerate}
 
 \end{definition}
 
-\begin{notion} \textit{The Church-Turing thesis.}
+\begin{definition}
 
-No intuitive notion of an algorithm can compute a problem that a Turing
+The \textbf{contents} of the tape of a TM is the sequence of symbols starting
+at the left end of the tape, and extending until the last non-blank symbol.
+
+\end{definition}
+
+Since the input to a Turing machine is followed by an infinite sequence of
+blank symbols, the contents of the tape at any given state of the TM, is
+finite.
+
+\begin{definition}
+
+A \textbf{configuration} of a TM $M=\chev{Q,\Gamma,\delta,\qstart,\qhalt}$, is
+a triple $\chev{q,n,u}$, where
+
+\begin{enumerate}
+
+\item $q\in Q$ is the current state,
+
+\item $n\in \mathbb{N}$ is the current offset of the head from the left end of
+the tape, and
+
+\item $u\in \Gamma^*$ is the current contents of the tape.
+
+\end{enumerate}
+
+\end{definition}
+
+\begin{notation}
+
+A configuration of a TM $M=\chev{Q,\Gamma,\delta,\qstart,\qhalt}$, is denoted
+by a concatenation of 3 components, $uqv$, where $u\in \Gamma^*$, $q\in Q$, and
+$v\in \Gamma^+$, indicating that the TM is in state $q$, with $uv$ as the
+contents of the tape, and the tape head is overlooking the first symbol of $v$.
+
+\end{notation}
+
+\begin{definition}
+
+A TM configuration $C_x$ \textbf{yields}, or transitions to, a configuration
+$C_y$, denoted $C_x\rightarrow C_y$, iff either
+
+\begin{enumerate}
+
+\item $C_x=uaq_xbv$, $\delta\p{q_x,b}=\chev{q_y,c,L}$ and $C_y=uq_yacv$, or
+
+\item $C_x=uq_xbv$, $\delta\p{q_x,b}=\chev{q_y,c,R}$ and $C_y=ucq_yv$, or
+
+\item $C_x=q_xbv$, $\delta\p{q_x,b}=\chev{q_y,c,L}$ and $C_y=q_ycv$.
+
+\end{enumerate}
+
+\end{definition}
+
+\begin{definition}
+
+A TM $M=\chev{Q,\Gamma,\delta,\qstart,\qhalt}$, halts on input $w$, if there
+exists a sequence of $M$-configurations, $\chev{C_0,C_1, \ldots, C_k}$, such
+that
+
+\begin{enumerate}
+
+\item $C_0=\qstart w$,
+
+\item $C_i\rightarrow C_{i+1}$,
+
+\item $C_k=u\qhalt v$, for some $u\in\Gamma^*$, and $v\in\Gamma^+$.
+
+\end{enumerate}
+
+\end{definition}
+
+\subsection{Church-Turing thesis}
+
+\begin{hypothesis} \textit{Church-Turing thesis.}
+
+No intuitive notion of an algorithm can compute a function that a Turing
 machine cannot compute.
 
-\end{notion}
+\end{hypothesis}
 
-The Church-Turing thesis does not lend itself to mathematical proof. It has
-however, a notational significance: to show that a problem P can be computed
-by a Turing machine M, it is sufficient to informally describe an algorithm for
-computing P.
+The Church-Turing thesis does not lend itself to mathematical proof. Rather, it
+is a proposed explanation of the natural phenomena of computation. The
+hypothesis remains to be disproven, and in the mean-while, computational models
+more convenient than the Turing machine have emerged, some of them, even useful
+in practice.
+
+Some of these models have a formal specification, and so it lends itself to
+formal proof that these models compute no more than a Turing machine does.
+
+Our belief in the Church-Turing thesis has however, a notational advantage: to
+show that a function $f$ is computable, it is sufficient to informally
+describe, an algorithm for computing $f$. Due to the hypothesis, any
+formalisation of the informal algorithm, will yield a computable algorithm,
+
+This is sometimes called providing the ``pseudo-code'' for computing $f$, but can be said
+of most ``code'' today in general.
+
+Formal methods, due to their inherent complexity are seldom employed.
