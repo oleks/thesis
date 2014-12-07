@@ -1,11 +1,119 @@
 \chapter{Computability}
 
+\begin{quotation}
+
+\footnotesize\sffamily\itshape
+
+\begin{flushright}
+
+The ``computable'' numbers may be described briefly as the real numbers whose
+expressions as a decimal are calculable by finite means.
+
+\smallbreak
+
+\upshape
+
+--- ALAN TURING, {\itshape Proceedings of The London Mathematical Society} (1936-7)
+
+\end{flushright}
+
+\end{quotation}
+
 % Aka. Computability Theory
+
+The theory of computability is a branch of Mathematical Logic and Computer
+Science, concerned with the nature of computation. It originated in the 1930s
+with the celebrated works of G\"odel, Kleene, Church, Post, Turing, et al.
+
+Fundamental to the science of computability is the Church-Turing thesis, which
+proposes that the notion of a Turing machine captures the natural phenomena of
+computation. Belief in this thesis permits us to work with the established
+notion of a Turing machine to formally develop computational algebras, which
+serve to support the fundamental human faculty of computation.
+
+For instance, a computational algebra may more closely resemble the mode of
+computation with a particular real-world machine. Such computational algebras
+are called ``machine models''. On the other hand, a computational algebra may
+enable us to specify a computation in a manner that is clear and concise, and
+perhaps even closely resembles our problem domain. Such computational algebras
+are called ``programming languages''.
+
+A modern exposition of the field would typically assume some notion of sets,
+and some basic set constructions, in the form of functions, Cartesian products,
+unions, etc. We choose to take a slightly different route.
+
+The foundations of mathematics, unlike the foundations of computation, remain
+largely disputed. This is not to say that computation is somehow superior to
+mathematics. Quite the contrary, computation is a natural phenomena, whereas
+mathematics is free to roam in the supernatural. For this reason, we develop
+the notion of a Turing machine and what it can compute, and take the
+Church-Turing thesis to hold as an axiom. This forms the axiomatic foundation
+of our computational algebras going forth.
+
+\section{Finite sets}
+
+It is beyond the scope of this thesis to develop the notion of ``finite sets'',
+``Cartesian products'', and ``total functions'' over finite sets. We assume
+these notions as given, subject to the following specifications:
+
+\begin{specification}
+
+A \textbf{finite set} $X$ is distinct from, but defined by its finite
+collection of \textbf{elements}, having the following properties:
+
+\begin{enumerate}
+
+\item The elements of $X$ can be considered in sequence.
+
+\item Two elements of $X$ are either equal to or not.
+
+\end{enumerate}
+
+\end{specification}
+
+We will exemplify and further specify these properties in the following
+paragraphs.
+
+\begin{notation} A finite set is given by denoting the elements of the set in a
+typographical sequence, separated by commas, and enclosed in braces. For
+instance, $X\triangleq\set{\symb{a},\symb{b},\symb{c}}$ defines a finite set
+$X$, defined by the elements $\symb{a}$, $\symb{b}$, and
+$\symb{c}$.\end{notation}
+
+\begin{notation} An element $x$ of $X$ is written as $x:X$. \end{notation}
+
+We now consider some operations that form new finite sets from given finite sets.
+
+\begin{specification} A \textbf{total function} $f$ over finite sets $X$ and
+$Y$, written  $f:X\rightarrow Y$, has ``domain'' $X$ and ``codomain'' $Y$,
+and adheres to the following properties:
+
+\begin{enumerate}
+
+\item For each $x:X$, $f$ has a \textbf{value} at $x$ in $Y$, written $f\p{x}:Y$.
+
+\item $X$, $Y$, and $f\p{x} : Y$ for each $x : X$, are all determined completely
+by $f$.
+
+\item $X$, $Y$, and $f\p{x} : Y$ for each $x : X$, completely determine $f$.
+
+\end{enumerate}
+
+\end{specification}
+
+\begin{specification} The \textbf{Cartesian product} over finite sets $X$ and
+$Y$, written $X\times Y$, is the finite set of all pairs, written $\p{x,y}$,
+where $x:X$ and $y:Y$. \end{specification}
+
+\begin{alias} An \textbf{alphabet} is a finite set of \textbf{symbols}.
+\end{alias}
+
+\pagebreak
 
 We begin with a brief discussion about the intuitive notion of computation.
 This will motivate our choice of mathematical foundations, enabling a formal
 definition of a model of computation with Turing machines. We conclude with an
-exposition of the Church-Turing thesis, which proposes that the Turing
+exposition of the Church-Turing thesis, which hypothesises that the Turing
 machine model captures the natural phenomena of computation.
 
 \begin{notion} A problem is ``computable'' if it can be solved by transforming
@@ -31,30 +139,256 @@ notion of an algorithm:
 specification of how a problem can be solved by solving a finite sequence of
 computable problems, called ``steps''.\end{notion}
 
-As we are dealing with the transformation of mathematical objects, we can
-characterise the solution of a problem by a mathematical function.
+At this point, we have a recursive notion of computability with no basis. We
+will gradually assume some problems to be fundamentally computable, gradually
+evolving into the Church-Turing thesis.
 
-\begin{notion} A ``mathematical function'' is a relation between two
-collections of mathematical objects, called its ``domain'' and ``range'', with
-the property that each element of the domain is related to exactly one element
-of the range. \end{notion}
+An object of interest in computation is either one of a finite collection of
+distinguished objects, or an object constructed by means of an algorithm.
 
-\begin{notation} A function $f$ with domain $X$ and range $Y$ is denoted as
-$f:X\rightarrow Y$. \end{notation}
+\begin{notion} An ``alphabet'' is a finite collection of distinguished objects.
+\end{notion}
 
-\begin{notation} Given an object $x$ of domain $X$ of $f:X\rightarrow Y$, we
-denote the corresponding (wrt. $f$) element of range $Y$ as $f\p{x}$.
+\begin{notion} An object $x$ is an ``element'' of an alphabet $X$, written $x :
+X$, if $x$ is one of the distinguished objects of $X$. We'll often refer to an
+$x:X$ as a ``symbol''. \end{notion}
+
+\begin{hypothesis}
+
+We assume it to be fundamentally computable to consider the elements of an
+alphabet in a sequence.
+
+\end{hypothesis}
+
+Due to the above hypothesis, we can now list the elements in an alphabet
+typographically:
+
+\begin{notation}
+
+The elements of an alphabet are listed by listing the elements enclosed in
+braces, and separated by commas.
+
 \end{notation}
 
+\textbf{Note:} Alphabets are toy-conception of the better known finite sets. We
+choose only to draw the distinction for the purposes of a discussion about the
+natural phenomena of computation. In particular, alphabets have a natural
+correspondence to the real world. Alphabets often employed in computation in
+practice is the alphabet of binary numbers $\set{0,1}$, the alphabet of
+integers in the range $[0;2^{63}-1]$, the ASCII table, etc.
+
+For instance, the alphabet $X$, consisting of just the symbols \symb{a},
+\symb{b}, and \symb{c}, is denoted as $X=\set{\symb{a},\symb{b},\symb{c}}$.
+
+\begin{hypothesis} We assume it to be fundamentally computable to decide
+whether two elements $x:X$ and $y:X$ of the same alphabet $X$ are the same
+symbol or not. \end{hypothesis}
+
+\begin{notion}
+
+A ``total function'' $f$ with ``domain'' $X$ and ``range'' $Y$, written
+$f:X\rightarrow Y$, where $X$ and $Y$ are alphabets, has the following
+properties:
+
+\begin{enumerate}
+
+\item For each $x : X$, $f$ has a unique \textbf{value} at $x$ in $Y$, written
+$f\p{x} : Y$.
+
+\item $X$, $Y$, and $f\p{x} : Y$ for each $x : X$ are all determined completely
+by $f$.
+
+\item $X$, $Y$, and $f\p{x} : Y$ for each $x : X$ completely determine $f$.
+
+\end{enumerate}
+
+\end{notion}
+
+\begin{notion} A ``Cartesian product'' of alphabet $X$ and $Y$, written
+$X\times Y$, is the collection of all tuples $\p{x,y}$, where $x:X$ and $y:Y$.
+\end{notion}
+
+The notions above are sufficient to define a computational model.
+
+To this end, the concept of a Turing machine, due to Alan
+Turing\cite{turing-1936-7}, forms perhaps the most well-founded, classical, and
+intuitive conceptualization of computation. The conceptualization below is
+heavily inspired by \cite{jones-1997}, \cite{homer-selman-2011}, and
+\cite{sipser-2013}.
+
+A Turing machine is a symbol-manipulating machine, working with a 1-dimensional
+tape divided into discrete, equally sized squares, each occupied by one of the
+symbols in a tape alphabet, $\Gamma$. The tape has a left edge, but extends
+into infinity to the right.
+
+A Turing machine is always in one of an alphabet of states, $Q$, and has a tape
+head, always overlooking a particular square on the tape. A Turing machine
+``computes'' by transitioning between states and working with the tape head.
+
+The transition from one state to the next is uniquely determined by the current
+state, and the symbol read off the overlooked square. A state transition bears
+with it writing a new symbol to the overlooked square, and moving the tape head
+one square to the left, or one square to the right.
+
+\def\qstart{\ensuremath{q_{\text{start}}}}
+\def\qhalt{\ensuremath{q_{\text{halt}}}}
+
+A Turing machine has two distinguished states, the starting state, \qstart{},
+and the halting state, \qhalt{}. A Turing machine computes by starting in state
+\qstart{}, with the tape head on the left edge of the tape, and transitioning
+states until the state \qhalt{} is reached. A Turing machine does not halt,
+i.e.  continues transitioning states forever, if \qhalt{} is never reached.
+
+The input of a Turing machine is a string of symbols $w$, from an
+``input/output alphabet'', $\Sigma$. To facilitate computation with Turing
+machine, the tape alphabet is the union of $\Sigma$, and an alphabet containing
+just the special ``blank symbol'', \textvisiblespace. $w$ is written on tape by
+starting at the left edge of the tape, and followed by an infinite sequence of
+blank symbols.
+
+The output of a Turing machine is the string of symbols on tape, starting at
+the current position of the head when $\qhalt$ is reached, extending to the
+right, until the first blank symbol is reached.
+
+\begin{notion} \emph{Turing machine (TM).}
+
+A Turing machine $M$, has 5 constituents, written
+$M=\p{Q,\qstart,\qhalt,\Gamma, \delta}$, where
+
+\begin{enumerate}
+
+\item $Q$ is the state alphabet,
+
+\item $\qstart :  Q$ is the starting state,
+
+\item $\qhalt : Q$ is the halting state,
+
+\item $\Gamma=\Sigma\cup\set{\text{\textvisiblespace}}$ is the tape alphabet,
+where $\Sigma$ is the input/output alphabet,
+
+\item $\delta:Q\setminus\set{\qhalt}\times\Gamma \rightarrow
+Q\times\Gamma\times\set{\mathtt{L},\mathtt{R}}$, is the total transformation
+function.
+
+\end{enumerate}
+
+\end{notion}
+
+\begin{definition}
+
+The \textbf{contents} of the tape of a TM is the sequence of symbols starting
+at the left end of the tape, and extending until the last non-blank symbol.
+
+\end{definition}
+
+Since the input to a Turing machine is followed by an infinite sequence of
+blank symbols, the contents of the tape at any given state of the TM, is
+finite.
+
+\begin{definition}
+
+A \textbf{configuration} of a TM $M=\chev{Q,\Gamma,\delta,\qstart,\qhalt}$, is
+a triple $\chev{q,n,u}$, where
+
+\begin{enumerate}
+
+\item $q\in Q$ is the current state,
+
+\item $n\in \mathbb{N}$ is the current offset of the head from the left end of
+the tape, and
+
+\item $u\in \Gamma^*$ is the current contents of the tape.
+
+\end{enumerate}
+
+\end{definition}
+
+\begin{notation}
+
+A configuration of a TM $M=\chev{Q,\Gamma,\delta,\qstart,\qhalt}$, is denoted
+by a concatenation of 3 components, $uqv$, where $u\in \Gamma^*$, $q\in Q$, and
+$v\in \Gamma^+$, indicating that the TM is in state $q$, with $uv$ as the
+contents of the tape, and the tape head is overlooking the first symbol of $v$.
+
+\end{notation}
+
+\begin{definition}
+
+A TM configuration $C_x$ \textbf{yields}, or transitions to, a configuration
+$C_y$, denoted $C_x\rightarrow C_y$, iff either
+
+\begin{enumerate}
+
+\item $C_x=uaq_xbv$, $\delta\p{q_x,b}=\chev{q_y,c,L}$ and $C_y=uq_yacv$, or
+
+\item $C_x=uq_xbv$, $\delta\p{q_x,b}=\chev{q_y,c,R}$ and $C_y=ucq_yv$, or
+
+\item $C_x=q_xbv$, $\delta\p{q_x,b}=\chev{q_y,c,L}$ and $C_y=q_ycv$.
+
+\end{enumerate}
+
+\end{definition}
+
+
+\pagebreak
+
+\begin{notion}
+
+A ``set'' is collection of distinguishable ``elements'', where each element is
+either an element of an alphabet, or an object constructed by means of an algorithm. 
+
+If a collection is a finite collection of distinguished objects, it is
+trivially a set. Otherwise, an algorithm is required to distinguish the
+elements.
+
+\end{notion}
+
+\begin{notion} An object $x$ is an element of a set $X$, written $x\in X$, if
+$x$ is one of the distinguishable objects in $X$. \end{notion}
+
+Notably, if $x\in X$ is a not a constant, there must exist an algorithm which
+decides whether $x$ is one of the distinguishable objects in $X$ or not.
+
+We can characterise a problem (computable, or not) by a mathematical function:
+
+\begin{notion}
+
+A ``mathematical function'' $f$ is a mathematical object with the following
+properties:
+
+\begin{enumerate}
+
+\item $f$ has a ``domain'' $X$, and ``range'' $Y$, written $f:X\rightarrow Y$.
+
+\item Both $X$ and $Y$ are sets.
+
+\item For each $x \in X$, $f$ either has a unique \textbf{value} at $x$ in $Y$,
+written $f\p{x} \in Y$, or $f\p{x}$ is undefined.
+
+\item $X$, $Y$, and $f\p{x}\in Y$ for each $x\in X$ are all determined
+completely by $f$.
+
+\item $X$, $Y$, and $f\p{x}\in Y$ for each $x\in X$ completely determine $f$.
+
+\end{enumerate}
+
+\end{notion}
+
+For now, all functions that we deal in are mathematical, and so we refer to
+them simply as ``functions'' until further notice.
+
+\begin{definition} A function $f:X\rightarrow Y$ is \textbf{total} if for each
+$x\in X$, $f\p{x}\in Y$, and \textbf{partial} otherwise. \end{definition}
+
 Unlike an algorithm, a mathematical function does not dictate how to compute a
-solution to the problem --- it is a characterisation of all the possible
+solution to the problem. Instead, it is a characterisation of all the possible
 algorithms which compute it.
 
 \begin{notion}
 
 An algorithm $A$ ``computes'' a mathematical function $f:X\rightarrow Y$, if
-for all $x$ in $X$, the sequence of steps involved in $A$, transform a
-representation of $x$, into a representation of $f\p{x}$.
+for all $x\in X$, the sequence of steps involved in $A$, transform a
+representation of $x$, into a representation of $f\p{x}$, or it does not halt.
 
 \end{notion}
 
@@ -64,9 +398,9 @@ mathematical function.  \end{notion}
 We can now recast \refThesis{problem-composition} in terms of functions,
 forming a notion of function composition:
 
-\begin{hypothesis} A function $f:X\rightarrow Y$ is computable if for all $x$,
-$f\p{x}=h\p{g\p{x}}$, where $g:X\rightarrow Z$ and $h:Z\rightarrow Y$ are both
-computable functions. \end{hypothesis}
+\begin{hypothesis} A function $f:X\rightarrow Y$ is computable if for all $x\in
+X$, $f\p{x}=h\p{g\p{x}}$, where $g:X\rightarrow Z$ and $h:Z\rightarrow Y$ are
+both computable functions. \end{hypothesis}
 
 Similarly, we can recast \refNotion{problem-algorithm} in terms of functions:
 
@@ -144,21 +478,18 @@ tape divided into discrete, equally sized squares, each occupied by one of the
 symbols in a tape alphabet, $\Gamma$. The tape has a left edge, but extends
 into infinity to the right.
 
-A Turing machine is always in one of a finite set of states, $Q$, and has a
-tape head, always overlooking a particular square on the tape. The transition
-from one state to the next is uniquely determined by the current state, and the
+A Turing machine is always in one of an alphabet of states, $Q$, and has a tape
+head, always overlooking a particular square on the tape. The transition from
+one state to the next is uniquely determined by the current state, and the
 symbol read off the overlooked square. A state transition bears with it writing
 a new symbol to the overlooked square, and moving the tape head one square to
 the left, or one square to the right.
 
-\def\qstart{\ensuremath{q_{\text{start}}}}
-\def\qhalt{\ensuremath{q_{\text{halt}}}}
-
-A Turing machine has 2 distinguished states, the starting state, \qstart, and
-the halting state, \qhalt. A Turing machine computes by starting in state
-\qstart, with the tape head on the left edge of the tape, and transitioning
-states until the state \qhalt is reached. A Turing machine does not halt, i.e.
-continues transitioning states forever, if \qhalt is never reached.
+A Turing machine has 2 distinguished states, the starting state, \qstart{}, and
+the halting state, \qhalt{}. A Turing machine computes by starting in state
+\qstart{}, with the tape head on the left edge of the tape, and transitioning
+states until the state \qhalt{} is reached. A Turing machine does not halt,
+i.e.  continues transitioning states forever, if \qhalt{} is never reached.
 
 The input of a Turing machine is a string of symbols $w$, from an
 ``input/output alphabet'', $\Sigma$. To facilitate computation with Turing
@@ -176,17 +507,18 @@ A Turing machine is a 5-tuple $\chev{Q,\Gamma,\delta,\qstart,\qhalt}$, where
 
 \begin{enumerate}
 
-\item $Q$ is a finite set of states,
+\item $Q$ is the state alphabet,
+
+\item $\qstart\in Q$ is the starting state,
+
+\item $\qhalt\in Q$ is the halting state,
 
 \item $\Gamma=\Sigma\cup\set{\text{\textvisiblespace}}$ is the tape alphabet,
 where $\Sigma$ is the input/output alphabet,
 
 \item $\delta:Q\setminus\set{\qhalt}\times\Gamma \rightarrow
-Q\times\Gamma\times\set{L,R}$, is the transformation function,
-
-\item $\qstart$ is the starting state, and
-
-\item $\qhalt$ is the halting state.
+Q\times\Gamma\times\set{\mathtt{L},\mathtt{R}}$, is the total transformation
+function.
 
 \end{enumerate}
 
@@ -292,3 +624,29 @@ This is sometimes called providing the ``pseudo-code'' for computing $f$, but ca
 of most ``code'' today in general.
 
 Formal methods, due to their inherent complexity are seldom employed.
+
+%%%%%
+
+%As we are dealing with the transformation of mathematical objects, we can
+%initially capture the notion of solving a problem by the concept of a
+%``morphism'' from category theory.
+
+%\begin{definition} A \textbf{morphism} $f$ from object $X$ to object $Y$ is
+%written $f:X\rightarrow Y$. \end{definition}
+
+%This does not yet tell us what the objects $X$ and $Y$ are, or how it is that
+%$f$ ``morphs'' from $X$ to $Y$. We develop these concepts below. Drawing on
+%category theory, in the spirit of \refThesis{problem-composition}, morphisms
+%are composable:
+
+%\begin{definition} The \textbf{composition} of morphisms $f:X\rightarrow Z$ and
+%$g:Z\rightarrow Y$ is written $\p{g\circ f} : X \rightarrow Y$.
+%\end{definition}
+
+%The notion of an algorithm now becomes a finite composition of morphisms,
+%provided that the morphisms in question capture solving \emph{computable}
+%problems.  This demands that we specify what it means to ``morph'' from one
+%object to another. First however, we consider what sort of objects we are
+%interested in.
+
+
