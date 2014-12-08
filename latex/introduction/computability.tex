@@ -1,0 +1,177 @@
+\chapter{Computability}
+
+\begin{quotation}
+
+\footnotesize\sffamily\itshape
+
+\begin{flushright}
+
+The ``computable'' numbers may be described briefly as the real numbers whose
+expressions as a decimal are calculable by finite means.
+
+\smallbreak
+
+\upshape
+
+--- ALAN TURING, {\itshape Proceedings of The London Mathematical Society} (1936-7)
+
+\end{flushright}
+
+\end{quotation}
+
+
+\def\qstart{\ensuremath{q_{\text{start}}}}
+\def\qhalt{\ensuremath{q_{\text{halt}}}}
+\def\blank{\ensuremath{\text{\textvisiblespace}}}
+\def\goleft{\symb{L}}
+\def\goright{\symb{R}}
+
+The theory of computability is concerned with the nature of computation. It
+originated in the 1930s with the celebrated works of G\"odel, Kleene, Church,
+Post, Turing, et al.  Fundamental to the field is the Church-Turing thesis,
+which proposes that the natural phenomena of computation is captured by the
+notion of computation with a Turing machine.
+
+We begin with a brief discussion about the intuitive notion of computation,
+leading way for a formal\footnote{By ``formal'', in this chapter and the next,
+we mean built atop the mathematical foundations as outlined in
+\refSection{preface:mathematical-preliminaries}. It is an interesting thesis in
+its own right to consider an exposition of computability and complexity theory
+as based solely on the Church-Turing thesis as an axiom.} definition of
+computation with a Turing machine, and an exposition of the Church-Turing
+thesis.
+
+\begin{notion} A problem is ``computable'' if it can be solved by transforming
+a mathematical object, without ingenuity.
+\end{notion}
+
+Any attempt at a more definite notion of computability seems to arrive at a
+philosophical impasse, where the notions of ``mathematical object'',
+``transformation'', and ``ingenuity'' form a philosophical conundrum. The
+indefinite notion however, is sufficient to state the following hypothesis:
+
+\begin{hypothesis} \label{ths:problem-composition} If a problem $P$ can be
+solved by solving a computable problem $Q$, immediately followed by solving a
+computable problem $R$, then $P$ itself is computable. \end{hypothesis}
+
+The hypothesis clearly holds as nothing is done other than solve the two
+computable problems\footnote{Although, doing nothing, is itself a philosophical
+conundrum.}.  So any problem which can be solved by solving a finite sequence
+of computable problems, is itself computable. We now arrive at an intuitive
+notion of an algorithm:
+
+\begin{notion} \label{ntn:problem-algorithm} An ``algorithm'' is a
+specification of how a problem can be solved by solving a finite sequence of
+computable problems, called ``steps''.\end{notion}
+
+Such indefinite notions are useful for little else. We are left to fall prey to
+some choice of formalism. To this end, the notion of computation with a Turing
+machine, due to Alan Turing\cite{turing-1936-7}, forms perhaps the most
+classical and intuitive conceptualization of computation. The notion below is
+heavily inspired by the notions that appear in \cite{tourlakis-1984},
+\cite{jones-1997}, \cite{homer-selman-2011}, and \cite{sipser-2013}, but
+slightly differs from all of them.
+
+A \textbf{Turing machine} is a symbol-manipulating machine, working with a
+1-dimensional tape divided into discrete, equally sized squares. Each square is
+occupied by a symbol drawn from the \textbf{tape alphabet} of the machine.  The
+tape alphabet consists of the \textbf{input/output alphabet}, usually denoted
+$\Sigma$, and a special \textbf{blank symbol}, written \blank, which is not in
+$\Sigma$. The tape has a left edge, but extends into infinity to the right,
+filled with blank symbols.
+
+A Turing machine is always in one of a finite set of \textbf{states}, also
+called the \textbf{state alphabet}, and has a tape head, always overlooking a
+particular square on the tape. A Turing machine ``computes'' by transitioning
+between states and working with the tape head.
+
+The transition from one state to the next is uniquely determined by the current
+state, and the symbol read off the overlooked square. A state transition bears
+with it writing a new symbol to the overlooked square, and moving the tape head
+one square to the left, or one square to the right.
+
+There are two distinguished states, the \textbf{starting state}, usually
+denoted \qstart, and the \textbf{halting state}, usually denoted \qhalt. A
+Turing machine \textbf{starts} a computation by entering the state \qstart,
+overlooking the square at the left end of the tape. A Turing machine
+\textbf{halts}, i.e.  performs no further state transitions, if it ever
+transitions to state \qhalt. A halting computation is a finite sequence of
+state transitions.
+
+We now formalise these notions as follows:
+
+\begin{definition} A Turing machine (TM) $M$ is a 5-tuple
+$\p{Q,\qstart,\qhalt,\Gamma, \delta}$, where
+
+\begin{enumerate}
+
+\item $Q$ is the state alphabet,
+
+\item $\qstart \in Q$ is the starting state,
+
+\item $\qhalt \in Q$ is the halting state,
+
+\item $\Gamma=\Sigma\cup\set{\blank}$ is the tape alphabet, where
+$\set{\blank}\cap\Sigma=\emptyset$ and $\Sigma$ is the input/output alphabet,
+and
+
+\item $\delta : Q \setminus \set{\qhalt} \times \Gamma \rightarrow Q \times
+\Gamma \times \set{\symb{L}, \symb{R}}$ is the (total) transition function.
+
+\end{enumerate}
+
+We will omit stating the components of a TM, when they are clear from context.
+
+\end{definition}
+
+\begin{definition} An $M$-\textbf{configuration} of a TM $M$, is a 3-tuple,
+written $uqv$, where $u\in\Gamma^*$, $q\in Q$, and $v\in\Gamma^*$. If
+$v=\varepsilon$, it can be regarded as if $v=\blank$. \end{definition}
+
+We will omit stating that $u\in\Gamma^*$, $q\in Q$, and $v\in\Gamma^*$ when
+this is clear from context. The additional permission to regard an empty $v$ as
+a $v$ containing a blank symbol facilitates the notion of an infinite tape.
+This is illustrated by an example further below.
+
+\begin{definition} An $M$-configuration $C_x$ \textbf{yields} an
+$M$-configuration $C_y$, written $C_x\leadsto C_y$, iff either
+
+\begin{enumerate}
+
+\item $\delta\p{q_x,a}=\p{q_y,b,\goright}$, $C_x=uq_xav$, and $C_y=ubq_yv$,
+
+\item $\delta\p{q_x,a}=\p{q_y,b,\goleft}$, $C_x=ucq_xav$, and $C_y=uq_ycbv$,
+or
+
+\item $\delta\p{q_x,a}=\p{q_y,b,\goleft}$, $C_x=q_xbv$,  and $C_y=q_ybv$;
+
+where $a,b,c\in\Sigma$, and $q_x,q_y\in Q$.
+
+\end{enumerate}
+
+\end{definition}
+
+\begin{definition}
+
+A TM $M$ halts with output $y\in\Sigma^*$ on input $x\in\Sigma^*$, written
+$M\p{x}\downarrow y$, iff there exists a finite sequence of $M$-configurations,
+$\chev{C_1,C_2,\ldots, C_k}$, of length $k\in\mathbb{N}$, such that
+
+\begin{enumerate}
+
+\item $C_1=\qstart x$,
+
+\item $C_i\leadsto C_{i+1}$ for all $1\leq i < k$,
+
+\item $C_k=u\qhalt yv$.
+
+\end{enumerate}
+
+\end{definition}
+
+Note, in particular that the ``tape'' of a TM in such a formalisation is not
+infinite, and rather, finite but extensible. As an example, consider a TM $M$,
+where $\Sigma=\set{\symb{\#}}$ and $\delta\p{\qstart, \blank} =
+\p{\qhalt,\#,\goleft}$. We have that $\qstart\leadsto\qhalt\#$ and
+$M\p{}\downarrow\#$.
+

@@ -1,0 +1,161 @@
+\chapter{Preface}
+
+This chapter serves to motivate the following thesis.
+
+In most matters of life, it is of principal concern to represent and transform
+data. In high profile applications, such as where human fortunes are at stake,
+it is important that data transformations occur in a reliable manner.  This
+means both that the data is transformed in an expected way, but also that this
+is done in a timely manner.
+
+The advent of digital computers has delivered much reliability, provided that
+their human programmers can deliver correct and efficient programs for the
+matter at hand. Much has been done in the field of data representation and
+transformation, i.e. Computer Science, in terms of guaranteeing the correctness
+and judging the efficiency of programs. This thesis is about guaranteeing
+both the correctness and efficiency of programs.
+
+In support of the fundamental human faculty of managing data, it is natural in
+Computer Science to consider data representations and transformations as data
+in themselves. Accompanied by additional descriptors, this leads way for basic
+buildings blocks for the more elaborate management of data. Such
+``abstractions'' in Computer Science both alleviate the mundane details of data
+representation and transformation, and enable more efficient communication
+about programs amongst the humans themselves.
+
+\begin{example} \ 
+
+It may be sufficient, for a Alice to know that Bob has written a program
+\textsc{Add}, which given two integers, $x$ and $y$, in the range $[0;31]$,
+after a handful machine instructions, returns an integer, $z$, such that $z=x+y
+\mod 32$.
+
+Alice could now use \textsc{Add} to compute the sum of an array of integers in
+the range $[0;31]$, in a number of machine instructions proportional to the
+number of elements in the array. That is Alice, didn't need to know the
+internal details of how \textsc{Add} works, merely some high-level descriptors
+of what it does.
+
+\end{example}
+
+We say that the program \textsc{Add} computes the function $f(x,y)=x+y \mod
+32$.
+
+% static vs dynamic
+
+Abstractions incorporate into the interface between the human and computer.
+
+% The subject matter of this thesis is to guarantee that Bob has not used more
+% than a handful machine instructions.
+
+% A good programming language puts the tools of the language designer at the
+% programmers fingertips. And so anything written in a programming language
+% defines a programming language.
+
+% We approach the problem from a programming languages perspective. A digital
+% computer typically understands only one language --- machine language. As
+% programming is principally a human activity, 
+
+% Programming languages serve to communicate the intent of the programmer both
+% to a computer, other programmers, and the programmer themselves.
+
+\begin{itemize}
+
+\item Programming Languages
+
+\item Human-computer interaction
+
+\item Computability and Complexity
+
+\end{itemize}
+
+\section{Audience} \label{sec:preface:audience}
+
+The audience of this thesis is anyone interested in the connection of
+computability and complexity to the theory and practice of programming
+languages.
+
+In particular, what the admittance of useful programming language constructs
+implies for the time and space complexity of the programs that you can write. A
+programming language construct is ``useful'' if its admission permits to write
+a practical class of programs in an elegant manner.
+
+\def\ch{\textsection}
+\def\chs{\ch\ch}
+
+The thesis is directed towards the level of a Computer Science graduate student
+at the time of writing: The reader is assumed to be familiar with the basics of
+discrete mathematics, as in \cite{sipser-2013}, \ch0, and
+\cite{cormen-et-al-2009}, Appendices A, B, and C. The analysis of time and
+space complexity of algorithms, as in \cite{cormen-et-al-2009}, \chs1--17 and
+\chs21--24. Regular and context-free languages, as in \cite{sipser-2013}
+\chs1--2, and their use for programming language design, as in
+\cite{mogensen-2010}. The reader should also be familiar with Logic in Computer
+Science, as in \cite{huth-ryan-2004}, \chs1--4.
+
+\section{Internal references} \label{sec:preface:internal-references}
+
+All references within this document to parts of this document are qualified
+with the page on which the referenced part begins. For instance, we refer to
+this section as \refSection{preface:internal-references}.
+
+\section{Named segments}
+
+Named segments are text segments with a role and an address. The role seeks to
+distinguish the text segment from prose, and the address permits to
+subsequently reference the segment.
+
+Addresses are of the format \mbox{$x$.$y$.$z$}, where $z$ is the index of the
+named segment in section indexed $y$, in chapter indexed $x$. Where
+appropriate, we'll give a named segment a name for even easier reference, for
+instance, when defining the concept of a Turing machine. The various roles are
+described below, showcasing also how each named segment will be formatted.
+
+\begin{notion} An informal definition of a concept, appealing either to the
+reader's intuition or formerly stated notions. \end{notion}
+
+\begin{hypothesis} An informal statement, proposed as an explanation for a
+particular phenomenon. A hypothesis does not admit itself to formal proof, but
+can be disproven by observation. A hypothesis is always followed by a
+discussion of its validity. \end{hypothesis}
+
+Some notions are ``primitive'', in the sense that they underpin subsequent
+formal definitions. It is a fundamental epistemological impasse, that in any
+formal system, some concepts must remain distinguished, but undefined, these
+are the \textbf{primitive notions}, or \textbf{axioms}, of the formal system.
+
+\begin{definition} A formal definition of a concept, appealing to either
+formerly stated primitive notions or definitions. Definitions seek to underpin
+subsequent formal definitions and analyses. \end{definition}
+
+This thesis only seeks to be self-contained beyond what can be expected of the
+intended audience. Some notions, hypotheses, and definitions appeal to
+knowledge outside this thesis. See also \refSection{preface:audience}.
+
+\begin{theorem} \label{thm:theorem} A formal statement using formerly
+defined concepts. A theorem is always proven to hold by an immediately
+proceeding proof.\end{theorem}
+
+\begin{proof} A formal or informal proof the preceding theorem. \end{proof}
+
+As proofs occur immediately after a theorem, proofs are not decorated with an
+address. A proof is then referred to by the address of the theorem it proves.
+For instance, we refer to the proof above as \refProof{theorem}.
+
+\begin{example} An example of a concept discussed above. Examples seek to
+facilitate the reader's understanding on the concept in question.
+\end{example}
+
+\begin{notation}
+
+A choice of notation for some formally or informally defined concepts.
+Typically, notation is introduced to aid further discussion.
+
+\end{notation}
+
+A concept is put in quotations, for instance ``computable'', if it is
+introduced informally as part of a notion. A concept is put in bold, for
+instance \textbf{computable}, if it is introduced formally as part of a
+definition.
+
+\input{preface/mathematical-preliminaries}

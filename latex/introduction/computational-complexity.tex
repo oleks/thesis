@@ -1,0 +1,144 @@
+\chapter{Computational Complexity}
+
+\begin{quotation}
+
+\footnotesize\sffamily\itshape
+
+\begin{flushright}
+
+This may be a good point to mention that, although I have so far been tacitly
+equating computational difficulty with time and storage requirements, I don't
+mean to commit myself to either of these measures. It may turn out that some
+measure related to the physical notion of work will lead to the most
+satisfactory analysis; or we may ultimately find that no single measure
+adequately reflects our intuitive concept of difficulty.
+
+\smallbreak
+
+\upshape
+
+--- ALAN COBHAM, {\itshape Logic, Methodology and Philosophy of Science} (1964)
+
+\end{flushright}
+
+\end{quotation}
+
+\begin{quotation}
+
+\footnotesize\sffamily\itshape
+
+\begin{flushright}
+
+In practice, the length of computer computations must be restricted, otherwise
+the cost in time and money would be prohibitive.
+
+\smallbreak
+
+\upshape
+
+--- H. E. ROSE, {\itshape Subrecursion: functions and hierarchies} (1984)
+
+\end{flushright}
+
+\end{quotation}
+
+% Also known as Complexity, as in Computability & Complexity, and hence
+% Complexity Theory
+
+In the context of computing with Turing machines, there appeared two unbounded
+resources: the number of state transitions involved in a computation, and the
+number of tape cells scanned in a computation. For any halting computation, it
+is perhaps natural to consider these two factors as characterising the
+``complexity'' of the computation.
+
+\begin{definition} Let $M$ be a deterministic Turing machine that halts an all inputs.
+
+\begin{enumerate}
+
+\item The \textbf{time complexity} of $M$ is a function
+$T:\mathbb{N}\rightarrow \mathbb{N}$, where $T\p{n}$ is the maximum number of
+state transitions that $M$ makes for any input of length $n$.
+
+\item The \textbf{space complexity} of $M$ is a function
+$S:\mathbb{N}\rightarrow \mathbb{N}$, where $S\p{n}$ is the maximum number of
+tape cells scanned by $M$ for any input of length $n$.
+
+\end{enumerate}
+
+\end{definition}
+
+In the interest of classifying the halting computations by their time and space
+complexities, it has become customary to use approximations rather than the
+precise functions above.
+
+The approximations are in the form \textbf{asymptotic notation}
+
+\begin{definition} Let $f,g:\mathbb{N}\rightarrow \mathbb{R}^+$. We say that
+$g\p{n}$ is an \textbf{asymptotic upper bound}, or simply upper bound, of
+$f\p{n}$, written $f\p{n}=O\p{g\p{n}}$, if there exists a $c:\mathbb{R}^+$ and
+$n_0:\mathbb{N}$, such that for every $n\geq n_0$,
+
+$$f\p{n}\leq c\cdot g\p{n}.$$
+
+\end{definition}
+
+
+The theory of computational complexity deals in the analysis of the complexity
+of halting computations. As such, it is 
+
+Although the comparison of such precise functions can provide for more precise measures of complexity, it has become customary to use approximations rather than 
+
+% Some complexity classes are interesting in their own right, as they are (more
+% or less) the same, regardless of the choice of classical machine model.
+% Perhaps the discussion of machine models really should be integrated with the
+% discussion of complexity.
+
+% It is perhaps at this point (in the discussion of machine models) that we
+% mention our assumptions that a logical system is indifferent to a programming
+% language.
+
+\section{Machine models}
+
+Although the Church-Turing thesis permits us to specify algorithms by means of
+pseudo-code, this admits a pitfall. There is no guarantee that all the steps
+involved in our algorithm are, in fact, computable.
+
+To make sure that our algorithms are always computable (as by the Church-Turing
+thesis), we have to formally specify our algorithm description language, aka.
+our programming language, and show that it can be simulated by a Turing
+machine.
+
+...
+
+% it is even better wrt. talking about complexity to specify the machine model,
+% show it simulateable by a Turing machine.
+
+% so it is okay to write crazy stuff? what you would really do, is show that
+% your formal system can be simulated by a turing machine.
+
+% maybe not as we survey other work.
+
+% simulation
+
+\section{Complexity}
+
+...
+
+\begin{notion} \emph{The Cobham-Edmonds thesis.}
+
+The feasible functions are those which can be computed in time polynomial in
+the size of the input.
+
+\end{notion}
+
+...
+
+% measure of size is machine dependent.
+% basic instructions are machine dependent.
+
+In what follows, we refrain from quantification over (countably, or otherwise)
+infinite domains. This is out of the consideration that there is no mechanical
+procedure to check a property quantified over an infinite domain within a
+finite amount of time.
+
+.

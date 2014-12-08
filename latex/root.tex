@@ -1,0 +1,104 @@
+\documentclass[a4paper,oneside]{book}
+
+\PassOptionsToPackage{backref=page}{hyperref} % backrefs in references
+
+\usepackage[fancy]{template}
+\usepackage{survival-pack}
+
+\usepackage{tikz}
+\usepackage{enumitem} % fixed-width description items
+
+\backrefparscanfalse % don't automatically add backrefs to references
+
+% custom layout for backrefs in references
+\renewcommand*{\backrefalt}[4]{%
+  \ifcase #1 %
+    No citations.%
+  \or
+    Cited on page #2.%
+  \else
+    Cited on pages #2.%
+  \fi
+}
+
+\setup{%
+  subject={Master's Thesis},%
+  assignment={Programming Languages for Feasible Programs},%
+%  assignment={Implicit Guarantees of the Computational Complexity of Feasible Programs},%
+  date={February 11, 2015.}%
+}
+\setupLocation[short=DIKU]{Datalogisk institut, Copenhagen University}
+\setupAuthor[addendum={\email{oleks@oleks.info}}]{Oleksandr Shturmov}
+
+\newtheorem{notation}{Notation}
+\newtheorem{notational-corollary}{Notational Corollary}
+
+\theoremstyle{theorem}
+\newtheorem{textaxiom}{Axiom}
+\newtheorem{theorem}{Theorem}
+\newtheorem{hypothesis}{Hypothesis}
+
+\numberwithin{textaxiom}{section}
+\numberwithin{theorem}{section}
+\numberwithin{hypothesis}{section}
+
+\theoremstyle{definition}
+\newtheorem{notion}{Notion}
+\newtheorem{primitive-notion}{Primitive Notion}
+\newtheorem{example}{Example}
+\newtheorem{definition}{Definition}
+\newtheorem{alias}{Alias}
+\newtheorem{specification}{Specification}
+
+\numberwithin{primitive-notion}{section}
+\numberwithin{notion}{section}
+\numberwithin{example}{section}
+\numberwithin{definition}{section}
+\numberwithin{alias}{section}
+\numberwithin{specification}{section}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\DeclareDocumentCommand{\ruleref}{m}{%
+  \ensuremath{\text{\textsc{#1}}}%
+}
+
+\DeclareDocumentCommand{\judgement}{O{}mm}{%
+  \frac{\displaystyle #2}{\displaystyle #3}%
+  \ifthenelse{\equal{#1}{}}{}{\;\ruleref{#1}}%
+}
+
+\DeclareDocumentCommand{\axiom}{O{}m}{%
+  \judgement[#1]{}{#2}
+}
+
+\DeclareDocumentCommand{\sequent}{O{}mm}{%
+  \ifthenelse{\equal{#1}{}}{}{\text{\textsc{#1:}}}%
+  \frac{\displaystyle #2}{\displaystyle #3}%
+}
+
+\DeclareDocumentCommand{\symb}{m}{%
+  \ensuremath{\mathtt{#1}}%
+}
+
+\begin{document}
+
+%\maketitle
+%\thispagestyle{first} % no fancy header on first page (just a fancy footer).
+
+\setcounter{chapter}{-1}
+
+%\input{preface/root}
+
+\input{preface/root}
+
+\input{introduction/root}
+
+\input{polytime/root}
+
+%\input{appendix/root}
+
+\input{references}
+
+\end{document}
