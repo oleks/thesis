@@ -1,0 +1,334 @@
+\section{Mathematical Foundations}
+
+\label{sec:preface:mathematical-foundations}
+
+\def\strue{\ensuremath{\text{\textsc{True}}}}
+\def\sfalse{\ensuremath{\text{\textsc{False}}}}
+
+It is beyond the scope of thesis to justify a choice of mathematical
+foundations other than \emph{classical mathematics}. This is the sort of
+mathematics often taught prior to higher education, and throughout; so the
+reader is assumed to be familiar with it. This choice is also natural as most
+related literature assumes a classical foundation.
+
+This is certainly not the only possible foundation of mathematics, as advocated
+by various schools of \emph{constructive mathematics}. In a nutshell,
+constructive mathematics takes the stance that a proof that a mathematical
+object exists, constitutes specifying a way of (mentally) constructing that
+object.
+
+Although we assume a classical foundation, we will seek to keep ourselves to
+constructive arguments --- the approach often taken in related literature.
+
+\subsection{Sequences}
+
+We begin with a brief discussion of some typographical, rather than
+mathematical matters. Sequences have a particular notational significance in
+the remainder of this document.
+
+\begin{notion}
+
+A \textbf{sequence} is a ``juxtaposition'' of \textbf{elements}.
+
+\end{notion}
+
+Some ``short'' sequences can be denoted typographically. For instance,
+
+$$\symb{1}\symb{0}\symb{1}\symb{0}\symb{1}\symb{0}$$
+
+To make the distinction between the elements of a sequence clear, and to
+distinguish various types of sequences, some sequences will appear ``separated
+by'' a distinguished symbol. For instance,
+
+$$\symb{1},\symb{0},\symb{1},\symb{0},\symb{1},\symb{0} \quad \text{or} \quad
+X\rightarrow Y \rightarrow Z.$$
+
+Some sequences will be ``too long'' to be sequenced typographically. Such
+sequences will be given by stating a ``sequencing algorithm'', by which the
+elements can be sequenced, one-by-one, at the reader's leisure. There need not
+be a point at which we have sequenced all the elements of a sequence, and so
+the reader should take care not to get carried away.
+
+One informal way of specifying a sequencing algorithm is to typographically
+sequence the first couple of elements, and to terminate the sequence by an
+ellipses ($\ldots$) We then rely on the reader's intuition to deduce how the
+subsequent elements are to be sequenced, one-by-one\footnote{Here, we ignore
+Wittgenstein's rule-following paradox \cite[\textsection~201, p.
+69]{wittgenstein-1953}.}. For instance,
+
+$$\symb{1},\symb{0},\symb{1},\symb{0},\symb{1},\symb{0},\ldots \quad \text{or} \quad
+A\rightarrow B \rightarrow C\rightarrow\cdots$$
+
+We say that the elements of a sequence appear in a particular ``order'', and
+sometimes, the elements, or sequences of elements, ``repeat'' within a
+sequence. Such order and repetition will sometimes be significant.
+
+Some sequences will be otherwise decorated to further guide the reader's
+intuition about the sequence. For instance, the one-dimensional ``Turing
+tape'', as discussed in \refSection{background-computability}, is a sequence of
+``tape squares'' having a left edge, but extending to infinity to the right.  A
+Turing tape may be illustrated as follows:
+ 
+\begin{center}
+\begin{tikzpicture}
+  \tikzset{tape/.style={minimum size=.7cm, draw}}
+  \begin{scope}[start chain=0 going right, node distance=0mm]
+   \foreach \x [count=\i] in {\symb{1}, \symb{0}, \symb{1}, \symb{0}, \symb{1}, \blank, \blank, \blank} {
+    \ifnum\i=8 % if last node reset outer sep to 0pt
+      \node [on chain=0, tape, outer sep=0pt] (n\i) {\x};
+      \draw (n\i.north east) -- ++(.1,0) decorate [decoration={zigzag, segment length=.12cm, amplitude=.02cm}] {-- ($(n\i.south east)+(+.1,0)$)} -- (n\i.south east) -- cycle;
+     \else
+      \node [on chain=0, tape] (n\i) {\x};
+     \fi
+     \ifnum\i=1 % if first node draw a thick line at the left
+      \draw [line width=.1cm] (n\i.north west) -- (n\i.south west);
+     \fi
+   }
+   \node [right=.25cm of n8] {$\cdots$};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\subsection{Sets}
+
+It is beyond the scope of this thesis to develop an axiomatic theory of sets.
+We assume a notion of sets as given, subject to the following specification:
+
+\begin{specification} A \textbf{set} is a mathematical object that is distinct
+from, but completely determined by its \textbf{elements}. \end{specification}
+
+\begin{notation} By $X\triangleq Y$, read ``$X$ is by definition the same as
+$Y$'', we mean that $X$ is henceforth interchangeable with $Y$, until $X$
+occurs on the left side of another $\triangleq$, that is, until $X$ is
+redefined. \end{notation}
+
+A set will always be denoted enclosed in braces. For instance, the simplest set
+is the empty set, having no elements. We define the empty set as follows:
+
+\begin{definition} The \textbf{empty set}, written $\emptyset$, is
+
+$$\emptyset\triangleq\set{}.$$
+
+\end{definition}
+
+Some sets can be given by denoting their elements in a typographical sequence,
+separated by commas. For instance, we define the set of boolean values as follows:
+
+\begin{definition} The set of \textbf{boolean values} is
+
+$$\mathbb{B}\triangleq\set{\strue,\sfalse}$$
+
+\end{definition}
+
+Some sets have too many elements to be sequenced typographically. Some of these
+``large'' sets can be given by stating an algorithm\footnote{In the informal,
+mathematical sense of an algorithm, as in e.g. Egyptian multiplication.}, by
+which the elements can be sequenced at the reader's leisure.  Every element of
+such a set will eventually appear in the sequence, but there need not be a
+point at which we have sequenced all the elements of the set.
+
+One way of specifying such an algorithm is to typographically sequence the
+first couple of elements, and to terminate this sequence by an ellipses
+($\ldots$) We then rely on the reader's intuition to deduce how the subsequent
+elements can be sequenced one-by-one\footnote{Here we ignore Wittgenstein's
+rule-following paradox.}.
+
+For instance, we define the set of natural numbers as follows:
+
+\begin{definition} The set of \textbf{natural numbers} is
+
+$$\mathbb{N} \triangleq \set{0,1,2,3,4,5,6,7,8,9,10,\ldots}.$$
+
+\end{definition}
+
+As we shall later prove, there are sets which have too many elements to be
+sequenced by an algorithm.  Such sets will be given by a rule regarding what
+constitutes an element of the set, relying ever more on the reader's intuition.
+A set like this is written $\set{x\st{\text{rule regarding $x$}}}$, read ``all
+$x$ such that the rule regarding $x$ holds''.
+
+For instance, we define the set of real numbers as follows:
+
+\begin{definition} The set of \textbf{real numbers} is
+
+$$\mathbb{R}\triangleq\set{x\st{\text{$x$ is value along a continuous
+line}}}.$$
+
+\end{definition}
+
+We will use typical mathematical notation to denote the elements of
+$\mathbb{R}$. That is, fractions or adequate decimal expansions for the
+\emph{rational numbers}, and known mathematical functions for the
+\emph{irrational numbers}, e.g. $\sqrt{2}$, $\pi$, $\phi$. When adequate,
+an irrational number will be given by a rational approximation.
+
+\begin{notation} By $x\in X$, read (foreach) ``$x$ in $X$'', (if) ``$x$ is in
+$X$'', or (let) ``$x$ be in $X$'',  for some set $X$, we mean that $x$ shall
+henceforth refer to an element of $X$, if any. \end{notation}
+
+% Russel's paradox comes after functions, predicates and the last step of
+% set-builder notation with such that rules.
+
+\subsection{Functions}
+
+For the lack of an axiomatic approach to the notion of sets, we also take a
+notion of functions as given, subject to the following specification:
+
+\begin{specification} A \textbf{function} is either
+
+\begin{enumerate}
+
+\item a \textbf{partial function} $f$ with a \textbf{domain} $X$, and
+\textbf{codomain} $Y$, written $f:X\rightharpoonup Y$, where $X$ and $Y$ are
+sets, and
+
+\begin{enumerate}
+
+\item for each $x\in X$, $f$ either has a \textbf{value} at $x$ in $Y$, written
+$f\p{x}\in Y$, or $f\p{x}$ is undefined;
+
+\item $X$, $Y$, and $f\p{x}$ for each $x\in X$ are completely determined by $f$;
+
+\item $X$, $Y$, and $f\p{x}$ for some $x\in X$ are completely determine $f$; or
+
+\end{enumerate}
+
+\item a \textbf{constant} $\overline{x}$, where $x\in X$, for some nonempty set
+$X$, written $\overline{x}:X$, with domain $X$, written $x:X$, where $X$ is a
+nonempty set.
+
+\end{enumerate}
+
+\end{specification}
+
+\begin{definition} A function is \textbf{total}, if it is either a constant, or
+a partial function $f:X\rightharpoonup Y$, where $f\p{x}$ is defined for all
+$x\in X$, written $f:X\rightarrow Y$.\end{definition}
+
+For the lack of a formal definition of either sets or partial functions, but in
+tune with the specifications of these notions above, we can regard partial
+functions as sets. In such an interpretation, the codomain (and domain) of a
+partial function may itself be a partial function. This leads way to some
+convenient notation:
+
+\begin{notation} A partial function $f:X\rightharpoonup G$, where $G$ is a
+function $g:Y\rightharpoonup Z$ is also written $f:X\rightharpoonup
+\p{Y\rightharpoonup Z}$, or simply $f:X\rightharpoonup Y\rightharpoonup Z$.
+Similarly for total functions.  \end{notation}
+
+\def\codomain#1{co\textsuperscript{$#1$}domain}
+
+\begin{notation} For a function $f:X_0\rightharpoonup X_1 \rightharpoonup
+\cdots \rightharpoonup X_n \rightharpoonup Y$, for some $n\in \mathbb{N}$, we
+say $Y$ is the \codomain{n} of $f$, and $f$ has $n$ \textbf{arguments}, or $f$
+is an $n$-argument function, and furthermore
+
+\begin{itemize}
+
+\item $f$ is \textbf{nullary} if it has $0$ arguments;
+
+\item $f$ is \textbf{unary} if it has $1$ argument;
+
+\item $f$ is \textbf{binary} if it has $2$ arguments.
+
+\end{itemize}
+
+\end{notation}
+
+\begin{definition} A \textbf{relation} is a total binary function with a
+\codomain{2} $\mathbb{B}$. \end{definition}
+
+\begin{notation} When denoted by a symbol, the application of a relation will
+sometimes be denoted in infix notation. \end{notation}
+
+\begin{notation} By $=$, we denote the \textbf{equality relation}.
+\end{notation}
+
+ A partial function can hereby be given by a set of mappings,
+where a mapping from $x$ to $f\p{x}$ is written $x\mapsto f\p{x}$.
+
+\begin{definition} A function $f:X\rightarrow Y$ is a \textbf{bijection}, or
+``is bijective'', iff there exists a function $g:Y\rightarrow X$ such that for
+each $x\in X$, $g\p{f\p{\overline{x}}}=\overline{x}$. \end{definition}
+
+\subsection{Cardinality}
+
+The \textbf{cardinality} of a set $X$, written $\card{X}$, is a measure of its
+size. Two sets $X$ and $Y$ have the same cardinality, written
+$\card{X}=\card{Y}$, if there exists a bijective function $f:X\rightarrow Y$.
+
+\begin{notation} When we consider an element $a$ of a set $A$, we write $a\in
+A$. \end{notation}
+
+\begin{definition} The \textbf{union} of sets $A$ and $B$, written $A\cup B$,
+is the set of all $a\in A$ and all $b\in B$. \end{definition}
+
+\begin{specification} A \textbf{property} is a mathematical statement that is
+either true or false. \end{specification}
+
+\begin{definition} A set $X$, is \textbf{enumerable} iff
+$\card{X}\leq\card{\mathbb{N}}$. \end{definition}
+
+%\begin{definition}
+
+%A \textbf{language} $\mathcal{L}=\chev{\mathcal{C},\mathcal{F}, \mathcal{R}}$
+%is given by specifying a set of constant symbols $\mathcal{C}$, a set of
+%function symbols $\mathcal{F}$, and a set of relation symbols $\mathcal{R}$.
+
+%\end{definition}
+
+% a sequence is something formed by the concatenation of elements.
+
+%\begin{definition}
+
+%A \textbf{string} is a finite sequence of elements drawn from an alphabet.
+
+%\end{definition}
+
+%\begin{definition}
+
+%A \textbf{string language} is a set of \textbf{strings}.
+
+%\end{definition}
+
+%..
+
+%\begin{definition}
+
+%A \textbf{closure} of $A$ under the operations $O$, is the smallest class $C$,
+%containing $A$, and such that the operations of $O$, operating on elements of
+%$C$ yield elements of $C$.
+
+%\end{definition}
+
+%\begin{definition}
+
+%A \textbf{function algebra} is a closure of a class $A$.
+
+%\end{definition}
+
+%\begin{definition}
+
+%A characteristic function 
+
+%\end{definition}
+
+\subsection{Tuples}
+
+\begin{notation} We denote a tuple by listing the elements separated by commas,
+and enclosed in parentheses. We use this notation out of inspiration from
+Haskell syntax. We can regard this as in line with regular mathematical
+notation as the arguments to a non-curried function are typically passed in
+parentheses. That is unless a more convenient notation is given for particular
+kinds of tuples, e.g. the configurations of a Turing machine.\end{notation}
+
+\subsection{Strings and Languages}
+
+\begin{definition} An \textbf{alphabet} is a finite, nonempty set of
+\textbf{symbols}.  \end{definition}
+
+\begin{definition} A \textbf{string} over an alphabet is a finite sequence of
+symbols from that alphabet. \end{definition}
+
+%\begin{notation} We take $b\notin A$ to mean the same as $\set{b}\cup A =
+%\emptyset$. \end{notation}

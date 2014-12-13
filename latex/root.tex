@@ -1,4 +1,4 @@
-\documentclass[a4paper,oneside]{book}
+\documentclass[a4paper,oneside,tikz]{book}
 
 \PassOptionsToPackage{backref=page}{hyperref} % backrefs in references
 
@@ -6,6 +6,8 @@
 \usepackage{survival-pack}
 
 \usepackage{tikz}
+\usetikzlibrary{calc, chains, decorations.pathmorphing}
+
 \usepackage{enumitem} % fixed-width description items
 
 \backrefparscanfalse % don't automatically add backrefs to references
@@ -82,6 +84,15 @@
   \ensuremath{\mathtt{#1}}%
 }
 
+\def\ch{\textsection}
+\def\chs{\ch\ch}
+
+\def\qstart{\ensuremath{q_{\text{start}}}}
+\def\qhalt{\ensuremath{q_{\text{halt}}}}
+\def\blank{\ensuremath{\text{\textvisiblespace}}}
+\def\goleft{\symb{L}}
+\def\goright{\symb{R}}
+
 \begin{document}
 
 %\maketitle
@@ -89,11 +100,9 @@
 
 \setcounter{chapter}{-1}
 
-%\input{preface/root}
-
-\input{preface/root}
-
 \input{introduction/root}
+
+\input{background/root}
 
 \input{polytime/root}
 

@@ -1,4 +1,4 @@
-\chapter{Computability}
+\chapter{Computability} \label{sec:background-computability}
 
 \begin{quotation}
 
@@ -19,13 +19,6 @@ expressions as a decimal are calculable by finite means.
 
 \end{quotation}
 
-
-\def\qstart{\ensuremath{q_{\text{start}}}}
-\def\qhalt{\ensuremath{q_{\text{halt}}}}
-\def\blank{\ensuremath{\text{\textvisiblespace}}}
-\def\goleft{\symb{L}}
-\def\goright{\symb{R}}
-
 The theory of computability is concerned with the nature of computation. It
 originated in the 1930s with the celebrated works of G\"odel, Kleene, Church,
 Post, Turing, et al.  Fundamental to the field is the Church-Turing thesis,
@@ -35,7 +28,7 @@ notion of computation with a Turing machine.
 We begin with a brief discussion about the intuitive notion of computation,
 leading way for a formal\footnote{By ``formal'', in this chapter and the next,
 we mean built atop the mathematical foundations as outlined in
-\refSection{preface:mathematical-preliminaries}. It is an interesting thesis in
+\refSection{preface:mathematical-foundations}. It is an interesting thesis in
 its own right to consider an exposition of computability and complexity theory
 as based solely on the Church-Turing thesis as an axiom.} definition of
 computation with a Turing machine, and an exposition of the Church-Turing
@@ -67,23 +60,46 @@ computable problems, called ``steps''.\end{notion}
 Such indefinite notions are useful for little else. We are left to fall prey to
 some choice of formalism. To this end, the notion of computation with a Turing
 machine, due to Alan Turing\cite{turing-1936-7}, forms perhaps the most
-classical and intuitive conceptualization of computation. The notion below is
-heavily inspired by the notions that appear in \cite{tourlakis-1984},
+classical conceptualization of computation. The conceptualization below is
+heavily inspired by the those that appear in \cite{tourlakis-1984},
 \cite{jones-1997}, \cite{homer-selman-2011}, and \cite{sipser-2013}, but
 slightly differs from all of them.
 
 A \textbf{Turing machine} is a symbol-manipulating machine, working with a
-1-dimensional tape divided into discrete, equally sized squares. Each square is
-occupied by a symbol drawn from the \textbf{tape alphabet} of the machine.  The
-tape alphabet consists of the \textbf{input/output alphabet}, usually denoted
-$\Sigma$, and a special \textbf{blank symbol}, written \blank, which is not in
-$\Sigma$. The tape has a left edge, but extends into infinity to the right,
-filled with blank symbols.
+1-dimensional, unbounded tape divided into discrete, equally sized squares.
+Each square is occupied by a symbol drawn from the \textbf{tape alphabet} of
+the machine.  The tape alphabet consists of the \textbf{input/output alphabet},
+usually denoted $\Sigma$, and a special \textbf{blank symbol}, written \blank,
+which is not in $\Sigma$. The tape has a left edge, but extends into infinity
+to the right, filled with blank symbols.
 
-A Turing machine is always in one of a finite set of \textbf{states}, also
-called the \textbf{state alphabet}, and has a tape head, always overlooking a
-particular square on the tape. A Turing machine ``computes'' by transitioning
-between states and working with the tape head.
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+  \tikzset{tape/.style={minimum size=.7cm, draw}}
+  \begin{scope}[start chain=0 going right, node distance=0mm]
+   \foreach \x [count=\i] in {\symb{1}, \symb{0}, \symb{1}, \symb{0}, \symb{1}, \blank, \blank, \blank} {
+    \ifnum\i=8 % if last node reset outer sep to 0pt
+      \node [on chain=0, tape, outer sep=0pt] (n\i) {\x};
+      \draw (n\i.north east) -- ++(.1,0) decorate [decoration={zigzag, segment length=.12cm, amplitude=.02cm}] {-- ($(n\i.south east)+(+.1,0)$)} -- (n\i.south east) -- cycle;
+     \else
+      \node [on chain=0, tape] (n\i) {\x};
+     \fi
+     \ifnum\i=1 % if first node draw a thick line at the left
+      \draw [line width=.1cm] (n\i.north west) -- (n\i.south west);
+     \fi
+   }
+   \node [right=.25cm of n8] {$\cdots$};
+  \end{scope}
+\end{tikzpicture}
+\caption[]{Schematic of a Turing tape with $\Sigma=\set{\symb{0},\symb{1}}$.}
+\label{fig:turing-tape}
+\end{figure}
+
+A Turing machine is always in one of a finite, nonempty set of \textbf{states},
+also called the \textbf{state alphabet}, and has a tape head, always
+overlooking a particular square on the tape. A Turing machine ``computes'' by
+transitioning between states and working with the tape head.
 
 The transition from one state to the next is uniquely determined by the current
 state, and the symbol read off the overlooked square. A state transition bears
@@ -95,13 +111,13 @@ denoted \qstart, and the \textbf{halting state}, usually denoted \qhalt. A
 Turing machine \textbf{starts} a computation by entering the state \qstart,
 overlooking the square at the left end of the tape. A Turing machine
 \textbf{halts}, i.e.  performs no further state transitions, if it ever
-transitions to state \qhalt. A halting computation is a finite sequence of
+transitions to the state \qhalt. A halting computation is a finite sequence of
 state transitions.
 
 We now formalise these notions as follows:
 
 \begin{definition} A Turing machine (TM) $M$ is a 5-tuple
-$\p{Q,\qstart,\qhalt,\Gamma, \delta}$, where
+$\p{Q,\qstart,\qhalt,\Gamma, \delta}$, where $\Gamma\supseteq\Sigma\cup\set{\blank}$, $\blank\notin\Sigma$,
 
 \begin{enumerate}
 
@@ -111,9 +127,8 @@ $\p{Q,\qstart,\qhalt,\Gamma, \delta}$, where
 
 \item $\qhalt \in Q$ is the halting state,
 
-\item $\Gamma=\Sigma\cup\set{\blank}$ is the tape alphabet, where
-$\set{\blank}\cap\Sigma=\emptyset$ and $\Sigma$ is the input/output alphabet,
-and
+\item $\Gamma$ is the tape alphabet, where $\blank\notin
+\Sigma$ and $\Sigma$ is the input/output alphabet, and
 
 \item $\delta : Q \setminus \set{\qhalt} \times \Gamma \rightarrow Q \times
 \Gamma \times \set{\symb{L}, \symb{R}}$ is the (total) transition function.
@@ -175,3 +190,93 @@ where $\Sigma=\set{\symb{\#}}$ and $\delta\p{\qstart, \blank} =
 \p{\qhalt,\#,\goleft}$. We have that $\qstart\leadsto\qhalt\#$ and
 $M\p{}\downarrow\#$.
 
+\section{Minor variants}
+
+In this section, we give some justification for our definition of Turing
+machines by considering how it can simulate various variants often found the
+literature. The ability of our Turing machines to simulate these variants
+builds confidence in our definition, and permits us to stand on the shoulders
+of giants, and state the Church-Turing thesis based on our notion of Turing
+machines.
+
+\begin{itemize}
+
+\item $\Sigma\cup\set{\blank}\subseteq\Gamma$.
+
+\item $\set{\symb{L},\symb{R},\symb{S}}$.
+
+\item Multiple halting states.
+
+\item Multiway and multiple tapes.
+
+\end{itemize}
+
+\section{Major variants}
+
+Major variants differ from minor variants in that they tend to play a major
+role in the theory of computability and complexity.
+
+\begin{itemize}
+
+\item Nondeterministic Turing machines.
+
+\item Enumerators.
+
+\end{itemize}
+
+\section{Church-Turing thesis}
+
+\begin{hypothesis} \textit{Church-Turing thesis.}
+
+No intuitive notion of an algorithm can compute a function that a Turing
+machine cannot compute.
+
+\end{hypothesis}
+
+The Church-Turing thesis does not lend itself to mathematical proof. Rather, it
+is a proposed explanation of the natural phenomena of computation. The
+hypothesis remains to be disproven, and in the mean-while, computational models
+more convenient than the Turing machine have emerged, some of them, even useful
+in practice.
+
+Some of these models have a formal specification, and so it lends itself to
+formal proof that these models compute no more than a Turing machine does.
+
+Our belief in the Church-Turing thesis has however, a notational advantage: to
+show that a function $f$ is computable, it is sufficient to informally
+describe, an algorithm for computing $f$. Due to the hypothesis, any
+formalisation of the informal algorithm, will yield a computable algorithm,
+
+This is sometimes called providing the ``pseudo-code'' for computing $f$, but can be said
+of most ``code'' today in general.
+
+Formal methods, due to their inherent complexity are seldom employed.
+
+\section{What does Turing machines compute?}
+
+The introduction to this chapter talked about ``problems'' being computable. We
+went on to define computation by means of a Turing machine. We now formally
+discuss what it is that a Turing machine computes, effectively giving a
+definition of what we mean by the notion of a ``problem''.
+
+\begin{itemize}
+
+\item Recursively enumerable.
+
+\item Recursive.
+
+\end{itemize}
+
+\begin{theorem} For every element $x\in X$, of an enumerable set $X$, there is
+a unique \textbf{representation} of $x$ in $\Sigma^*$, written
+$\overline{x}\in\Sigma^*$, where $\Sigma$ is an alphabet. \end{theorem} 
+
+\begin{definition} A TM $M$ \textbf{computes} a partial function
+$f:X\nrightarrow Y$, where $X$ and $Y$ are enumerable sets, if given a
+$\overline{x}$ as input, $M$ halts with $\overline{f\p{x}}$ as output, whenever
+$f\p{x}$ is defined, and does not halt otherwise.  \end{definition}
+
+\begin{definition} A function is \textbf{computable}, or \textbf{recursively
+enumerable} if there exists a Turing machine that computes it. \end{definition}
+
+\section{Some uncomputable problems}
