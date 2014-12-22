@@ -30,9 +30,9 @@ leading way for a formal\footnote{By ``formal'', in this chapter and the next,
 we mean built atop the mathematical foundations as outlined in
 \refSection{preface:mathematical-foundations}. It is an interesting thesis in
 its own right to consider an exposition of computability and complexity theory
-as based solely on the Church-Turing thesis as an axiom.} definition of
-computation with a Turing machine, and an exposition of the Church-Turing
-thesis.
+as based solely on the Church-Turing thesis as an axiom. Some work in this
+direction appears in \cite{markov-1954}.} definition of computation with a
+Turing machine, and an exposition of the Church-Turing thesis.
 
 \begin{notion} A problem is ``computable'' if it can be solved by transforming
 a mathematical object, without ingenuity.
@@ -73,23 +73,23 @@ usually denoted $\Sigma$, and a special \textbf{blank symbol}, written \blank,
 which is not in $\Sigma$. The tape has a left edge, but extends into infinity
 to the right, filled with blank symbols.
 
+% Inspired by
+% http://tex.stackexchange.com/questions/203257/tikz-chains-with-one-side-of-the-leftmost-node-thickbold
+
 \begin{figure}[h!]
 \centering
 \begin{tikzpicture}
   \tikzset{tape/.style={minimum size=.7cm, draw}}
   \begin{scope}[start chain=0 going right, node distance=0mm]
-   \foreach \x [count=\i] in {\symb{1}, \symb{0}, \symb{1}, \symb{0}, \symb{1}, \blank, \blank, \blank} {
-    \ifnum\i=8 % if last node reset outer sep to 0pt
+   \foreach \x [count=\i] in {\symb{1}, \symb{0}, \symb{1}, \symb{0}, \symb{1}, \symb{0}, \blank, \blank, \blank} {
+    \ifnum\i=9 % if last node reset outer sep to 0pt
       \node [on chain=0, tape, outer sep=0pt] (n\i) {\x};
       \draw (n\i.north east) -- ++(.1,0) decorate [decoration={zigzag, segment length=.12cm, amplitude=.02cm}] {-- ($(n\i.south east)+(+.1,0)$)} -- (n\i.south east) -- cycle;
      \else
       \node [on chain=0, tape] (n\i) {\x};
      \fi
-     \ifnum\i=1 % if first node draw a thick line at the left
-      \draw [line width=.1cm] (n\i.north west) -- (n\i.south west);
-     \fi
    }
-   \node [right=.25cm of n8] {$\cdots$};
+   \node [right=.25cm of n9] {$\cdots$};
   \end{scope}
 \end{tikzpicture}
 \caption[]{Schematic of a Turing tape with $\Sigma=\set{\symb{0},\symb{1}}$.}

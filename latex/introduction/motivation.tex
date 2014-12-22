@@ -1,0 +1,90 @@
+\section{Motivation}
+
+In most matters of life, it is of principal concern to represent and transform
+data. In high profile applications, such as where human fortunes are at stake,
+it is important that data transformations occur in a reliable manner.  This
+means both that the data is transformed in an expected way, but also that this
+is done in a timely manner.
+
+The advent of digital computers has delivered much reliability, provided that
+their human programmers can deliver correct and efficient programs for the
+matter at hand. Much has been done in the field of data representation and
+transformation, i.e. Computer Science, in terms of guaranteeing the
+correctness, and judging the efficiency of programs. This thesis is about
+guaranteeing both the correctness and efficiency of programs.
+
+In support of the fundamental human faculty of managing data, it is natural in
+Computer Science to consider data representations and transformations as data
+in themselves. Accompanied by additional descriptors, this leads way for basic
+buildings blocks for the more eloquent management of data. Such
+``abstractions'' in Computer Science both alleviate the mundane details of data
+representation and transformation, and enable more efficient communication
+about programs amongst the humans themselves.
+
+\begin{example} \label{example:alice-bob-add} \ 
+
+It may be sufficient for Alice to know that Bob has written a program
+\textsc{Add}, which given two integers, $x$ and $y$, in the range $[0;31]$,
+after a handful machine instructions, returns an integer, $z$, such that $z=x+y
+\mod 32$.
+
+Alice could now use \textsc{Add} to compute the sum of an array of integers in
+the range $[0;31]$, in a number of machine instructions proportional to the
+number of elements in the array. Alice doesn't need to deal with the
+intricacies of adding numbers. She merely needs to know some high-level
+descriptors of \textsc{Add}, and have a means of using \textsc{Add}.
+
+\end{example}
+
+\begin{example} \label{example:alice-bob-plot} \
+
+It may be sufficient for Alice to know that Bob has written a program
+\textsc{Plot}, which given an array of 2-dimensional coordinates, plots the
+coordinates in a line graph, in time proportional to the given number of
+coordinates.
+
+Alice could now use \textsc{Plot} to plot a whole range of data in time
+proportional to the total number of coordinates. Alice doesn't need to deal
+with the intricacies of plotting the coordinates. She merely needs to know some
+high-level descriptors of \textsc{Plot}, and have a means of using
+\textsc{Plot}.
+
+\end{example}
+
+\begin{example} \label{example:alice-bob-email} \
+
+It may be sufficient for Alice and Bob to know that their computers are
+connected via a computer network, and that they each have a program
+\textsc{Send} at their disposal, which given a recipient, title, and body,
+sends an electronic message with the body, duly entitled, into the network,
+eventually reaching the recipient's computer.
+
+Alice and Bob could now use their \textsc{Send} programs to communicate about
+life, the universe, and everything. They don't need to deal with the
+intricacies of sending and receiving electronic mail. They merely need to know
+some high-level descriptors of \textsc{Send}, and have a means of using
+\textsc{Send}.
+
+\end{example}
+
+These examples illustrate how various abstractions in Computer Science,
+incorporate into the interface amongst both humans and computers. They touch
+upon fields as diverse as Programming Languages, Human-computer interaction,
+and Systems programming.
+
+We will predominantly be concerned with the field of programming languages, as
+this field underpins many other fields in Computer Science. We seek means to
+guarantee both the correctness and efficiency of programs.
+
+% A good programming language puts the tools of the language designer at the
+% programmers fingertips. And so anything written in a programming language
+% defines a programming language.
+
+% We approach the problem from a programming languages perspective. A digital
+% computer typically understands only one language --- machine language. As
+% programming is principally a human activity, 
+
+% Programming languages serve to communicate the intent of the programmer both
+% to a computer, other programmers, and the programmer themselves.
+
+The rest of this chapter is concerned with prefacing matters.

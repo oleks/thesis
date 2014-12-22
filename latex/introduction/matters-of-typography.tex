@@ -1,0 +1,158 @@
+\section{Matters of Typography}
+
+\subsection{Internal references} \label{sec:introduction:internal-references}
+
+All references within this document to parts of this document are qualified
+with the page on which the referenced part begins. For instance, we refer to
+this section as \refSection{introduction:internal-references}, read ``section
+zero point two, on page two''.
+
+\subsection{External references} \label{sec:introduction:external-references}
+
+All external references..
+
+\subsection{Named segments}
+
+Named segments are text segments with a role and an address. The role seeks to
+distinguish the text segment from prose, and the address permits to
+subsequently reference the segment. For instance, \refExample{alice-bob-add}.
+
+Addresses are of the format \mbox{$x$.$y$.$z$}, where $z$ is the index of the
+named segment in section indexed $y$, in chapter indexed $x$. Where
+appropriate, we'll give a named segment a name for even easier reference, for
+instance, when defining the concept of a Turing machine. The various roles are
+described below, showcasing also how each named segment will be formatted.
+
+\begin{notion} An informal definition of a concept, appealing either to the
+reader's intuition or formerly stated notions. \end{notion}
+
+Some concepts are too disputed to be given by a notion. In the presence of
+multiple competing notions, we will merely specify the features that we are
+interested in.
+
+\begin{specification} An informal specification of a concept, appealing either
+to the reader's intuition or formerly stated notions or specifications.
+\end{specification}
+
+\begin{hypothesis} An informal statement, proposed as an explanation of a
+natural phenomenon. A hypothesis does not admit itself to formal proof, but can
+be disproven by observation. A hypothesis is always followed by a discussion of
+its validity. \end{hypothesis}
+
+Some notions are ``primitive'', in the sense that they underpin subsequent
+formal definitions. It is a fundamental epistemological impasse, that in any
+formal system, some concepts must remain distinguished, but undefined, these
+form the \textbf{primitive notions}, or \textbf{axioms}, of the formal system.
+
+\begin{definition} A formal definition of a concept, appealing to either
+formerly stated primitive notions or definitions. Definitions seek to underpin
+subsequent formal definitions and analyses. \end{definition}
+
+This thesis only seeks to be self-contained beyond what can be expected of the
+intended audience. Some notions, hypotheses, and definitions appeal to
+knowledge outside this thesis. See also \refSection{introduction:audience}.
+
+\begin{theorem} \label{thm:theorem} A formal statement using formerly
+defined concepts. A theorem is always proven to hold by an immediately
+proceeding proof.\end{theorem}
+
+\begin{proof} A formal or informal proof the preceding theorem. \end{proof}
+
+As proofs occur immediately after a theorem, proofs are not decorated with an
+address. A proof is then referred to by the address of the theorem it proves.
+For instance, we refer to the proof above as \refProof{theorem}.
+
+\begin{example} An example of a concept discussed above. Examples seek to
+facilitate the reader's understanding on the concept in question.
+\end{example}
+
+\begin{notation}
+
+A choice of notation for some formally or informally defined concepts.
+Typically, notation is introduced to aid further discussion.
+
+\end{notation}
+
+A concept is put in quotations, for instance ``computable'', if it is
+introduced informally as part of a notion. A concept is put in bold, for
+instance \textbf{computable}, if it is introduced formally as part of a
+definition.
+
+\subsection{Sequences}
+
+Sequences have notational significance in the remainder of this document.
+
+\begin{notion}
+
+A \textbf{sequence} is a juxtaposition of elements.
+
+\end{notion}
+
+Some short sequences can be denoted typographically. For instance,
+
+$$\symb{1}\symb{0}\symb{1}\symb{0}\symb{1}\symb{0}$$
+
+To make the distinction between the elements of a sequence clear, and to
+distinguish various types of sequences, some sequences will appear ``separated
+by'' a distinguished symbol. For instance,
+
+$$\symb{1},\symb{0},\symb{1},\symb{0},\symb{1},\symb{0} \quad \text{or} \quad
+X\rightarrow Y \rightarrow Z.$$
+
+Some sequences will be too long to be sequenced typographically. Such sequences
+will be given by stating their ``sequencing algorithm'', by which the elements can
+be sequenced, one-by-one, at the reader's leisure. There need not be a point at
+which we have sequenced all the elements, and so the reader should take care
+not to get carried away.
+
+We will soon formalise the notion of an ``algorithm''. For now, we make use of
+the less formal, ellipses notation:
+
+\begin{notation} A sequence is given by \textbf{ellipses notation} by
+typographically sequencing the first couple of elements, and terminating the
+sequence with a distinguished ellipses symbol ($\ldots$) We then rely on the
+reader's intuition to deduce how the subsequent elements are to be
+sequenced\footnote{We generally ignore Wittgenstein's rule-following paradox
+\cite[\textsection~201, p.  69]{wittgenstein-1953}.}. For instance,
+
+$$\symb{1},\symb{0},\symb{1},\symb{0},\symb{1},\symb{0},\ldots$$ 
+
+If we wish for the sequencing algorithm to stop when a particular ``final
+element'' is reached, we follow the ellipses by the final element. For instance,
+
+$$A\rightarrow B \rightarrow \cdots \rightarrow Z.$$
+
+\end{notation}
+
+We say that the elements of a sequence appear in a particular ``order'', and
+sometimes, the elements, or sequences of elements, ``repeat'' within a
+sequence. For instance, the elements \symb{1} and \symb{0} repeat, in that
+order, in a sequence above. Such order and repetition will sometimes be
+significant.
+
+Some sequences will be further decorated to guide the reader's intuition. For
+instance, a ``Turing tape'', as discussed in
+\refSection{background-computability}, is a sequence of tape squares, occupied
+by symbols drawn from an alphabet, followed by an infinite sequence of blank
+symbols. We illustrate a Turing tape as in \refFigure{informal-turing-tape}.
+ 
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+  \tikzset{tape/.style={minimum size=.7cm, draw}}
+  \begin{scope}[start chain=0 going right, node distance=0mm]
+   \foreach \x [count=\i] in {\symb{1}, \symb{0}, \symb{1}, \symb{0}, \symb{1}, \symb{0}, \blank, \blank, \blank} {
+    \ifnum\i=9 % if last node reset outer sep to 0pt
+      \node [on chain=0, tape, outer sep=0pt] (n\i) {\x};
+      \draw (n\i.north east) -- ++(.1,0) decorate [decoration={zigzag, segment length=.12cm, amplitude=.02cm}] {-- ($(n\i.south east)+(+.1,0)$)} -- (n\i.south east) -- cycle;
+     \else
+      \node [on chain=0, tape] (n\i) {\x};
+     \fi
+   }
+   \node [right=.25cm of n9] {$\cdots$};
+  \end{scope}
+\end{tikzpicture}
+\caption[]{A Turing tape with an alphabet of \symb{0} and \symb{1}.
+\blank{} denotes the blank symbol.}
+\label{fig:informal-turing-tape}
+\end{figure}
