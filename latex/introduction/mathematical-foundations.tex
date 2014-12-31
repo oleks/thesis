@@ -5,11 +5,11 @@
 \def\strue{\ensuremath{\text{\textsc{True}}}}
 \def\sfalse{\ensuremath{\text{\textsc{False}}}}
 
-It is beyond the scope of thesis to justify a choice of mathematical
+It is beyond the scope of this thesis to justify a choice of mathematical
 foundations other than \emph{classical mathematics}. This is the sort of
 mathematics often taught prior to higher education, and throughout. The reader
-is assumed to be familiar with this style of mathematics. This choice is also
-natural as most related literature assumes a classical foundation.
+is assumed to be familiar with this style of mathematics. This choice is
+natural as a lot of related literature assumes a classical foundation.
 
 This is certainly not the only possible foundation of mathematics, as advocated
 by various schools of \emph{constructive mathematics}. In a nutshell,
@@ -18,20 +18,19 @@ object exists, constitutes specifying a way of (mentally) constructing that
 object.
 
 Although we assume a classical foundation, we will seek to keep ourselves to
-constructive arguments --- the approach often taken in related literature.
+constructive arguments --- the approach often taken in related literature. This
+is however, not the case for this chapter in general.
 
 \subsection{Sets}
 
 It is beyond the scope of this thesis to develop an axiomatic theory of sets.
-We assume a notion of sets as given, subject to the following specification:
+We assume the concept as given, subject to the following specification:
 
 \begin{specification} A \textbf{set} is a mathematical object that is distinct
-from, but completely determined by its \textbf{elements}. \end{specification}
-
-\begin{notation} By $X\triangleq Y$, read ``$X$ is by definition the same as
-$Y$'', we mean that $X$ is henceforth interchangeable with $Y$, until $X$
-occurs on the left side of another $\triangleq$, that is, until $X$ is
-redefined. \end{notation}
+from, but completely determined by its \textbf{elements}. For any conceivable
+set $S$ and object $s$, either the statement $s\in S$, read ``$s$ refers to an
+element of $S$'', holds, or the statement $s\notin S$, read ``$s$ does not
+refer to an element of $S$'', does. \end{specification}
 
 A set is given by characterising its elements, enclosed in braces. For
 instance, the simplest set is the empty set, having no elements. We define the
@@ -68,6 +67,14 @@ $$\mathbb{N} \triangleq \set{0,1,2,3,4,5,6,7,8,9,10,\ldots}.$$
 
 \end{definition}
 
+\begin{remark} When sequenced typographically, or given by a sequencing
+algorithm, the order and repetition of elements in the sequence is
+insignificant to the denotation of a set. \end{remark}
+
+For instance, $\set{\strue,\sfalse}$ and $\set{\sfalse, \strue, \sfalse}$
+denote the same sets, as do $\set{0,1,2,3,4,5,6,7,8,9,10,\ldots}$ and
+$\set{1,0,3,2,5,4,7,6,9,8,11,10,\ldots}$.
+
 As we shall later prove, there are sets which have too many elements to be
 sequenced by an algorithm.  Such sets will be given by a rule regarding what
 constitutes an element of the set, relying ever more on the reader's intuition.
@@ -88,105 +95,245 @@ $\mathbb{R}$. That is, fractions or adequate decimal expansions for the
 \emph{irrational numbers}, e.g. $\sqrt{2}$, $\pi$, $\phi$. When adequate,
 an irrational number will be given by a rational approximation.
 
-\begin{notation} By $x\in X$, read ``$x$ in $X$'', (if) ``$x$ is in $X$'', or
-(let) ``$x$ be in $X$'',  for some set $X$, we mean that $x$ shall henceforth
-refer to an element of $X$, if any. \end{notation}
+\subsubsection{Containment}
+
+The statement $x\in X$ may be more simply as ``$x$ in $X$'', or (let) ``$x$ be
+in $X$'', or (if) ``$x$ is in $X$''. Similarly for $x\notin X$.
+
+\begin{definition} If $x\in X$, we say that $X$ \textbf{contains} $x$, or $x$
+is \textbf{drawn} from $X$.\end{definition}
+
+\begin{remark} We will often exploit $\mathbb{N}$ in ellipses
+notation.\end{remark}
+
+For instance, a set of $n$ natural numbers, for some $n\in\mathbb{N}$, may be
+given as $\set{1,2,\ldots,n}$. In particular, if $n$ is $5$, this denotes the
+set $\set{1,2,3,4,5}$; if $n$ is $0$, this denotes the set $\set{}$.
+
+\begin{notation} If we would like to draw a sequence of elements from a set
+$X$, as a shorthand, we sometimes denote a sequence of variables before the
+$\in$ sign. \end{notation}
+
+For instance, if we let $x,y,z\in X$, then $x$, $y$, and $z$ now refer to three
+arbitrary elements of $X$. In general, if we let $x_1,x_2,\ldots,x_n\in X$, for
+some $n\in\mathbb{N}$, then $x_1$, $x_2$, up to $x_n$, refer to $n$ arbitrary
+elements of $X$.
+
+\subsubsection{Element equality}
+
+\begin{notation} Two given elements $x\in X$ and $y\in X$, by virtue of
+definition, or choice, may refer to the ``same'' element of $X$, written $x=y$,
+read ``$x$ is \textbf{equal} to $y$'', for some notion of ``equality''.
+Conversely, $x$ and $y$ may refer to ``different'' elements of $X$, written
+$x\neq y$, read ``$x$ is \textbf{not equal} to $y$''.\end{notation}
+
+\begin{remark} Some $x\in X$ and $y\in X$ need neither refer to ``same''
+nor ``different'' elements. For some sets, the notion of ``equality'' will
+remain undefined, or will even be known to be ``undecidable''. \end{remark}
+
+\subsubsection{Set operations}
+
+\begin{definition} The \textbf{union} of sets $S$ and $T$ is
+
+$$S\cup T\triangleq \set{x\st{\text{$x\in S$ or $x\in T$}}}.$$
+
+\end{definition}
+
+\begin{definition} The \textbf{intersection} of sets $S$ and $T$ is
+
+$$S\cap T\triangleq \set{x\st{\text{$x\in S$ and $x\in T$}}}.$$
+
+\end{definition}
+
+\begin{definition} A set $S$ is a \textbf{subset} of a set $T$, written
+$S\subseteq T$ if for each $s\in S$, we have $s\in T$. \end{definition}
+
+\begin{definition} A set $S$ is \textbf{elementarily equal} to a set $T$,
+written $S=T$, if $S\subseteq T$ and $T\subseteq S$. \end{definition} 
+
+Sometimes, a subset of a set $S$, will be given by decorating the elements of
+$X$ with a rule. We write this as $\set{x\in X\st{\text{rule regarding $x$}}}$,
+read ``all $x$ in $X$ such that the rule regarding $x$ holds''. For instance,
+we define the set of non-negative real numbers as follows:
+
+\begin{definition} The set of \textbf{non-negative} real numbers is
+
+$$\mathbb{R}^+ \triangleq \set{ x\in\mathbb{R} \st{\text{$x$ is greater than or
+equal to $0$}}}.$$
+
+\end{definition}
+
+Perhaps a more eloquent use of the notation is for the definition of the set
+minus operation:
+
+\begin{definition} A set $S$, \textbf{minus} a set $T$ is
+
+$$S\setminus T \triangleq \set{s\in S\st{s\notin T}}.$$
+
+\end{definition}
+
+\subsection{Tuples}
+
+\begin{definition} An $n$-\textbf{tuple} over some given sets $X_1$, $X_2$,
+\ldots, $X_n$, where $n\in\mathbb{N}$, is a sequence of $n$ elements, written
+$\p{x_1,x_2,\ldots,x_n}$, where $x_i\in X_i$ for all $i\in\set{1,2,\ldots, n}$.
+\end{definition}
+
+\begin{definition} A $0$-tuple is also called \textbf{unit}, a $1$-tuple
+\textbf{singleton}, a $2$-tuple \textbf{pair}, and a 3-tuple \textbf{triple}.
+\end{definition}
+
+\begin{definition} The \textbf{cartesian product} of the sets $X_1$, $X_2$,
+\ldots, $X_n$, for some $n\in\mathbb{N}$, is the set of all $n$-tuples over the
+given sets:
+
+$$X_1\times X_2\times \cdots \times X_n \triangleq
+\set{\p{x_1,x_2,\ldots,x_n}\st{ \text{$x_i\in X_i$ for all
+$i\in\set{1,2,\ldots, n}$}}}.$$
+
+\end{definition}
+
+\begin{remark} The empty cartesian product is unit. \end{remark} 
 
 % Russel's paradox comes after functions, predicates and the last step of
 % set-builder notation with such that rules.
 
-\subsection{Tuples}
+\begin{definition} A \textbf{relation} $R$, between sets $S$ and $T$, is $R
+\subseteq S\times T$. \end{definition}
 
-\begin{definition} An $n$-\textbf{tuple} over some given sets $X_0$, $X_1$,
-\ldots, $X_n$, where $n\in\mathbb{N}$, is a sequence of $n$ elements enclosed
-in parentheses, $\p{x_0,x_1,\ldots,x_n}$, where $x_i\in X_i$ for all
-$i\in\set{0,1,\ldots, n}$. \end{definition}
-
-\begin{definition} The \textbf{Cartesian product} of the sets $X_0$, $X_1$,
-\ldots, $X_n$, for some $n\in\mathbb{N}$, is the set of all $n$-tuples over the
-sets:
-
-$$X_0\times X_1\times \cdots \times X_n \triangleq
-\set{\p{x_0,x_1,\ldots,x_n}\st{ \text{$x_i\in X_i$ for all
-$i\in\set{0,1,\ldots, n}$}}}.$$
-
+\begin{definition} A \textbf{diagonal relation} $\Delta_S$, is a relation
+between a set $S$ and itself, i.e. $\Delta_S \subseteq S \times S$.
 \end{definition}
 
-\begin{notation} We denote a tuple by listing the elements separated by commas,
-and enclosed in parentheses. We use this notation out of inspiration from
-Haskell syntax. We can regard this as in line with regular mathematical
-notation as the arguments to a non-curried function are typically passed in
-parentheses. That is unless a more convenient notation is given for particular
-kinds of tuples, e.g. the configurations of a Turing machine.\end{notation}
+\subsection{Functions on Sets}
 
-\subsection{Functions}
+For the lack of an axiomatic approach to the concept of sets, we also take a
+concept of functions as given, subject to the following specification:
 
-For the lack of an axiomatic approach to the notion of sets, we also take a
-notion of functions as given, subject to the following specification:
-
-\begin{specification} A \textbf{function} is either
+\begin{specification} A \textbf{total function}, or simply \textbf{function},
+$f$, is a mathematical object with \textbf{domain} $X$, and \textbf{codomain}
+$Y$, written $f:X\rightarrow Y$, where
 
 \begin{enumerate}
 
-\item a \textbf{partial function} $f$ with a \textbf{domain} $X$, and
-\textbf{codomain} $Y$, written $f:X\rightharpoonup Y$, where $X$ and $Y$ are
-sets, and
+\item [F-1.] $X$ and $Y$ are sets;
 
-\begin{enumerate}
+\item [F-2.] for each $x\in X$, $f$ has a \textbf{value} at $x$ in $Y$, written
+$f\p{x}\in Y$;
 
-\item for each $x\in X$, $f$ either has a \textbf{value} at $x$ in $Y$, written
-$f\p{x}\in Y$, or $f\p{x}$ is undefined;
+\item [F-3.] for any $x,y\in X$, if $x=y$, then $f\p{x}=f\p{y}$;
 
-\item $X$, $Y$, and $f\p{x}$ for each $x\in X$, are completely determined by $f$;
+\item [F-4.] $X$, $Y$, and $f\p{x}$ for each $x\in X$, are completely determined
+by $f$;
 
-\item $X$, $Y$, and $f\p{x}$ for some $x\in X$, are completely determine $f$; or
-
-\end{enumerate}
-
-\item a \textbf{constant} $\overline{x}$, where $x\in X$, for some nonempty set
-$X$, written $\overline{x}:X$, with domain $X$, written $x:X$, where $X$ is a
-nonempty set.
+\item [F-5.] $X$, $Y$, and $f\p{x}$ for each $x\in X$, completely determine $f$.
 
 \end{enumerate}
 
 \end{specification}
 
-\begin{definition} A function is \textbf{total}, if it is either a constant, or
-a partial function $f:X\rightharpoonup Y$, where $f\p{x}$ is defined for all
-$x\in X$, written $f:X\rightarrow Y$.\end{definition}
+\begin{definition} Given functions $f:X\rightarrow Y$ and $g:Y\rightarrow Z$,
+let the \textbf{composite} function, written $g\circ f : X \rightarrow Z$, be
+the function such that $\p{g\circ f}\p{x}=g\p{f\p{x}}$ for all $x\in X$.
+\end{definition}
 
-For the lack of a formal definition of either sets or partial functions, but in
-tune with the specifications of these notions above, we can regard partial
-functions as sets. In such an interpretation, the codomain (and domain) of a
-partial function may itself be a partial function. This leads way to some
-convenient notation:
+\begin{definition} Given a set $S$, let the \textbf{identity} function, written
+$id_S: S \rightarrow S$, be the function such that $id_S\p{s}=s$ for all $s\in
+S$. We omit $S$ from $id_S$, when it is clear from context. \end{definition}
 
-\begin{notation} A partial function $f:X\rightharpoonup G$, where $G$ is a
-function $g:Y\rightharpoonup Z$ is also written $f:X\rightharpoonup
-\p{Y\rightharpoonup Z}$, or simply $f:X\rightharpoonup Y\rightharpoonup Z$.
-Similarly for total functions.  \end{notation}
+\begin{definition} The \textbf{graph} $G_f$, of a function $f:X\rightarrow Y$, is the
+set of pairs
 
-\def\codomain#1{co\textsuperscript{$#1$}domain}
+$$G_f\triangleq\set{\p{x,f\p{x}}\st{x\in X}}.$$
 
-\begin{notation} For a function $f:X_0\rightharpoonup X_1 \rightharpoonup
-\cdots \rightharpoonup X_n \rightharpoonup Y$, for some $n\in \mathbb{N}$, we
-say $Y$ is the \codomain{n} of $f$, and $f$ has $n$ \textbf{arguments}, or $f$
-is an $n$-argument function, and furthermore
+\end{definition}
 
-\begin{itemize}
+The graph of a function is a relation: a subset of the cartesian product
+$X\times Y$, with the \textbf{functional property}, i.e. for each $x\in X$, we
+have $\p{x,f\p{x}} \in G_f$. Although by collecting the first components of the
+pairs in $G_f$, we get $X$, by collecting the second components, we \emph{do
+not necessarily} get $Y$. The graph $G_f$ is insufficient to implement a
+function $f:X\rightarrow Y$. One common implementation is therefore the triple
+$\p{X,Y,G_f}$.
 
-\item $f$ is \textbf{nullary} if it has $0$ arguments;
+It is perhaps worth noting why we don't just define functions as such triples.
+One reason will become apparent in \refSection{background-what-tm-computes},
+where we observe that a Turing machine \emph{implements} a partial function, as
+defined below:
 
-\item $f$ is \textbf{unary} if it has $1$ argument;
+\begin{definition} A \textbf{partial function} $f$, with domain $X$ and
+codomain $Y$, written $f:X_\bot\rightarrow Y_\bot$, is a total function $f :
+\p{X\cup\set{\bot}} \rightarrow \p{Y\cup\set{\bot}}$, where $\bot\notin X$,
+$\bot\notin Y$, and $f\p{\bot}=\bot$.\end{definition}
 
-\item $f$ is \textbf{binary} if it has $2$ arguments.
+\begin{definition} We say that $\bot$, read ``bottom'', denotes an
+\textbf{undefined} value, in the sense that it is not an element of any
+distinguished set we will consider. \end{definition}
 
-\end{itemize}
+\begin{definition} For any partial function $f:S_\bot\rightarrow T_\bot$, if
+$f\p{x}=\bot$, for some $x\in X$, we say that $f\p{x}$ is
+\textbf{undefined}.\end{definition}
 
-\end{notation}
+This definition of partial functions is perhaps a bit unconventional, but it
+permits us to directly compose partial functions, and provides perhaps a better
+model of computation (as discussed in
+\refSection{background-what-tm-computes}). Indeed, $\bot$ will represent
+non-terminating computation.
 
-\begin{definition} A \textbf{relation} is a total binary function with a
-\codomain{2} $\mathbb{B}$. \end{definition}
+For the lack of a formal definition of either sets or functions, but in tune
+with the specifications of these notions above, we can regard \emph{functions
+as sets}. In such an interpretation, the codomain (and domain) of a function
+may itself be a function. This demands some convenient notation:
+
+\begin{notation} A function $f:X\rightarrow G$, where $G$ is a function
+$g:Y\rightarrow Z$ is also written $f:X\rightarrow \p{Y\rightarrow Z}$, or
+simply $f:X\rightarrow Y\rightarrow Z$. That is, $\rightarrow$ is
+right-associative. \end{notation}
+
+\def\codomain#1{(co)\textsuperscript{$#1$}domain}
+
+%\begin{notation} For a function $f:X_1\rightarrow X_2 \rightarrow \cdots
+%\rightarrow X_n \rightarrow Y$, for some $n\in \mathbb{N}$, we say $Y$ is the
+%\codomain{n} of $f$, and $f$ has $n$ \textbf{arguments}, or $f$ is an
+%$n$-argument function, and furthermore
+
+%\begin{itemize}
+
+%\item $f$ is \textbf{nullary} if it has $0$ arguments;
+
+%\item $f$ is \textbf{unary} if it has $1$ argument;
+
+%\item $f$ is \textbf{binary} if it has $2$ arguments.
+
+%\end{itemize}
+
+%\end{notation}
+
+\begin{definition} A function $f:X\rightarrow Y$ is \textbf{injective} if
+$f\p{x}=f\p{y}$ iff $x=y$. \end{definition}
+
+\begin{definition} A function $f:X\rightarrow Y$ is \textbf{surjective} iff for
+each $y\in Y$ there is a corresponding $x\in X$, such that $f\p{x}=y$.
+\end{definition}
+
+\begin{definition} \label{def:enumerable} A set $X$ is \textbf{enumerable} if
+there exists an injective function $f:X\rightarrow \mathbb{N}$.
+\end{definition}
+
+\begin{definition} The \textbf{identity function} for a set $X$, written
+$id:X\rightarrow X$, is the (unique) function such that $id\p{x}=x$.
+\end{definition}
+
+\begin{corollary} Every set $X$ has an identity function. \end{corollary}
+
+\begin{corollary} An identity function is injective. \end{corollary}
+
+\begin{corollary} The set $\mathbb{N}$ is enumerable. \end{corollary}
+
+\begin{definition} A \textbf{partial function} $f$, with domain $X$ and
+codomain $Y$, written $f:X\rightarrow Y_{\bot}$, is a total function
+$f:X\rightarrow Y \cup \set{\bot}$, where $Y\cap \set{\bot} = \emptyset$.
+\end{definition}
 
 \begin{notation} When denoted by a symbol, the application of a relation will
 sometimes be denoted in infix notation. \end{notation}
@@ -199,25 +346,31 @@ where a mapping from $x$ to $f\p{x}$ is written $x\mapsto f\p{x}$.
 
 \begin{definition} A function $f:X\rightarrow Y$ is a \textbf{bijection}, or
 ``is bijective'', iff there exists a function $g:Y\rightarrow X$ such that for
-each $x\in X$, $g\p{f\p{\overline{x}}}=\overline{x}$. \end{definition}
+each $x\in X$, $g\p{f\p{x}}=x$. \end{definition}
+
+\begin{definition} A set $X$ is \textbf{enumerable} if there exists a injective
+function $f:X\rightarrow \mathbb{N}$. \end{definition}
 
 \subsection{Cardinality}
 
-The \textbf{cardinality} of a set $X$, written $\card{X}$, is a measure of its
-size. Two sets $X$ and $Y$ have the same cardinality, written
-$\card{X}=\card{Y}$, if there exists a bijective function $f:X\rightarrow Y$.
+\begin{notion} The \textbf{cardinality} of a set $X$, written $\card{X}$, is a
+measure of its size. \end{notion}
 
-\begin{notation} When we consider an element $a$ of a set $A$, we write $a\in
-A$. \end{notation}
+\begin{definition} Two sets $X$ and $Y$ have the same cardinality, written
+$\card{X}=\card{Y}$, if there exists a bijective function $f:X\rightarrow
+Y$.\end{definition}
 
-\begin{definition} The \textbf{union} of sets $A$ and $B$, written $A\cup B$,
-is the set of all $a\in A$ and all $b\in B$. \end{definition}
+\begin{definition} \label{def:card-leq} A set $X$ has a cardinality less than
+or equal to the cardinality of set $Y$, written $\card{X}\leq\card{Y}$, if
+there exists an injective function $f:X\rightarrow Y$. \end{definition}
 
-\begin{specification} A \textbf{property} is a mathematical statement that is
-either true or false. \end{specification}
+\begin{theorem}\label{thm:card-enumerable} A set $X$ is enumerable iff
+$\card{X}\leq\card{\mathbb{N}}$.  \end{theorem}
 
-\begin{definition} A set $X$, is \textbf{enumerable} iff
-$\card{X}\leq\card{\mathbb{N}}$. \end{definition}
+\begin{proof} Follows directly from \refDef{enumerable} and \refDef{card-leq}.
+\end{proof}
+
+
 
 %\begin{definition}
 
@@ -273,3 +426,57 @@ symbols from that alphabet. \end{definition}
 
 %\begin{notation} We take $b\notin A$ to mean the same as $\set{b}\cup A =
 %\emptyset$. \end{notation}
+
+\section{Categories}
+
+Classical and constructive mathematics are not the only possible foundations
+for the theory of computability and complexity.
+
+\emph{Category theory} allows a systematic discussion of the behaviour of a
+system in terms of the admissible transformations of system objects, without
+dealing in the issues of representation.
+
+\begin{specification} A \textbf{category} $\mathbb{C}$ is a collection of
+\textbf{objects} and \textbf{morphisms} between them. A morphism $f$ between
+objects $A$ and $B$ is denoted $f:A\rightarrow B$. We say that $A$ is the
+\textbf{domain}, and $B$ the \textbf{codomain} of $f$. For each object $A$,
+there is an \textbf{identity morphism} $id_A:A\rightarrow A$.
+
+There is a notion of equality amongst the objects of a category, such that if
+$B=C$, for some morphisms $f : A\rightarrow B$ and $g : C \rightarrow D$, then
+there exists a \textbf{composite morphism} $\p{g\circ f} : A \rightarrow D$.
+There is also a notion of equality amongst the morphisms of a category, such
+that:
+
+\begin{enumerate}
+
+\item [C-1] For any morphism $f:A\rightarrow B$, we have $f\circ id_A = f =
+id_B \circ f$.
+
+\item [C-2] For any triple of morphisms $f : A \rightarrow B$, $g : B
+\rightarrow C$, and $h : C \rightarrow D$, we have $f\circ \p{g \circ h} =
+\p{f\circ g} \circ h$.
+
+\end{enumerate}
+
+\end{specification}
+
+\begin{notation} Except when in conflict with other definitions, we'll use the
+alphabet $\mathbb{C},\mathbb{D},\mathbb{E},\ldots,\mathbb{Z}$ to denote
+categories, $A,B,C,\ldots,Z$ to denote objects, and $f,g,h,\ldots,z$ to denote
+morphisms.  \end{notation}
+
+% order of characters is significant in an alphabet, often we define an order
+% on the letters leading to a lexicographical order on strings.
+
+Category theory is sufficient to deduce many, but not all results in the theory
+of computability and complexity\cite{di-paola-heller-1987}. The main hurdle to
+this is that a category is classically defined with morphisms being
+\emph{total}, whereas the notion of computation asks for partiality. That is,
+for morphisms $f : A \rightarrow B$ and $g : C \rightarrow D$ to be composable,
+we must have $B=C$. If $g$ is partial, it is not defined over the entire domain
+$B=C$, and so the ``compositionality'' of these morphisms is questionable.
+
+We still give a basic account of Category theory, as it will never-the-less
+prove useful in modeling terminating and otherwise naturally constrained
+computation.

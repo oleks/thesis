@@ -38,6 +38,7 @@
 \theoremstyle{theorem}
 \newtheorem{textaxiom}{Axiom}
 \newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
 \newtheorem{hypothesis}{Hypothesis}
 
 \numberwithin{textaxiom}{section}
@@ -58,9 +59,11 @@
 \numberwithin{definition}{section}
 \numberwithin{alias}{section}
 \numberwithin{specification}{section}
+\numberwithin{notation}{section}
 
 \theoremstyle{remark}
 \newtheorem{remark}{Remark}
+\numberwithin{remark}{section}
 
 \DeclareDocumentCommand{\ruleref}{m}{%
   \ensuremath{\text{\textsc{#1}}}%
@@ -106,7 +109,7 @@
 
 \input{polytime/root}
 
-%\input{appendix/root}
+\input{appendix/root}
 
 \input{references}
 

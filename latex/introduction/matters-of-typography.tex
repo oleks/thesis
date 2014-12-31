@@ -5,11 +5,21 @@
 All references within this document to parts of this document are qualified
 with the page on which the referenced part begins. For instance, we refer to
 this section as \refSection{introduction:internal-references}, read ``section
-zero point two, on page two''.
+zero, point three, point one, on page three''.
 
 \subsection{External references} \label{sec:introduction:external-references}
 
-All external references..
+All external literature is referenced enclosed brackets by citing the author(s)
+and year of the (first) publication. The citations are further expanded in the
+references at the end of this document. For instance, \cite{sipser-2013}.
+
+If you are reading a PDF version of this document, the citation is a hyperlink
+to the expanded citation. For easy backreference, the expanded citation lists
+all the pages where the citation shorthand occurs. Feel free to try this now.
+
+Sometimes we further qualify the citation with a particular section, or page
+number for a more precise citation.  For instance,
+\cite[\chs~1--2]{sipser-2013}.
 
 \subsection{Named segments}
 
@@ -24,25 +34,21 @@ instance, when defining the concept of a Turing machine. The various roles are
 described below, showcasing also how each named segment will be formatted.
 
 \begin{notion} An informal definition of a concept, appealing either to the
-reader's intuition or formerly stated notions. \end{notion}
-
-Some concepts are too disputed to be given by a notion. In the presence of
-multiple competing notions, we will merely specify the features that we are
-interested in.
-
-\begin{specification} An informal specification of a concept, appealing either
-to the reader's intuition or formerly stated notions or specifications.
-\end{specification}
+reader's intuition or other informal concepts. \end{notion}
 
 \begin{hypothesis} An informal statement, proposed as an explanation of a
 natural phenomenon. A hypothesis does not admit itself to formal proof, but can
 be disproven by observation. A hypothesis is always followed by a discussion of
 its validity. \end{hypothesis}
 
+A concept is ``put in quotations'', if it is introduced informally, as part of
+a notion, notation, or a mere discussion. A concept is \textbf{put in bold}, if
+it is introduced formally, as part of a definition.
+
 Some notions are ``primitive'', in the sense that they underpin subsequent
 formal definitions. It is a fundamental epistemological impasse, that in any
 formal system, some concepts must remain distinguished, but undefined, these
-form the \textbf{primitive notions}, or \textbf{axioms}, of the formal system.
+form the ``primitive notions'', or ``axioms'', of the formal system.
 
 \begin{definition} A formal definition of a concept, appealing to either
 formerly stated primitive notions or definitions. Definitions seek to underpin
@@ -52,9 +58,9 @@ This thesis only seeks to be self-contained beyond what can be expected of the
 intended audience. Some notions, hypotheses, and definitions appeal to
 knowledge outside this thesis. See also \refSection{introduction:audience}.
 
-\begin{theorem} \label{thm:theorem} A formal statement using formerly
-defined concepts. A theorem is always proven to hold by an immediately
-proceeding proof.\end{theorem}
+\begin{theorem} \label{thm:theorem} A formal statement using formerly defined
+concepts. A theorem is always proven to hold by an immediately succeeding
+proof.\end{theorem}
 
 \begin{proof} A formal or informal proof the preceding theorem. \end{proof}
 
@@ -62,8 +68,18 @@ As proofs occur immediately after a theorem, proofs are not decorated with an
 address. A proof is then referred to by the address of the theorem it proves.
 For instance, we refer to the proof above as \refProof{theorem}.
 
+Some concepts may have several competing formal or informal definitions in
+literature.  When such a choice of fundamentals is of little importance, we
+will give a concept by a ``specification'' rather than an informal or formal
+definition. 
+
+\begin{specification} An informal specification of a concept, appealing either
+to the reader's intuition or other informal concepts. The reader is free to
+choose any known formal or informal definition of the concept, provided that it
+adheres to the given specification. \end{specification}
+
 \begin{example} An example of a concept discussed above. Examples seek to
-facilitate the reader's understanding on the concept in question.
+facilitate the reader's understanding of the concept in question.
 \end{example}
 
 \begin{notation}
@@ -73,18 +89,13 @@ Typically, notation is introduced to aid further discussion.
 
 \end{notation}
 
-A concept is put in quotations, for instance ``computable'', if it is
-introduced informally as part of a notion. A concept is put in bold, for
-instance \textbf{computable}, if it is introduced formally as part of a
-definition.
-
 \subsection{Sequences}
 
 Sequences have notational significance in the remainder of this document.
 
 \begin{notion}
 
-A \textbf{sequence} is a juxtaposition of elements.
+A (typographical) \textbf{sequence} is a juxtaposition of elements.
 
 \end{notion}
 
@@ -100,10 +111,10 @@ $$\symb{1},\symb{0},\symb{1},\symb{0},\symb{1},\symb{0} \quad \text{or} \quad
 X\rightarrow Y \rightarrow Z.$$
 
 Some sequences will be too long to be sequenced typographically. Such sequences
-will be given by stating their ``sequencing algorithm'', by which the elements can
-be sequenced, one-by-one, at the reader's leisure. There need not be a point at
-which we have sequenced all the elements, and so the reader should take care
-not to get carried away.
+will be given by stating their ``sequencing algorithm'', by which the elements
+can be sequenced, one-by-one, at the reader's leisure. There need not be a
+point at which we have sequenced all the elements, and so the reader should
+take care not to get carried away.
 
 We will soon formalise the notion of an ``algorithm''. For now, we make use of
 the less formal, ellipses notation:
@@ -115,7 +126,7 @@ reader's intuition to deduce how the subsequent elements are to be
 sequenced\footnote{We generally ignore Wittgenstein's rule-following paradox
 \cite[\textsection~201, p.  69]{wittgenstein-1953}.}. For instance,
 
-$$\symb{1},\symb{0},\symb{1},\symb{0},\symb{1},\symb{0},\ldots$$ 
+$$\symb{1},\symb{0},\symb{1},\symb{0},\symb{1},\symb{0},\ldots$$
 
 If we wish for the sequencing algorithm to stop when a particular ``final
 element'' is reached, we follow the ellipses by the final element. For instance,
@@ -124,17 +135,20 @@ $$A\rightarrow B \rightarrow \cdots \rightarrow Z.$$
 
 \end{notation}
 
-We say that the elements of a sequence appear in a particular ``order'', and
-sometimes, the elements, or sequences of elements, ``repeat'' within a
-sequence. For instance, the elements \symb{1} and \symb{0} repeat, in that
-order, in a sequence above. Such order and repetition will sometimes be
-significant.
+We say that sequences having a final element are ``finite'', and ``infinite''
+otherwise. For instance, the last sequence above is finite, whereas the one
+before it is infinite.  Furthermore, the elements of a sequence appear in a
+particular ``order'', and sometimes, the elements, or sequences of elements,
+``repeat'' within a sequence. For instance, the elements \symb{1} and \symb{0}
+repeat, in that order, in a sequence above. Such order and repetition will
+sometimes be significant.
 
 Some sequences will be further decorated to guide the reader's intuition. For
 instance, a ``Turing tape'', as discussed in
-\refSection{background-computability}, is a sequence of tape squares, occupied
-by symbols drawn from an alphabet, followed by an infinite sequence of blank
-symbols. We illustrate a Turing tape as in \refFigure{informal-turing-tape}.
+\refSection{background-computability}, is a finite sequence of tape squares,
+occupied by symbols drawn from an alphabet, followed by an infinite sequence of
+tape squares, each occupied by special ``blank symbol''. We illustrate a Turing
+tape as in \refFigure{informal-turing-tape}.
  
 \begin{figure}[h!]
 \centering
@@ -156,3 +170,14 @@ symbols. We illustrate a Turing tape as in \refFigure{informal-turing-tape}.
 \blank{} denotes the blank symbol.}
 \label{fig:informal-turing-tape}
 \end{figure}
+
+\subsection{Definitions}
+
+\begin{notation} By $X\triangleq Y$, read ``$X$ by definition the same as
+$Y$'', we mean that $X$ is henceforth interchangeable with $Y$, until $X$
+occurs on the left side of another $\triangleq$, that is, until $X$ is
+``redefined''. \end{notation}
+
+This is not all the matters of typography, but is sufficient to lift some
+mathematical definitions off the ground. The remaining matters of typography
+are interspersed throughout the remainder of this document.

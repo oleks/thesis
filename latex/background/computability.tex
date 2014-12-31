@@ -116,8 +116,8 @@ state transitions.
 
 We now formalise these notions as follows:
 
-\begin{definition} A Turing machine (TM) $M$ is a 5-tuple
-$\p{Q,\qstart,\qhalt,\Gamma, \delta}$, where $\Gamma\supseteq\Sigma\cup\set{\blank}$, $\blank\notin\Sigma$,
+\begin{definition} A Turing machine (TM) $M$ is a 5-tuple $\p{Q, \qstart,
+\qhalt, \Gamma, \delta}$, where
 
 \begin{enumerate}
 
@@ -127,8 +127,8 @@ $\p{Q,\qstart,\qhalt,\Gamma, \delta}$, where $\Gamma\supseteq\Sigma\cup\set{\bla
 
 \item $\qhalt \in Q$ is the halting state,
 
-\item $\Gamma$ is the tape alphabet, where $\blank\notin
-\Sigma$ and $\Sigma$ is the input/output alphabet, and
+\item $\Gamma = \Sigma \cup \set{\blank}$ is the tape alphabet, where $\Sigma$
+is the input/output alphabet, and $\Sigma \cap \set{\blank} = \emptyset$
 
 \item $\delta : Q \setminus \set{\qhalt} \times \Gamma \rightarrow Q \times
 \Gamma \times \set{\symb{L}, \symb{R}}$ is the (total) transition function.
@@ -193,23 +193,40 @@ $M\p{}\downarrow\#$.
 \section{Minor variants}
 
 In this section, we give some justification for our definition of Turing
-machines by considering how it can simulate various variants often found the
+machines by considering how it can simulate various variants often found in the
 literature. The ability of our Turing machines to simulate these variants
 builds confidence in our definition, and permits us to stand on the shoulders
 of giants, and state the Church-Turing thesis based on our notion of Turing
 machines.
 
-\begin{itemize}
+\subsection{Don't move the tape head}
 
-\item $\Sigma\cup\set{\blank}\subseteq\Gamma$.
+In our definition of a Turing machine, each transition bore with it the
+movement of the tape head either left or right. Some variants will also permit
+the tape head to stay where it is. 
 
-\item $\set{\symb{L},\symb{R},\symb{S}}$.
+Our machines can simulate such machines by having two state transitions, first
+moving left, then right whenever we wish to simulate a state transition where
+the tape head does not move.
 
-\item Multiple halting states.
+\subsection{A larger tape alphabet}
 
-\item Multiway and multiple tapes.
+In our definition of a Turing machine we defined the tape alphabet as $\Gamma =
+\Sigma \cup \set{\blank}$, where $\Sigma$ is the input/output alphabet and
+$\Sigma \cap \set{\blank} = \emptyset$. It is frequent in literature to relax
+this definition, and let $\Gamma \supseteq \Sigma \cup \set{\blank}$.
 
-\end{itemize}
+A larger tape alphabet permits more eloquent work with the tape, where e.g. the
+tape alphabet could be extended with a particularly decorated version of the
+input/output alphabet. This is useful when e.g. showing that a one-tape Turing
+machine is equivalent in computational power to a multi-tape Turing machine.
+
+In a vein similar to Turing machines where the tape head can stay, we can
+simulate a machine where
+
+\subsection{Multiple halting states}
+
+\subsection{Multiway and multiple tapes}
 
 \section{Major variants}
 
@@ -252,31 +269,111 @@ of most ``code'' today in general.
 
 Formal methods, due to their inherent complexity are seldom employed.
 
-\section{What does Turing machines compute?}
+\section{What does a Turing machine compute?}\label{sec:background-what-tm-computes}
 
 The introduction to this chapter talked about ``problems'' being computable. We
 went on to define computation by means of a Turing machine. We now formally
 discuss what it is that a Turing machine computes, effectively giving a
 definition of what we mean by the notion of a ``problem''.
 
-\begin{itemize}
+Consider a Turing machine $M$. The possible inputs and outputs of $M$ form a
+set, in particular, the set $\Sigma^*$. Given a particular input $x\in\Sigma^*$
+on tape, a Turing machine either halts with a particular output $y\in\Sigma^*$
+on tape, or loops forever. The behaviour of $M$ is completely deterministic,
+that is, $M$ always behaves the same way for the same inputs. This summons the
+properties PF-1, PF-2, and PF-3 of the specification of partial functions (see
+also ...), leading way to the following definition:
 
-\item Recursively enumerable.
+\begin{definition}\label{def:tm-computes-sigma} A TM $M$ \textbf{computes} a
+partial function $f:\Sigma^*\rightarrow \Sigma^*_\bot$. \end{definition}
 
-\item Recursive.
+This definition also satisfies the properties PF-4 and PF-5. PF-4 holds as both
+$\Sigma^*$, and $f\p{x}$ for every $x$ are completely determined by $M$. PF-5
+holds as we can deduce a definition of $M$ if given the set of tuples defining
+$f$.
 
-\end{itemize}
+The output of one Turing machine can serve as the input of another, and so the
+functions that the two Turing machines compute are composable.
 
-\begin{theorem} For every element $x\in X$, of an enumerable set $X$, there is
-a unique \textbf{representation} of $x$ in $\Sigma^*$, written
-$\overline{x}\in\Sigma^*$, where $\Sigma$ is an alphabet. \end{theorem} 
+\begin{theorem} If a TM $M_1$ computes a function $f : \Sigma^* \rightarrow
+\Sigma^*_\bot$, and a TM $M_2$ computes a function $g : \Sigma^* \rightarrow
+\Sigma^*_\bot$, then there exists a TM $M$ which computes the function $g\circ
+f : \Sigma^* \rightarrow \Sigma^*_\bot$.\end{theorem}
 
-\begin{definition} A TM $M$ \textbf{computes} a partial function
-$f:X\nrightarrow Y$, where $X$ and $Y$ are enumerable sets, if given a
-$\overline{x}$ as input, $M$ halts with $\overline{f\p{x}}$ as output, whenever
-$f\p{x}$ is defined, and does not halt otherwise.  \end{definition}
+\begin{proof} Proof by pseudo code. \end{proof}
 
-\begin{definition} A function is \textbf{computable}, or \textbf{recursively
-enumerable} if there exists a Turing machine that computes it. \end{definition}
+We can now parley about our algorithms by the compositions of functions that
+our Turing machines compute, rather than resort to talking about the Turing
+machines themselves.
+
+Although this characterisation may be sufficient for proofs in computability
+theory, it is of little comfort to the eloquent programmer. Turing machines
+were not designed for eloquent programming, and so this is to be expected.  We
+can, never-the-less, provide a slightly more ``abstract'' characterisation of
+what it is that a Turing machine computes.
+
+% and hereby lift the design of programming languages off the ground.
+
+\begin{theorem}\label{thm:unique-representation} For any countable set $X$, and
+alphabet $\Sigma$, for each $x\in X$ there is a \textbf{unique representation}
+of $x$ in $\Sigma^*$, written $\overline{x}\in\Sigma^*$. That is, there is an
+injective function $h:X\rightarrow \Sigma^*$. \end{theorem}
+
+\begin{proof} By ... we have an injective function $f:X\rightarrow \mathbb{N}$.
+By ... we have a bijective function $g:\mathbb{N}\rightarrow\Sigma^*$. Let
+$h\triangleq g\circ f$. By ...  $h : X\rightarrow \Sigma^*$ is an injective
+function.  \end{proof}
+
+By \refDef{tm-computes-sigma} and \refTheorem{unique-representation}, we can
+now say more generally, that a Turing machine computes a function
+$f:X\rightarrow \Sigma^*$, for some countable set $X$. This is better, but a
+little disappointing. It is a bit like saying if you throw in the ingredients
+of a cake, we promise to deliver you a string of symbols drawn from $\Sigma$,
+if anything. Recall that $\Sigma^*$ is a countably infinite set. This leads to
+the slightly more general characterisation of what it is that a TM computes.
+
+\begin{corollary} A TM computes a partial function $f:X\rightarrow Y_\bot$, for
+some countable set $X$, and countably infinite set $Y$. \end{corollary}
+
+\begin{proof} Let $\Sigma$ be the alphabet of some Turing machine $M$. By
+\refTheorem{unique-representation} there is an injective function $i : X
+\rightarrow \Sigma^*$. By .. there is a bijective function $g : \Sigma^*_\bot
+\rightarrow Y_\bot$. Without loss of generality, let $M$ compute the function
+$h : \Sigma^* \rightarrow \Sigma^*_\bot$, and let $f = g \circ h \circ i$.
+\end{proof} 
+
+\begin{remark} We have now completely dropped the components of a TM from the
+characterisation of the function that the TM computes, attaining hereby a
+``machine-independent characterisation'' of what it is that the TM computes.
+\end{remark}
+
+This is still a little disappointing. A countably infinite set is ``no
+smaller'' than $\Sigma^*$. We can now throw in the ingredients of a cake, and
+be guaranteed only to get \emph{some} cake, if anything at all. We are not
+guaranteed to get a cake, and certainly not guaranteed to get the cake we want.
+
+It is perhaps worthwhile to reconsider representing functions as sets. If for a
+given TM $M$, we could construct the set of pairs
+$\set{\p{x,y}\st{\text{$M\p{x}\downarrow y$ or $y=\bot$}}}$, the second
+components of the pairs uniquely determine the codomain of the function
+computed by $M$. As we shall later prove, deciding whether a Turing machine
+halts or not, is ``undecidable'' in general, and so unfortunately, this is not
+an option.
+
+It is the subject matter of much Computer Science, and likewise the remainder
+of this thesis, to consider limiting the programmers to talk just in terms of
+composing particular functions, for which the codomains (among other
+properties) are either known beforehand, or can be determined by finite means.
+Hopefully, we can then be guaranteed, that if we throw in the right
+ingredients, without too much hassle, we will be delivered just the cake we
+want, in time for lunch.
+
+\subsection{Recursively enumerable and recursive functions}
+
+\begin{definition} The partial function $f:X\rightarrow Y_\bot$ is said to be
+\textbf{recursively enumerable} if some TM computes it. \end{definition}
+
+\begin{definition} The (total) function $f:X\rightarrow Y$ is said to be
+\textbf{recursive} if some TM computes it. \end{definition}
 
 \section{Some uncomputable problems}

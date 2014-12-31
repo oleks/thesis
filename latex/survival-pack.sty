@@ -76,7 +76,11 @@
 
 \NewDocumentCommand\refSection{m}{\fancyRef{\textsection}{sec}{#1}}
 
+\NewDocumentCommand\refDef{m}{\fancyRef{Definition}{def}{#1}}
+
+\NewDocumentCommand\refTheorem{m}{\fancyRef{Theorem}{thm}{#1}}
 \NewDocumentCommand\refProof{m}{\fancyRef{Proof}{thm}{#1}}
+\NewDocumentCommand\refEqn{m}{\mbox{(\ref{eqn:#1})/\pageref{eqn:#1}}}
 \NewDocumentCommand\refNotion{m}{\fancyRef{Notion}{ntn}{#1}}
 \NewDocumentCommand\refThesis{m}{\fancyRef{Hypothesis}{ths}{#1}}
 \NewDocumentCommand\refExample{m}{\fancyRef{Example}{example}{#1}}
