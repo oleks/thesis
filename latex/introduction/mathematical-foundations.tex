@@ -39,7 +39,7 @@ empty set as follows:
 % Note to self: we don't start with sequences as sets will also be defined by
 % other means than sequences.
 
-\begin{definition} The \textbf{empty set}, written $\emptyset$, is
+\begin{definition} The \textbf{empty set} is
 
 $$\emptyset\triangleq\set{}.$$
 
@@ -151,7 +151,7 @@ $S\subseteq T$ if for each $s\in S$, we have $s\in T$. \end{definition}
 \begin{definition} A set $S$ is \textbf{elementarily equal} to a set $T$,
 written $S=T$, if $S\subseteq T$ and $T\subseteq S$. \end{definition} 
 
-Sometimes, a subset of a set $S$, will be given by decorating the elements of
+Sometimes, a subset of a set $S$, will be given by predicating the elements of
 $X$ with a rule. We write this as $\set{x\in X\st{\text{rule regarding $x$}}}$,
 read ``all $x$ in $X$ such that the rule regarding $x$ holds''. For instance,
 we define the set of non-negative real numbers as follows:
@@ -193,22 +193,27 @@ $i\in\set{1,2,\ldots, n}$}}}.$$
 
 \end{definition}
 
-\begin{remark} The empty cartesian product is unit. \end{remark} 
+\begin{remark} The empty cartesian product (when $n=0$) is unit. \end{remark} 
 
 % Russel's paradox comes after functions, predicates and the last step of
 % set-builder notation with such that rules.
 
-\begin{definition} A \textbf{relation} $R$, between sets $S$ and $T$, is $R
-\subseteq S\times T$. \end{definition}
+\begin{definition} A \textbf{relation} $R$, between sets $S$ and $T$, is a
+subset of the cartesian product of $S$ and $T$, that is $R \subseteq S\times
+T$. \end{definition}
 
-\begin{definition} A \textbf{diagonal relation} $\Delta_S$, is a relation
-between a set $S$ and itself, i.e. $\Delta_S \subseteq S \times S$.
-\end{definition}
+% \begin{definition} A \textbf{diagonal relation} $\Delta_S$, is a relation
+% between a set $S$ and itself, i.e. $\Delta_S \subseteq S \times S$.
+% \end{definition}
+
+\begin{definition} A relation $R$ is \textbf{single-valued} iff $\p{x,y}\in R$
+and $\p{x,z}\in R$ implies that $y=z$. \end{definition}
 
 \subsection{Functions on Sets}
 
-For the lack of an axiomatic approach to the concept of sets, we also take a
-concept of functions as given, subject to the following specification:
+For the lack of an axiomatic approach to the concept of sets, and for reason we
+sill soon clarify, we also take a concept of functions as given, subject to the
+following specification:
 
 \begin{specification} A \textbf{total function}, or simply \textbf{function},
 $f$, is a mathematical object with \textbf{domain} $X$, and \textbf{codomain}
@@ -233,42 +238,111 @@ by $f$;
 \end{specification}
 
 \begin{definition} Given functions $f:X\rightarrow Y$ and $g:Y\rightarrow Z$,
-let the \textbf{composite} function, written $g\circ f : X \rightarrow Z$, be
-the function such that $\p{g\circ f}\p{x}=g\p{f\p{x}}$ for all $x\in X$.
+let the \textbf{composite} function, written $\p{g\circ f} : X \rightarrow Z$,
+be the function such that $\p{g\circ f}\p{x}=g\p{f\p{x}}$ for all $x\in X$.
 \end{definition}
 
 \begin{definition} Given a set $S$, let the \textbf{identity} function, written
 $id_S: S \rightarrow S$, be the function such that $id_S\p{s}=s$ for all $s\in
-S$. We omit $S$ from $id_S$, when it is clear from context. \end{definition}
+S$. \end{definition}
 
 \begin{definition} The \textbf{graph} $G_f$, of a function $f:X\rightarrow Y$, is the
 set of pairs
 
-$$G_f\triangleq\set{\p{x,f\p{x}}\st{x\in X}}.$$
+$$G_f\triangleq\set{\p{x,f\p{x}}\in X \times Y\st{x\in X}}.$$
 
 \end{definition}
 
-The graph of a function is a relation: a subset of the cartesian product
-$X\times Y$, with the \textbf{functional property}, i.e. for each $x\in X$, we
-have $\p{x,f\p{x}} \in G_f$. Although by collecting the first components of the
-pairs in $G_f$, we get $X$, by collecting the second components, we \emph{do
-not necessarily} get $Y$. The graph $G_f$ is insufficient to implement a
-function $f:X\rightarrow Y$. One common implementation is therefore the triple
-$\p{X,Y,G_f}$.
+The graph of a function is a single-valued relation, with the
+\textbf{functional property}, i.e. for each $x\in X$, we have $\p{x,f\p{x}} \in
+G_f$. Although by collecting the first components of the pairs in $G_f$, we get
+$X$, by collecting the second components, we \emph{do not necessarily} get $Y$.
+The graph $G_f$ is insufficient to implement a function $f:X\rightarrow Y$. One
+common implementation is therefore the triple $\p{X,Y,G_f}$.
 
 It is perhaps worth noting why we don't just define functions as such triples.
 One reason will become apparent in \refSection{background-what-tm-computes},
 where we observe that a Turing machine \emph{implements} a partial function, as
 defined below:
 
-\begin{definition} A \textbf{partial function} $f$, with domain $X$ and
-codomain $Y$, written $f:X_\bot\rightarrow Y_\bot$, is a total function $f :
-\p{X\cup\set{\bot}} \rightarrow \p{Y\cup\set{\bot}}$, where $\bot\notin X$,
-$\bot\notin Y$, and $f\p{\bot}=\bot$.\end{definition}
+\begin{specification} \label{spec:partial-function} A \textbf{partial function}
+$f_\bot$, with domain $S$ and codomain $T$, written $f_\bot : S \rightharpoonup
+T$, is a (total) function $f : S' \rightarrow T$, where $S'\subseteq S$. We say
+that $S'$ is the \textbf{domain of definition} of $f_\bot$, and $f_\bot\p{s}$
+is \textbf{undefined} for all $s\in S\setminus S'$.\end{specification}
 
-\begin{definition} We say that $\bot$, read ``bottom'', denotes an
-\textbf{undefined} value, in the sense that it is not an element of any
-distinguished set we will consider. \end{definition}
+\begin{remark} For some partial functions, the domain of definition, or the
+underlying total function may be unknown. \end{remark}
+
+\begin{corollary} Every (total) function $f : S \rightarrow T$ is also a
+partial function $f_\bot : S \rightharpoonup T$ with the domain of definition
+$S$. \end{corollary}
+
+\begin{proof} Follows from \refSpec{partial-function}, as for any $S$, we have
+$S\subseteq S$.  \end{proof}
+
+We give the notion of partial function by specification rather than by
+definition to leave the notion of ``undefined'' undefined, until we have an
+implementation of (total) functions at hand.
+
+For instance, if we consider the implementation of functions by triples, we can
+implement partial functions by dropping the functional requirement from the
+graph of a partial function. In this implementation, $f_\bot\p{s}$ is undefined
+for all those $s\in S$, for which $s$ does not occur as the first component of
+any pair in $G_{f_\bot}$. This way, not only do we not necessarily get $Y$ by
+collecting the second components of the pairs in $G_{f_\bot}$, we also \emph{do
+not necessarily} get $X$ by collecting the first components of $G_{f_\bot}$.
+
+\begin{definition} The graph $G_{f_\bot}$, of a partial function $f_\bot : S
+\rightharpoonup T$, is the set of pairs
+
+$$G_{f_\bot} \triangleq \set{\p{x,f_\bot\p{x}}\in X \times Y}.$$
+
+\end{definition}
+
+For similar reasons, we leave the notion of composition of partial functions as
+a specification.
+
+\begin{specification} \label{spec:partial-composition} Given two partial
+functions $f_\bot : S \rightharpoonup T$ and $g_\bot : T \rightharpoonup U$,
+with domains of definition of $S'$, and $T'$, respectively, let the composite
+partial function, written $\p{g_\bot \circ f_\bot} : S \rightharpoonup U$, be
+the partial function such that $\p{g \circ f}\p{s} = g\p{f\p{s}}$ for all $s\in
+S'$ where $f\p{s} \in T'$, and $\p{g \circ f}\p{s}$ is \textbf{undefined}
+otherwise.  \end{specification}
+
+\begin{definition} \label{def:codomain-coersion} A function $f:S\rightarrow T$
+may be \textbf{coerced} to a function $g:S\rightarrow U$ if $T\subseteq U$. We
+write $f \leq g$.  \end{definition}
+
+For instance, a function $f:S\rightarrow T$ implemented as the triple
+$\p{S,T,G_f}$, can be coerced to a function $g:S\rightarrow U$, by replacing
+$T$ with $U$ in the triple to get $\p{S,U,G_f}$. 
+
+
+\begin{definition} Let $\bot$, read ``bottom'', denote an \textbf{undefined}
+value, such that for any set $S$, we have that $\bot\notin S$, unless
+explicitly stated otherwise. \end{definition}
+
+\begin{definition} For any set $S$, let $S_\bot\triangleq S\cup \set{\bot}$.
+\end{definition}
+
+Arguably, the definition of $\bot$ is non-constructive. This does not cause
+much trouble however, as in most contexts in which we will use $\bot$, it will
+indeed denote a value which cannot be ``constructed''. On the other hand, any
+set $S$, for which we \emph{will} consider $S_\bot$, will be either countable,
+or countably infinite. In either case, the addition of a $\bot$ element to such
+a ``small'' set is straight-forward and constructive.
+
+\begin{definition} \label{def:partial-function} A \textbf{partial function} is
+a function $f_\bot:S\rightarrow T_\bot$. \end{definition}
+
+\begin{theorem} Every total function $f : S\rightarrow T$ can be coerced to a
+partial function $f_\bot : S \rightarrow T_\bot$. That is, $f \leq f_\bot$.
+\end{theorem}
+
+\begin{proof} Follows directly from \refDef{partial-function} and
+\refDef{codomain-coersion}. \end{proof}
 
 \begin{definition} For any partial function $f:S_\bot\rightarrow T_\bot$, if
 $f\p{x}=\bot$, for some $x\in X$, we say that $f\p{x}$ is

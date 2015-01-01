@@ -241,34 +241,6 @@ role in the theory of computability and complexity.
 
 \end{itemize}
 
-\section{Church-Turing thesis}
-
-\begin{hypothesis} \textit{Church-Turing thesis.}
-
-No intuitive notion of an algorithm can compute a function that a Turing
-machine cannot compute.
-
-\end{hypothesis}
-
-The Church-Turing thesis does not lend itself to mathematical proof. Rather, it
-is a proposed explanation of the natural phenomena of computation. The
-hypothesis remains to be disproven, and in the mean-while, computational models
-more convenient than the Turing machine have emerged, some of them, even useful
-in practice.
-
-Some of these models have a formal specification, and so it lends itself to
-formal proof that these models compute no more than a Turing machine does.
-
-Our belief in the Church-Turing thesis has however, a notational advantage: to
-show that a function $f$ is computable, it is sufficient to informally
-describe, an algorithm for computing $f$. Due to the hypothesis, any
-formalisation of the informal algorithm, will yield a computable algorithm,
-
-This is sometimes called providing the ``pseudo-code'' for computing $f$, but can be said
-of most ``code'' today in general.
-
-Formal methods, due to their inherent complexity are seldom employed.
-
 \section{What does a Turing machine compute?}\label{sec:background-what-tm-computes}
 
 The introduction to this chapter talked about ``problems'' being computable. We
@@ -276,21 +248,33 @@ went on to define computation by means of a Turing machine. We now formally
 discuss what it is that a Turing machine computes, effectively giving a
 definition of what we mean by the notion of a ``problem''.
 
-Consider a Turing machine $M$. The possible inputs and outputs of $M$ form a
-set, in particular, the set $\Sigma^*$. Given a particular input $x\in\Sigma^*$
-on tape, a Turing machine either halts with a particular output $y\in\Sigma^*$
-on tape, or loops forever. The behaviour of $M$ is completely deterministic,
-that is, $M$ always behaves the same way for the same inputs. This summons the
-properties PF-1, PF-2, and PF-3 of the specification of partial functions (see
-also ...), leading way to the following definition:
+Consider a Turing machine $M$. Given a particular input $w\in\Sigma^*$ on tape,
+we either have that $M$ halts with the output $v\in\Sigma^*$ on tape, written
+$M\p{w}\downarrow v$, or $M$ does not halt, written $M\p{w}\uparrow$.  Let
+$S'=\set{w\in\Sigma^* \st{\text{$M\p{w}\downarrow v$ for some $v\in\Sigma^*$}}
+}$ be the set of inputs for which $M$ halts, and let
+$S''=\set{w\in\Sigma^*\st{M\p{w}\uparrow}}$ be the set of inputs for which $M$
+does not halt.
 
-\begin{definition}\label{def:tm-computes-sigma} A TM $M$ \textbf{computes} a
-partial function $f:\Sigma^*\rightarrow \Sigma^*_\bot$. \end{definition}
+We can say that $S'$ forms the \emph{domain of definition} of a partial
+function $f_\bot : \Sigma^* \rightharpoonup \Sigma^*$, that $M$ computes, where
+$f_\bot\p{w}$ is \emph{undefined} for all $w\in S''$.
 
-This definition also satisfies the properties PF-4 and PF-5. PF-4 holds as both
-$\Sigma^*$, and $f\p{x}$ for every $x$ are completely determined by $M$. PF-5
-holds as we can deduce a definition of $M$ if given the set of tuples defining
-$f$.
+\begin{definition} A TM $M$ \textbf{computes} a partial function $f_\bot :
+\Sigma^* \rightharpoonup \Sigma^*$. \end{definition}
+
+To convince ourselves that a TM $M$ indeed implements a partial function
+$f_\bot : \Sigma^* \rightharpoonup \Sigma^*$, we show that $M$ implements a
+total function $f:S'\rightarrow \Sigma^*$.
+
+We have that $S'$ and $\Sigma^*$ are sets by definition (F-1). For each $v\in
+S'$, $M$ does halt with an output $w\in\Sigma^*$ on tape (F-2). The transition
+function $\delta$ is deterministic, in the sense that the same input $v\in S'$
+will yield the same output $w\in\Sigma^*$ (F-3). The output $w\in\Sigma^*$
+corresponding to each input $v\in S'$ is completely determined by $M$ (F-4).If
+we know the sets $S'$ and $\Sigma^*$, and for each $v\in S'$, the $w\in
+\Sigma^*$, we can define a TM $M$ that computes a function $f:S'\rightarrow
+\Sigma^*$ (F-5).
 
 The output of one Turing machine can serve as the input of another, and so the
 functions that the two Turing machines compute are composable.
@@ -367,6 +351,35 @@ properties) are either known beforehand, or can be determined by finite means.
 Hopefully, we can then be guaranteed, that if we throw in the right
 ingredients, without too much hassle, we will be delivered just the cake we
 want, in time for lunch.
+
+\section{Church-Turing thesis}
+
+\begin{hypothesis} \textit{(Church-Turing thesis.)}
+
+No intuitive notion of an algorithm can compute a function that a Turing
+machine cannot compute.
+
+\end{hypothesis}
+
+The Church-Turing thesis does not lend itself to mathematical proof. Rather, it
+is a proposed explanation of the natural phenomena of computation. The
+hypothesis remains to be disproven, and in the mean-while, computational models
+more convenient than the Turing machine have emerged, some of them, even useful
+in practice.
+
+Some of these models have a formal specification, and so it lends itself to
+formal proof that these models compute no more than a Turing machine does.
+
+Our belief in the Church-Turing thesis has however, a notational advantage: to
+show that a function $f$ is computable, it is sufficient to informally
+describe, an algorithm for computing $f$. Due to the hypothesis, any
+formalisation of the informal algorithm, will yield a computable algorithm,
+
+This is sometimes called providing the ``pseudo-code'' for computing $f$, but can be said
+of most ``code'' today in general.
+
+Formal methods, due to their inherent complexity are seldom employed.
+
 
 \subsection{Recursively enumerable and recursive functions}
 
