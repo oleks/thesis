@@ -26,11 +26,13 @@ is however, not the case for this chapter in general.
 It is beyond the scope of this thesis to develop an axiomatic theory of sets.
 We assume the concept as given, subject to the following specification:
 
-\begin{specification} A \textbf{set} is a mathematical object that is distinct
-from, but completely determined by its \textbf{elements}. For any conceivable
-set $S$ and object $s$, either the statement $s\in S$, read ``$s$ refers to an
-element of $S$'', holds, or the statement $s\notin S$, read ``$s$ does not
-refer to an element of $S$'', does. \end{specification}
+\begin{specification} \label{spec:set} A \textbf{set} is a mathematical object
+that is distinct from, but completely determined by its \textbf{elements}. For
+any conceivable set $S$ and object $x$, either the statement $x\in S$, read
+``$x$ refers to an element of $S$'', holds, or the statement $x\notin S$, read
+``$x$ does not refer to an element of $S$'', does. \end{specification}
+
+% omnipresent universe
 
 A set is given by characterising its elements, enclosed in braces. For
 instance, the simplest set is the empty set, having no elements. We define the
@@ -95,13 +97,15 @@ $\mathbb{R}$. That is, fractions or adequate decimal expansions for the
 \emph{irrational numbers}, e.g. $\sqrt{2}$, $\pi$, $\phi$. When adequate,
 an irrational number will be given by a rational approximation.
 
-\subsubsection{Containment}
+The statement $x \in S$ may be more simply read as ``$x$ in $S$'', or (let)
+``$x$ be in $S$'', or (if) ``$x$ is in $S$''. Similarly for $x \notin S$.
 
-The statement $x\in X$ may be more simply as ``$x$ in $X$'', or (let) ``$x$ be
-in $X$'', or (if) ``$x$ is in $X$''. Similarly for $x\notin X$.
+\begin{definition} For any set $S$, if $x\in S$, we say that $S$
+\textbf{contains} $x$, or $x$ is \textbf{drawn} from $S$.\end{definition}
 
-\begin{definition} If $x\in X$, we say that $X$ \textbf{contains} $x$, or $x$
-is \textbf{drawn} from $X$.\end{definition}
+\begin{definition} It follows from \refSpec{set}, that the sets $S$ and $T$ are
+\textbf{equal}, written $S=T$, iff they contain the same elements.
+\end{definition}
 
 \begin{remark} We will often exploit $\mathbb{N}$ in ellipses
 notation.\end{remark}
@@ -154,7 +158,15 @@ written $S=T$, if $S\subseteq T$ and $T\subseteq S$. \end{definition}
 Sometimes, a subset of a set $S$, will be given by predicating the elements of
 $X$ with a rule. We write this as $\set{x\in X\st{\text{rule regarding $x$}}}$,
 read ``all $x$ in $X$ such that the rule regarding $x$ holds''. For instance,
-we define the set of non-negative real numbers as follows:
+we define the set minus operation as follows:
+
+\begin{definition} A set $S$ \textbf{minus} a set $T$ is
+
+$$S\setminus T \triangleq \set{s\in S\st{s\notin T}}.$$
+
+\end{definition}
+
+A less formal use of the notation is this:
 
 \begin{definition} The set of \textbf{non-negative} real numbers is
 
@@ -163,14 +175,11 @@ equal to $0$}}}.$$
 
 \end{definition}
 
-Perhaps a more eloquent use of the notation is for the definition of the set
-minus operation:
+\begin{notation} When denoted by a symbol, the application of a relation will
+sometimes be denoted in infix notation. \end{notation}
 
-\begin{definition} A set $S$, \textbf{minus} a set $T$ is
-
-$$S\setminus T \triangleq \set{s\in S\st{s\notin T}}.$$
-
-\end{definition}
+\begin{notation} By $=$, we denote the \textbf{equality relation}.
+\end{notation}
 
 \subsection{Tuples}
 
@@ -209,67 +218,109 @@ T$. \end{definition}
 \begin{definition} A relation $R$ is \textbf{single-valued} iff $\p{x,y}\in R$
 and $\p{x,z}\in R$ implies that $y=z$. \end{definition}
 
-\subsection{Functions on Sets}
+\subsection{Set Functions}
 
-For the lack of an axiomatic approach to the concept of sets, and for reason we
-sill soon clarify, we also take a concept of functions as given, subject to the
-following specification:
+For the lack of an axiomatic approach to the concept of sets, and because we
+will consider several different ``implementations'' of functions, we take the
+concept of functions as given, subject to the following specification:
 
-\begin{specification} A \textbf{total function}, or simply \textbf{function},
-$f$, is a mathematical object with \textbf{domain} $X$, and \textbf{codomain}
-$Y$, written $f:X\rightarrow Y$, where
+\begin{specification} \label{spec:function} A \textbf{total function}, or
+simply \textbf{function}, $f$, is a mathematical object with \textbf{domain}
+$S$, and \textbf{codomain} $T$, written $f : S\rightarrow T$, where
 
 \begin{enumerate}
 
-\item [F-1.] $X$ and $Y$ are sets;
+\item [F-1.] $S$ and $T$ are sets;
 
-\item [F-2.] for each $x\in X$, $f$ has a \textbf{value} at $x$ in $Y$, written
-$f\p{x}\in Y$;
+\item [F-2.] for each $s \in S$, $f$ has a (unique) \textbf{value} at $s$ in
+$T$, written $f\p{s}\in T$;
 
-\item [F-3.] for any $x,y\in X$, if $x=y$, then $f\p{x}=f\p{y}$;
+\item [F-3.] for any $s,t \in S$, if $s = t$, then $f\p{s} = f\p{t}$;
 
-\item [F-4.] $X$, $Y$, and $f\p{x}$ for each $x\in X$, are completely determined
-by $f$;
+\item [F-4.] $S$, $T$, and $f\p{s}$ for each $s \in S$, are completely
+determined by $f$;
 
-\item [F-5.] $X$, $Y$, and $f\p{x}$ for each $x\in X$, completely determine $f$.
+\item [F-5.] $S$, $T$, and $f\p{s}$ for each $s \in S$, completely determine
+$f$.
 
 \end{enumerate}
 
 \end{specification}
 
-\begin{definition} Given functions $f:X\rightarrow Y$ and $g:Y\rightarrow Z$,
-let the \textbf{composite} function, written $\p{g\circ f} : X \rightarrow Z$,
-be the function such that $\p{g\circ f}\p{x}=g\p{f\p{x}}$ for all $x\in X$.
-\end{definition}
+Having functions at hand, we can now expand on the notion of sets:
 
-\begin{definition} Given a set $S$, let the \textbf{identity} function, written
-$id_S: S \rightarrow S$, be the function such that $id_S\p{s}=s$ for all $s\in
-S$. \end{definition}
+\begin{definition} \label{def:subset} A set $S$ is a \textbf{subset} of a set
+$T$, written $S \subseteq T$, iff there is an \textbf{inclusion function}, $i :
+S \rightarrow T$, such that $i\p{s}=s$ for all $s \in S$. \end{definition}
 
-\begin{definition} The \textbf{graph} $G_f$, of a function $f:X\rightarrow Y$, is the
-set of pairs
+\begin{definition} \label{def:seteq} A set $S$ is \textbf{equal} to a set $T$,
+written $S=T$, iff $S\subseteq T$ and $T\subseteq S$. \end{definition}
 
-$$G_f\triangleq\set{\p{x,f\p{x}}\in X \times Y\st{x\in X}}.$$
+Having the notion of equality for sets, functions can now be composed:
+
+\begin{definition} \label{def:compose} Given two functions $f : S \rightarrow
+T$ and $g : U \rightarrow V$, if $T = U$, let the \textbf{composite function},
+written $\p{g\circ f} : S \rightarrow V$, be the function such that $\p{g\circ
+f}\p{s}=g\p{f\p{s}}$ for all $s \in S$.  \end{definition}
+
+\begin{notation} The symbol $\circ$ is read ``after''.\end{notation}
+
+% equality of functions
+
+\begin{definition} \label{def:graph} The \textbf{graph} of a function $f : S
+\rightarrow T$ is
+
+$$G_f\triangleq\set{\p{s,t}\st{\text{$t=f\p{s}$ for some $s\in S$}}}.$$
 
 \end{definition}
 
 The graph of a function is a single-valued relation, with the
-\textbf{functional property}, i.e. for each $x\in X$, we have $\p{x,f\p{x}} \in
+\textbf{functional property}, i.e. for each $s\in S$, we have $\p{s,f\p{s}} \in
 G_f$. Although by collecting the first components of the pairs in $G_f$, we get
-$X$, by collecting the second components, we \emph{do not necessarily} get $Y$.
-The graph $G_f$ is insufficient to implement a function $f:X\rightarrow Y$. One
-common implementation is therefore the triple $\p{X,Y,G_f}$.
+$S$ --- by collecting the second components, we \emph{do not necessarily} get
+$T$.  The graph $G_f$ is insufficient to implement the function $f :
+S\rightarrow T$.  One common implementation is therefore the triple
+$\p{S,T,G_f}$. In general however, this leads to the following theorem:
 
-It is perhaps worth noting why we don't just define functions as such triples.
-One reason will become apparent in \refSection{background-what-tm-computes},
-where we observe that a Turing machine \emph{implements} a partial function, as
-defined below:
+\begin{theorem} \label{thm:codomain-subtyping} If there exists a function $f :
+S \rightarrow T$, where $T\subseteq U$, then there exists a function $g : S
+\rightarrow U$, such that $f\p{s}=g\p{s}$ for all $s\in S$. \end{theorem}
+
+\begin{proof} By \refDef{subset}, we have an inclusion function $i : T
+\rightarrow U$. Let $g \triangleq \p{i\circ f}$. \end{proof}
+
+\begin{definition} \label{def:id-fun} Given a set $S$, let the \textbf{identity
+function}, written $id_S: S \rightarrow S$, be the function such that
+$id_S\p{s}=s$ for all $s\in S$. \end{definition}
+
+\begin{definition} \label{def:injective} A function $f : S \rightarrow T$ is
+\textbf{injective} if $f\p{s}=f\p{t}$ iff $s=t$ for any $s,t\in S$.
+\end{definition}
+
+\begin{corollary} \label{cor:id-is-injective} The identity function of any set
+$S$ is injective.  \end{corollary}
+
+\begin{proof} Follows directly from \refDef{id-fun} and \refDef{injective}.
+\end{proof}
+
+\begin{definition} \label{def:image} The \textbf{image} of a function $f : S
+\rightarrow T$, is
+
+$$I_f \triangleq \set{t\st{\text{$t=f\p{s}$ for some $s\in S$}}}.$$
+
+\end{definition}
+
+It is perhaps worth noting why we don't just define the function $f : S
+\rightarrow T$ as the triple $\p{S, T, G_f}$.  One reason will become apparent
+in \refSection{background-what-tm-computes}, where we observe that a Turing
+machine \emph{implements} a partial function (specified below) for particular
+kinds of sets.
 
 \begin{specification} \label{spec:partial-function} A \textbf{partial function}
-$f_\bot$, with domain $S$ and codomain $T$, written $f_\bot : S \rightharpoonup
-T$, is a (total) function $f : S' \rightarrow T$, where $S'\subseteq S$. We say
-that $S'$ is the \textbf{domain of definition} of $f_\bot$, and $f_\bot\p{s}$
-is \textbf{undefined} for all $s\in S\setminus S'$.\end{specification}
+$f_\bot$, with domain $S$ and codomain $U$, written $f_\bot : S \rightharpoonup
+U$, is a (total) function $f : T \rightarrow U$, where $T\subseteq S$. We say
+that $T$ is the \textbf{domain of definition} of $f_\bot$, and $f_\bot\p{s}$
+is \textbf{undefined} for all $s \in S \setminus T$.\end{specification}
 
 \begin{remark} For some partial functions, the domain of definition, or the
 underlying total function may be unknown. \end{remark}
@@ -285,13 +336,14 @@ We give the notion of partial function by specification rather than by
 definition to leave the notion of ``undefined'' undefined, until we have an
 implementation of (total) functions at hand.
 
-For instance, if we consider the implementation of functions by triples, we can
-implement partial functions by dropping the functional requirement from the
-graph of a partial function. In this implementation, $f_\bot\p{s}$ is undefined
-for all those $s\in S$, for which $s$ does not occur as the first component of
-any pair in $G_{f_\bot}$. This way, not only do we not necessarily get $Y$ by
-collecting the second components of the pairs in $G_{f_\bot}$, we also \emph{do
-not necessarily} get $X$ by collecting the first components of $G_{f_\bot}$.
+For instance, if we consider the implementation of (total) functions by
+triples, we can implement partial functions by dropping the functional
+requirement from the graph in the triple. In this implementation, $f_\bot\p{s}$
+is undefined for all those $s\in S$, for which $s$ does not occur as the first
+component of any pair in $G_{f_\bot}$. This way, not only do we not necessarily
+get $Y$ by collecting the second components of the pairs in $G_{f_\bot}$, we
+also \emph{do not necessarily} get $X$ by collecting the first components of
+$G_{f_\bot}$.
 
 \begin{definition} The graph $G_{f_\bot}$, of a partial function $f_\bot : S
 \rightharpoonup T$, is the set of pairs
@@ -311,48 +363,13 @@ the partial function such that $\p{g \circ f}\p{s} = g\p{f\p{s}}$ for all $s\in
 S'$ where $f\p{s} \in T'$, and $\p{g \circ f}\p{s}$ is \textbf{undefined}
 otherwise.  \end{specification}
 
-\begin{definition} \label{def:codomain-coersion} A function $f:S\rightarrow T$
-may be \textbf{coerced} to a function $g:S\rightarrow U$ if $T\subseteq U$. We
-write $f \leq g$.  \end{definition}
+% \begin{definition} \label{def:codomain-coersion} A function $f:S\rightarrow
+% T$ may be \textbf{coerced} to a function $g:S\rightarrow U$ if $T\subseteq
+% U$. We write $f \leq g$.  \end{definition}
 
-For instance, a function $f:S\rightarrow T$ implemented as the triple
-$\p{S,T,G_f}$, can be coerced to a function $g:S\rightarrow U$, by replacing
-$T$ with $U$ in the triple to get $\p{S,U,G_f}$. 
-
-
-\begin{definition} Let $\bot$, read ``bottom'', denote an \textbf{undefined}
-value, such that for any set $S$, we have that $\bot\notin S$, unless
-explicitly stated otherwise. \end{definition}
-
-\begin{definition} For any set $S$, let $S_\bot\triangleq S\cup \set{\bot}$.
-\end{definition}
-
-Arguably, the definition of $\bot$ is non-constructive. This does not cause
-much trouble however, as in most contexts in which we will use $\bot$, it will
-indeed denote a value which cannot be ``constructed''. On the other hand, any
-set $S$, for which we \emph{will} consider $S_\bot$, will be either countable,
-or countably infinite. In either case, the addition of a $\bot$ element to such
-a ``small'' set is straight-forward and constructive.
-
-\begin{definition} \label{def:partial-function} A \textbf{partial function} is
-a function $f_\bot:S\rightarrow T_\bot$. \end{definition}
-
-\begin{theorem} Every total function $f : S\rightarrow T$ can be coerced to a
-partial function $f_\bot : S \rightarrow T_\bot$. That is, $f \leq f_\bot$.
-\end{theorem}
-
-\begin{proof} Follows directly from \refDef{partial-function} and
-\refDef{codomain-coersion}. \end{proof}
-
-\begin{definition} For any partial function $f:S_\bot\rightarrow T_\bot$, if
-$f\p{x}=\bot$, for some $x\in X$, we say that $f\p{x}$ is
-\textbf{undefined}.\end{definition}
-
-This definition of partial functions is perhaps a bit unconventional, but it
-permits us to directly compose partial functions, and provides perhaps a better
-model of computation (as discussed in
-\refSection{background-what-tm-computes}). Indeed, $\bot$ will represent
-non-terminating computation.
+% For instance, a function $f:S\rightarrow T$ implemented as the triple
+% $\p{S,T,G_f}$, can be coerced to a function $g:S\rightarrow U$, by replacing
+% $T$ with $U$ in the triple to get $\p{S,U,G_f}$. 
 
 For the lack of a formal definition of either sets or functions, but in tune
 with the specifications of these notions above, we can regard \emph{functions
@@ -364,7 +381,7 @@ $g:Y\rightarrow Z$ is also written $f:X\rightarrow \p{Y\rightarrow Z}$, or
 simply $f:X\rightarrow Y\rightarrow Z$. That is, $\rightarrow$ is
 right-associative. \end{notation}
 
-\def\codomain#1{(co)\textsuperscript{$#1$}domain}
+% \def\codomain#1{(co)\textsuperscript{$#1$}domain}
 
 %\begin{notation} For a function $f:X_1\rightarrow X_2 \rightarrow \cdots
 %\rightarrow X_n \rightarrow Y$, for some $n\in \mathbb{N}$, we say $Y$ is the
@@ -383,56 +400,108 @@ right-associative. \end{notation}
 
 %\end{notation}
 
-\begin{definition} A function $f:X\rightarrow Y$ is \textbf{injective} if
-$f\p{x}=f\p{y}$ iff $x=y$. \end{definition}
-
-\begin{definition} A function $f:X\rightarrow Y$ is \textbf{surjective} iff for
-each $y\in Y$ there is a corresponding $x\in X$, such that $f\p{x}=y$.
+\begin{definition} \label{def:countable} A set $S$ is \textbf{countable} iff
+there exists an injective function $f : S \rightarrow \mathbb{N}$.
 \end{definition}
 
-\begin{definition} \label{def:enumerable} A set $X$ is \textbf{enumerable} if
-there exists an injective function $f:X\rightarrow \mathbb{N}$.
-\end{definition}
+\begin{definition} \label{def:surjective} A function $f:S\rightarrow T$ is
+\textbf{surjective} iff for each $t\in T$ there is a corresponding $s\in S$,
+such that $f\p{s}=t$.  \end{definition}
 
-\begin{definition} The \textbf{identity function} for a set $X$, written
-$id:X\rightarrow X$, is the (unique) function such that $id\p{x}=x$.
-\end{definition}
+\begin{definition} \label{def:bijective} A function $f : S \rightarrow T$ is
+\textbf{bijective}, iff $f$ is both injective and surjective, or (equivalently)
+there exists a function $g : T \rightarrow S$, such that $g\p{f\p{s}}=s$ for
+all $s\in S$, and $f\p{g\p{t}}=t$ for all $t\in T$.\end{definition}
 
-\begin{corollary} Every set $X$ has an identity function. \end{corollary}
+\begin{theorem} \label{thm:injective-compose} An injective function $f : S
+\rightarrow T$, composed with an injective function $g : T \rightarrow U$,
+written $\p{g \circ f} : S \rightarrow U$ is also injective. \end{theorem}
+
+\begin{proof} By \refDef{compose}, we have $\p{g \circ f}\p{s}=g\p{f\p{s}}$ for
+all $s \in S$. By \refDef{injective}, we have $f\p{s}=f\p{t}$ iff $s=t$ for any
+$s,t\in S$, and $g\p{u}=g\p{v}$ iff $u=v$ for any $u,v \in T$. By transitivity,
+we must have $g\p{f\p{s}}=g\p{f\p{t}}$ iff $f\p{s}=f\p{t}$ iff $s=t$ for any
+$s,t \in S$.\end{proof}
+
+\begin{theorem} \label{thm:surjective-compose} A surjective function $f : S
+\rightarrow T$, composed with a surjective function $g : T \rightarrow U$,
+written $\p{g \circ f} : S \rightarrow U$ is also surjective. \end{theorem}
+
+\begin{proof} By \refDef{compose}, we have $\p{g \circ f}\p{s}=g\p{f\p{s}}$ for
+all $s \in S$. By \refDef{surjective}, for each $t \in T$, there is a
+corresponding $s \in S$, such that $f\p{s} = t$, and for each $u \in U$, there
+is a corresponding $t \in T$, such that $g\p{t} = u$. By transitivity, for each
+$u \in U$, there is a corresponding $t \in T$, for which there is a
+corresponding $s \in S$, such that $g\p{f\p{s}} = g\p{t} = u$.\end{proof}
+
+\begin{theorem} \label{thm:bijective-compose} A bijective function $f : S
+\rightarrow T$, composed with a bijective function $g : T \rightarrow U$,
+written $\p{g \circ f} : S \rightarrow U$, is also bijective.
+\end{theorem}
+
+\begin{proof} By \refDef{bijective}, $f$ and $g$ are both injective and
+surjective. By \refThm{injective-compose} and \refThm{surjective-compose},
+$\p{g \circ f}$ is both injective and surjective, and so similarly, also
+bijective. \end{proof}
+
+\begin{definition} \label{def:countably-infinite} A set $S$ is
+\textbf{countably infinite} iff there exists a bijective function $f : S
+\rightarrow \mathbb{N}$, or (equivalently) a bijective function $g : \mathbb{N}
+\rightarrow S$. \end{definition}
+
+\begin{theorem} \label{thm:countable-to-countably-infinite} If $S$ is a
+countable set, then there exists an injective function $f : S \rightarrow T$,
+where $T$ is a countably infinite set.  \end{theorem}
+
+\begin{proof} By \refDef{countable}, there is an injective function $g : S
+\rightarrow \mathbb{N}$. By \refDef{countably-infinite}, there is a bijective
+function $h : \mathbb{N} \rightarrow T$, which by \refDef{bijective} is also
+injective. Let $f \triangleq \p{h \circ g}$. By \refThm{injective-compose}, $f$
+is also injective. \end{proof}
+
+\begin{theorem} \label{thm:countably-infinite-to-countably-infinite} If $S$ is
+a countably infinite set, then there exists a bijective function $f : S
+\rightarrow T$, where $T$ is a countably infinite set. \end{theorem}
+
+\begin{proof} By \refDef{countably-infinite}, there is a bijective function $g
+: S \rightarrow \mathbb{N}$, and a bijective function $h : \mathbb{N}
+\rightarrow T$. Let $f \triangleq \p{h \circ g}$. By
+\refThm{bijective-compose}, $f$ is also bijective.\end{proof}
+
+\begin{definition} \label{def:id-function} The \textbf{identity function} for a
+set $S$, written $id_S : S\rightarrow S$, is a function such that $id\p{s}=s$
+for any $s\in S$. \end{definition}
 
 \begin{corollary} An identity function is injective. \end{corollary}
 
-\begin{corollary} The set $\mathbb{N}$ is enumerable. \end{corollary}
-
-\begin{definition} A \textbf{partial function} $f$, with domain $X$ and
-codomain $Y$, written $f:X\rightarrow Y_{\bot}$, is a total function
-$f:X\rightarrow Y \cup \set{\bot}$, where $Y\cap \set{\bot} = \emptyset$.
-\end{definition}
-
-\begin{notation} When denoted by a symbol, the application of a relation will
-sometimes be denoted in infix notation. \end{notation}
-
-\begin{notation} By $=$, we denote the \textbf{equality relation}.
-\end{notation}
-
- A partial function can hereby be given by a set of mappings,
-where a mapping from $x$ to $f\p{x}$ is written $x\mapsto f\p{x}$.
-
-\begin{definition} A function $f:X\rightarrow Y$ is a \textbf{bijection}, or
-``is bijective'', iff there exists a function $g:Y\rightarrow X$ such that for
-each $x\in X$, $g\p{f\p{x}}=x$. \end{definition}
-
-\begin{definition} A set $X$ is \textbf{enumerable} if there exists a injective
-function $f:X\rightarrow \mathbb{N}$. \end{definition}
+\begin{corollary} The set $\mathbb{N}$ is countable. \end{corollary}
 
 \subsection{Cardinality}
 
-\begin{notion} The \textbf{cardinality} of a set $X$, written $\card{X}$, is a
+\begin{notion} The \textbf{cardinality} of a set $S$, written $\card{S}$, is a
 measure of its size. \end{notion}
 
-\begin{definition} Two sets $X$ and $Y$ have the same cardinality, written
-$\card{X}=\card{Y}$, if there exists a bijective function $f:X\rightarrow
-Y$.\end{definition}
+\begin{definition} \label{def:same-card} Two sets $S$ and $T$ have the same
+cardinality, written $\card{S}=\card{T}$, iff there exists a bijective function
+$f : S\rightarrow T$.\end{definition}
+
+\begin{theorem} \label{thm:injective-image-card} If $f : S \rightarrow T$ is an
+injective function, then $\card{I_f}=\card{S}$. \end{theorem}
+
+\begin{proof} Proof by contradiction. Let $\card{I_f} \neq \card{S}$. We
+must have one of two cases: 
+
+\begin{enumerate}
+
+\item There is an $s\in S$ such that $f\p{s}\notin f\seq{S}$, but this
+contradicts the assumption that $f\seq{S}$ forms the image of $f$.
+
+\item There is a $f\p{s}\in f\seq{S}$ such that $s\notin S$, which again
+contradicts the assumption that $f\seq{S}$ forms the image of $f$. 
+
+\end{enumerate}
+
+\end{proof}
 
 \begin{definition} \label{def:card-leq} A set $X$ has a cardinality less than
 or equal to the cardinality of set $Y$, written $\card{X}\leq\card{Y}$, if
@@ -493,13 +562,21 @@ $\card{X}\leq\card{\mathbb{N}}$.  \end{theorem}
 \subsection{Strings and Languages}
 
 \begin{definition} An \textbf{alphabet} is a finite, nonempty set of
-\textbf{symbols}.  \end{definition}
+\textbf{symbols}. \end{definition}
+
+\begin{notation} We will typically use the symbol $\Sigma$ to denote an
+alphabet. \end{notation}
 
 \begin{definition} A \textbf{string} over an alphabet is a finite sequence of
 symbols from that alphabet. \end{definition}
 
-%\begin{notation} We take $b\notin A$ to mean the same as $\set{b}\cup A =
-%\emptyset$. \end{notation}
+\begin{definition} The set of all strings over an alphabet $\Sigma$ is written
+$\Sigma^*$. \end{definition}
+
+\begin{theorem} \label{thm:kleene-star-countably-infinite} The set $\Sigma^*$
+is countably infinite. \end{theorem}
+
+\begin{proof} \end{proof}
 
 \section{Categories}
 
@@ -513,14 +590,13 @@ dealing in the issues of representation.
 \begin{specification} A \textbf{category} $\mathbb{C}$ is a collection of
 \textbf{objects} and \textbf{morphisms} between them. A morphism $f$ between
 objects $A$ and $B$ is denoted $f:A\rightarrow B$. We say that $A$ is the
-\textbf{domain}, and $B$ the \textbf{codomain} of $f$. For each object $A$,
-there is an \textbf{identity morphism} $id_A:A\rightarrow A$.
+\textbf{domain}, and $B$ the \textbf{codomain} of $f$.
 
-There is a notion of equality amongst the objects of a category, such that if
-$B=C$, for some morphisms $f : A\rightarrow B$ and $g : C \rightarrow D$, then
-there exists a \textbf{composite morphism} $\p{g\circ f} : A \rightarrow D$.
-There is also a notion of equality amongst the morphisms of a category, such
-that:
+For each object $A$, there exists an \textbf{identity morphism}
+$id_A:A\rightarrow A$. For any pair of morphisms $f : A\rightarrow B$ and $g :
+B \rightarrow C$, there exists a \textbf{composite morphism} $\p{g\circ f} : A
+\rightarrow C$.  Furthermore, there is a notion of equality amongst the
+morphisms of a category, such that:
 
 \begin{enumerate}
 

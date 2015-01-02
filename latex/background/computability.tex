@@ -248,36 +248,100 @@ went on to define computation by means of a Turing machine. We now formally
 discuss what it is that a Turing machine computes, effectively giving a
 definition of what we mean by the notion of a ``problem''.
 
-Consider a Turing machine $M$. Given a particular input $w\in\Sigma^*$ on tape,
-we either have that $M$ halts with the output $v\in\Sigma^*$ on tape, written
-$M\p{w}\downarrow v$, or $M$ does not halt, written $M\p{w}\uparrow$.  Let
-$S'=\set{w\in\Sigma^* \st{\text{$M\p{w}\downarrow v$ for some $v\in\Sigma^*$}}
-}$ be the set of inputs for which $M$ halts, and let
-$S''=\set{w\in\Sigma^*\st{M\p{w}\uparrow}}$ be the set of inputs for which $M$
-does not halt.
+Consider a TM $M$. Given a particular input $s\in\Sigma^*$ on tape, $M$ either
+halts with the output $t\in\Sigma^*$ on tape, written $M\p{s}\downarrow t$, or
+$M$ does not halt, written $M\p{s}\uparrow$. Let
+$S^\downarrow=\set{s\in\Sigma^* \st{\text{$M\p{s}\downarrow t$ for some
+$t\in\Sigma^*$}} }$, and let
+$S^\uparrow=\set{s\in\Sigma^*\st{M\p{s}\uparrow}}$.
 
-We can say that $S'$ forms the \emph{domain of definition} of a partial
-function $f_\bot : \Sigma^* \rightharpoonup \Sigma^*$, that $M$ computes, where
-$f_\bot\p{w}$ is \emph{undefined} for all $w\in S''$.
+We can say that $S^\downarrow$ forms the \emph{domain of definition} of a
+partial function $f_\bot : \Sigma^* \rightharpoonup \Sigma^*$, which $M$
+\emph{implements}, letting $f_\bot\p{s}$ be \emph{undefined} for all $s\in
+S^\uparrow$.  That is, the value of $f_\bot$ is undefined at $s$ iff $M$ does
+not halt on input $s$.
 
-\begin{definition} A TM $M$ \textbf{computes} a partial function $f_\bot :
-\Sigma^* \rightharpoonup \Sigma^*$. \end{definition}
+We say that $M$ \textbf{computes} $f_\bot$.
+
+\begin{definition} A TM $M$ computes a partial function $f_\bot : \Sigma^*
+\rightharpoonup \Sigma^*$. \end{definition}
 
 To convince ourselves that a TM $M$ indeed implements a partial function
-$f_\bot : \Sigma^* \rightharpoonup \Sigma^*$, we show that $M$ implements a
-total function $f:S'\rightarrow \Sigma^*$.
+$f_\bot : \Sigma^* \rightharpoonup \Sigma^*$, we need to show that $M$
+implements a total function $f:S^\downarrow \rightarrow \Sigma^*$. We consider
+the constituents of \refSpec{function} in order:
 
-We have that $S'$ and $\Sigma^*$ are sets by definition (F-1). For each $v\in
-S'$, $M$ does halt with an output $w\in\Sigma^*$ on tape (F-2). The transition
-function $\delta$ is deterministic, in the sense that the same input $v\in S'$
-will yield the same output $w\in\Sigma^*$ (F-3). The output $w\in\Sigma^*$
-corresponding to each input $v\in S'$ is completely determined by $M$ (F-4).If
-we know the sets $S'$ and $\Sigma^*$, and for each $v\in S'$, the $w\in
-\Sigma^*$, we can define a TM $M$ that computes a function $f:S'\rightarrow
-\Sigma^*$ (F-5).
+\begin{enumerate}
 
-The output of one Turing machine can serve as the input of another, and so the
-functions that the two Turing machines compute are composable.
+\item [F-1] Recall that $S^\downarrow \subseteq \Sigma^*$. We have that
+$S^\downarrow$ and $\Sigma^*$ are sets by definition.
+
+\item [F-2] For each $s\in S^\downarrow$, $M$ does halt with an output
+$t\in\Sigma^*$ on tape.
+
+\item [F-3] The transition function $\delta$ is
+deterministic, in the sense that the same input $s\in S^\downarrow$ will yield
+the same output $t\in\Sigma^*$.
+
+\item [F-4] The output $t\in\Sigma^*$ corresponding to each input $s\in S'$ is
+completely determined by $M$.
+
+\item [F-5] If we know the sets $S'$ and $\Sigma^*$, and for each $s\in S'$,
+the $t\in \Sigma^*$, we can define a TM $M$ that computes a function
+$f:S'\rightarrow \Sigma^*$.
+
+\end{enumerate}
+
+Although this characterisation of what it is a TM computes may be sufficient
+for proofs in computability theory, it is of little comfort to the eloquent
+programmer. This is to be expected, as Turing machines were not designed for
+eloquent programming. We can, never-the-less, provide a slightly more
+``abstract'' characterisation of TM computation. For this, we will need a bit
+of abstraction machinery:
+
+% and hereby lift the design of programming languages off the ground.
+
+\begin{theorem}\label{thm:unique-representation} For any countable set $S$, and
+alphabet $\Sigma$, for each $s\in S$ there is a \textbf{unique representation}
+of $s$ in $\Sigma^*$, written $\overline{s}\in\Sigma^*$. That is, there is a
+bijective function $e : S \rightarrow T$, for some $T \subseteq \Sigma^*$.
+\end{theorem}
+
+% a partial function $d_\bot : \Sigma^* \rightharpoonup S$ with the domain of
+% definition $T$.
+
+\begin{proof} By \refDef{countable}, we have an injective function $f : S
+\rightarrow \mathbb{N}$. By \refThm{kleene-star-countably-infinite}, $\Sigma^*$
+is countably infinite. By \refDef{countably-infinite} and \refDef{bijective},
+we have a bijective function $g:\mathbb{N}\rightarrow\Sigma^*$. Let $h = g\circ
+f$. By ... $h : S\rightarrow \Sigma^*$ is an injective function. 
+
+Let $T=h\seq{S}$ be the image of $h$. By \refDef{image}, $T \subseteq
+\Sigma^*$. Since $h$ is injective, we must have $\card{S}=\card{T}$. Then, by
+\refDef{same-card}, there must be a bijective function $e : S \rightarrow
+T$.\end{proof}
+
+By \refDef{tm-computes-sigma} and \refThm{unique-representation}, we can now
+say more generally, that a Turing machine computes a function $f:X\rightarrow
+\Sigma^*$, for some countable set $X$. This is better, but a little
+disappointing. It is a bit like saying if you throw in the ingredients of a
+cake, we promise to deliver you a string of symbols drawn from $\Sigma$, if
+anything. Recall that $\Sigma^*$ is a countably infinite set. This leads to the
+slightly more general characterisation of what it is that a TM computes.
+
+If two Turing machines share a tape alphabet, the output of one Turing machine
+can serve as the input to another.
+
+This can be modelled by the composition of the
+partial functions that the TMs compute.
+
+\begin{definition} If a TM $M_f$ computes a partial function $f_\bot : \Sigma^*
+\rightharpoonup \Sigma^*$, and a TM $M_g$ computes a partial function $g_\bot :
+\Sigma^* \rightharpoonup \Sigma^*$, then the composite TM $M_{g\circ f}$
+computes the composite partial function $\p{g_\bot \circ f_\bot} : \Sigma^*
+\rightharpoonup \Sigma^*$, such that $M_{g_\bot \circ f_\bot}\p{v}\downarrow w$
+for all $v\in S_f$, where $f\p{v}\in S_g$, and $M_{g_\bot \circ
+f_\bot}\p{v}\uparrow$ otherwise. \end{definition}
 
 \begin{theorem} If a TM $M_1$ computes a function $f : \Sigma^* \rightarrow
 \Sigma^*_\bot$, and a TM $M_2$ computes a function $g : \Sigma^* \rightarrow
@@ -289,47 +353,6 @@ f : \Sigma^* \rightarrow \Sigma^*_\bot$.\end{theorem}
 We can now parley about our algorithms by the compositions of functions that
 our Turing machines compute, rather than resort to talking about the Turing
 machines themselves.
-
-Although this characterisation may be sufficient for proofs in computability
-theory, it is of little comfort to the eloquent programmer. Turing machines
-were not designed for eloquent programming, and so this is to be expected.  We
-can, never-the-less, provide a slightly more ``abstract'' characterisation of
-what it is that a Turing machine computes.
-
-% and hereby lift the design of programming languages off the ground.
-
-\begin{theorem}\label{thm:unique-representation} For any countable set $X$, and
-alphabet $\Sigma$, for each $x\in X$ there is a \textbf{unique representation}
-of $x$ in $\Sigma^*$, written $\overline{x}\in\Sigma^*$. That is, there is an
-injective function $h:X\rightarrow \Sigma^*$. \end{theorem}
-
-\begin{proof} By ... we have an injective function $f:X\rightarrow \mathbb{N}$.
-By ... we have a bijective function $g:\mathbb{N}\rightarrow\Sigma^*$. Let
-$h\triangleq g\circ f$. By ...  $h : X\rightarrow \Sigma^*$ is an injective
-function.  \end{proof}
-
-By \refDef{tm-computes-sigma} and \refTheorem{unique-representation}, we can
-now say more generally, that a Turing machine computes a function
-$f:X\rightarrow \Sigma^*$, for some countable set $X$. This is better, but a
-little disappointing. It is a bit like saying if you throw in the ingredients
-of a cake, we promise to deliver you a string of symbols drawn from $\Sigma$,
-if anything. Recall that $\Sigma^*$ is a countably infinite set. This leads to
-the slightly more general characterisation of what it is that a TM computes.
-
-\begin{corollary} A TM computes a partial function $f:X\rightarrow Y_\bot$, for
-some countable set $X$, and countably infinite set $Y$. \end{corollary}
-
-\begin{proof} Let $\Sigma$ be the alphabet of some Turing machine $M$. By
-\refTheorem{unique-representation} there is an injective function $i : X
-\rightarrow \Sigma^*$. By .. there is a bijective function $g : \Sigma^*_\bot
-\rightarrow Y_\bot$. Without loss of generality, let $M$ compute the function
-$h : \Sigma^* \rightarrow \Sigma^*_\bot$, and let $f = g \circ h \circ i$.
-\end{proof} 
-
-\begin{remark} We have now completely dropped the components of a TM from the
-characterisation of the function that the TM computes, attaining hereby a
-``machine-independent characterisation'' of what it is that the TM computes.
-\end{remark}
 
 This is still a little disappointing. A countably infinite set is ``no
 smaller'' than $\Sigma^*$. We can now throw in the ingredients of a cake, and
@@ -351,6 +374,45 @@ properties) are either known beforehand, or can be determined by finite means.
 Hopefully, we can then be guaranteed, that if we throw in the right
 ingredients, without too much hassle, we will be delivered just the cake we
 want, in time for lunch.
+
+\begin{lemma} \label{lem:tm-domain} For any partial function $f : T
+\rightharpoonup U$, where $T$ is a countably infinite set, and any countable or
+countably infinite set $S$, there is a partial function $h : S \rightharpoonup
+U$. \end{lemma}
+
+\begin{proof} We show that there is an injective function $g : S \rightarrow
+T$, and let $h \triangleq \p{f \circ g}$. If $S$ is countable, then by
+\refThm{countable-to-countably-infinite} there is an injective function $g : S
+\rightarrow T$. If $S$ is countably infinite, then by
+\refThm{countably-infinite-to-countably-infinite} there is a bijective function
+$g : S \rightarrow T$, which by \refDef{bijective} is also
+injective.\end{proof}
+
+\begin{lemma} \label{lem:tm-codomain} For any partial function $f : S
+\rightharpoonup T$, where $T$ is a countably infinite set, and any countable or
+countably infinite set $U$, there is a partial function $h : S \rightharpoonup
+U$. \end{lemma}
+
+\begin{proof} We show that there is a surjective function $g : T
+\rightharpoonup U$, and let $h \triangleq \p{g \circ f}$. \end{proof}
+
+\begin{theorem} \label{thm:tm-machine-independent} A TM computes a partial
+function $f : S \rightharpoonup T$, for some countable, or countably infinite
+sets $S$ and $T$. \end{theorem}
+
+\begin{proof} Let $\Sigma$ be the alphabet of some Turing machine $M$ ...
+Without loss of generality, let $M$ compute the partial function $h : \Sigma^*
+\rightharpoonup \Sigma^*$.  \end{proof} 
+
+\begin{remark} We have now completely dropped the components of a TM from the
+characterisation of the function that the TM computes, attaining hereby a
+``machine-independent characterisation'' of what it is that the TM computes.
+\end{remark}
+
+An unsatisfying aspect of this characterisation, from a natural point of view,
+is that we do not know the domain of definition of the partial function $f : S
+\rightharpoonup T$ that a TM computes. As we shall later prove, it is not
+possible in general, to deduce such a domain of definition from a TM.
 
 \section{Church-Turing thesis}
 
