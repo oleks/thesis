@@ -477,6 +477,13 @@ for any $s\in S$. \end{definition}
 
 \begin{corollary} The set $\mathbb{N}$ is countable. \end{corollary}
 
+\begin{theorem} \label{thm:subset-of-countably-infinite} If $S\subset T$, for
+some countably infinite set $T$, $S$ must either be countable or countably
+infinite. \end{theorem}
+
+\begin{proof} Requires an inclusion function from $S$ to $T$, which is
+injective, and done by transitivity. \end{proof}
+
 \subsection{Cardinality}
 
 \begin{notion} The \textbf{cardinality} of a set $S$, written $\card{S}$, is a
@@ -485,6 +492,10 @@ measure of its size. \end{notion}
 \begin{definition} \label{def:same-card} Two sets $S$ and $T$ have the same
 cardinality, written $\card{S}=\card{T}$, iff there exists a bijective function
 $f : S\rightarrow T$.\end{definition}
+
+\begin{definition} \label{def:leq-card} A set $S$ has a cardinality less than
+or equal to the cardinality of a set $T$, written $\card{S}\leq\card{T}$, iff
+there exists an injective function $f : S \rightarrow T$.\end{definition}
 
 \begin{theorem} \label{thm:injective-image-card} If $f : S \rightarrow T$ is an
 injective function, then $\card{I_f}=\card{S}$. \end{theorem}
