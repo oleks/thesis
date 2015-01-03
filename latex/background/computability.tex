@@ -23,7 +23,7 @@ The theory of computability is concerned with the nature of computation. It
 originated in the 1930s with the celebrated works of G\"odel, Kleene, Church,
 Post, Turing, et al.  Fundamental to the field is the Church-Turing thesis,
 which proposes that the natural phenomena of computation is captured by the
-notion of computation with a Turing machine.
+definition of computation with a Turing machine.
 
 We begin with a brief discussion about the intuitive notion of computation,
 leading way for a formal\footnote{By ``formal'', in this chapter and the next,
@@ -32,24 +32,28 @@ we mean built atop the mathematical foundations as outlined in
 its own right to consider an exposition of computability and complexity theory
 as based solely on the Church-Turing thesis as an axiom. Some work in this
 direction appears in \cite{markov-1954}.} definition of computation with a
-Turing machine, and an exposition of the Church-Turing thesis.
+Turing machine, culminating in an exposition of the Church-Turing thesis.
+
+\section{Notion of computation}
 
 \begin{notion} A problem is ``computable'' if it can be solved by transforming
-a mathematical object, without ingenuity.
-\end{notion}
+a mathematical object, without ingenuity. \end{notion}
 
-Any attempt at a more definite notion of computability seems to arrive at a
+Any attempt at a more definite notion of computation seems to arrive at a
 philosophical impasse, where the notions of ``mathematical object'',
 ``transformation'', and ``ingenuity'' form a philosophical conundrum. The
-indefinite notion however, is sufficient to state the following hypothesis:
+indefinite notion however, is perhaps sufficient to state a couple hyptheses
+about the nature of computation:
+
+\begin{hypothesis} \label{ths:do-nothing} Doing nothing is computable.
+\end{hypothesis}
 
 \begin{hypothesis} \label{ths:problem-composition} If a problem $P$ can be
 solved by solving a computable problem $Q$, immediately followed by solving a
 computable problem $R$, then $P$ itself is computable. \end{hypothesis}
 
 The hypothesis clearly holds as nothing is done other than solve the two
-computable problems\footnote{Although, doing nothing, is itself a philosophical
-conundrum.}.  So any problem which can be solved by solving a finite sequence
+computable problems.  So any problem which can be solved by solving a finite sequence
 of computable problems, is itself computable. We now arrive at an intuitive
 notion of an algorithm:
 
@@ -57,8 +61,21 @@ notion of an algorithm:
 specification of how a problem can be solved by solving a finite sequence of
 computable problems, called ``steps''.\end{notion}
 
+The notion of computation yearns perhaps for a category-theoretical definition.
+Such a definition however, is both non-classical and somewhat disputed.
+
 Such indefinite notions are useful for little else. We are left to fall prey to
-some choice of formalism. To this end, the notion of computation with a Turing
+some choice of formalism. 
+
+A problem is ``computable'' if it can be solved by means of computation. That
+is, if a mathematical . Assuming a set theoretical foundation of mathematics,
+computation induces a function on sets.
+
+Before further characterising the class of computable functions
+
+\section{Turing machines}
+
+To this end, the notion of computation with a Turing
 machine, due to Alan Turing\cite{turing-1936-7}, forms perhaps the most
 classical conceptualization of computation. The conceptualization below is
 heavily inspired by the those that appear in \cite{tourlakis-1984},
@@ -244,9 +261,11 @@ role in the theory of computability and complexity.
 \section{What does a Turing machine compute?}\label{sec:background-what-tm-computes}
 
 The introduction to this chapter talked about ``problems'' being computable. We
-went on to define computation by means of a Turing machine. We now formally
-discuss what it is that a Turing machine computes, effectively giving a
-definition of what we mean by the notion of a ``problem''.
+went on to define computation by means of a Turing machine. We now characterise
+what it is that a Turing machine computes, in terms of our mathematical
+foundations, effectively giving both a definition of what we mean by the notion
+of a ``problem'', and a ``machine-independent'' characterisation of
+computation.
 
 Consider a TM $M$. Given a particular input $s\in\Sigma^*$ on tape, $M$ either
 halts with the output $t\in\Sigma^*$ on tape, written $M\p{s}\downarrow t$, or
@@ -256,20 +275,19 @@ $t\in\Sigma^*$}} }$, and let
 $S^\uparrow=\set{s\in\Sigma^*\st{M\p{s}\uparrow}}$.
 
 We can say that $S^\downarrow$ forms the \emph{domain of definition} of a
-partial function $f_\bot : \Sigma^* \rightharpoonup \Sigma^*$, which $M$
-\emph{implements}, letting $f_\bot\p{s}$ be \emph{undefined} for all $s\in
-S^\uparrow$.  That is, the value of $f_\bot$ is undefined at $s$ iff $M$ does
-not halt on input $s$.
+partial function $f : \Sigma^* \rightharpoonup \Sigma^*$, which $M$
+\emph{implements}, letting $f\p{s}$ be \emph{undefined} for all $s\in
+S^\uparrow$.  That is, the value of $f$ is undefined at $s$ iff $M$ does not
+halt on input $s$. We say that $M$ \textbf{computes} the partial function $f :
+\Sigma^* \rightharpoonup \Sigma^*$.
 
-We say that $M$ \textbf{computes} $f_\bot$.
-
-\begin{definition} A TM $M$ computes a partial function $f_\bot : \Sigma^*
+\begin{definition} A TM $M$ \textbf{computes} a partial function $f : \Sigma^*
 \rightharpoonup \Sigma^*$. \end{definition}
 
-To convince ourselves that a TM $M$ indeed implements a partial function
-$f_\bot : \Sigma^* \rightharpoonup \Sigma^*$, we need to show that $M$
-implements a total function $f:S^\downarrow \rightarrow \Sigma^*$. We consider
-the constituents of \refSpec{function} in order:
+To convince ourselves that $M$ indeed implements a partial function $f :
+\Sigma^* \rightharpoonup \Sigma^*$, it remains to show that $M$ implements a
+total function $g:S^\downarrow \rightarrow \Sigma^*$. We consider the
+constituents of \refSpec{function} in order:
 
 \begin{enumerate}
 
@@ -292,56 +310,104 @@ $f:S'\rightarrow \Sigma^*$.
 
 \end{enumerate}
 
-Although this characterisation of what it is a TM computes may be sufficient
-for proofs in computability theory, it is of little comfort to the eloquent
-programmer. This is to be expected, as Turing machines were not designed for
-eloquent programming. We can, never-the-less, provide a slightly more
-``abstract'' characterisation of TM computation. For this, we will need a bit
-of abstraction machinery:
+If two Turing machines share a tape alphabet, the output of one can serve as
+the input to the other. In other words, we can construct a Turing machine that
+computes the composite of the respective partial functions.
+
+\begin{theorem} If a Turing machine $M_f$ computes a partial function $f :
+\Sigma^* \rightharpoonup \Sigma^*$, and a Turing machine $M_g$ computes a
+partial function $g : \Sigma^* \rightharpoonup \Sigma^*$, we can construct a
+Turing machine $M_{g \circ f}$, which computes the partial function $\p{g \circ
+f} : \Sigma^* \rightharpoonup \Sigma^*$. \end{theorem}
+
+\begin{proof} Let $M_f=\p{Q_f,\qstart^f,\qhalt^f,\Gamma,\delta_f}$, and let
+$M_g=\p{Q_g,\qstart^g,\qhalt^g,\Gamma,\delta_g}$. Without loss of generality,
+let $Q_f \cap Q_g = \set{\qhalt^f} = \set{\qstart^g}$, that is,
+$\qhalt^f=\qstart^g$. Let $Q=Q_f \cup Q_g$, and let $\delta : Q \setminus
+\set{\qhalt^g} \rightarrow Q \times \Gamma \times \set{\goleft,\goright}$ be
+defined as follows ... Let $M_{g \circ f} = \p{Q, \qstart^f, \qhalt^g, \Gamma,
+\delta}$.\end{proof}
+
+This means that we can parley about our algorithms by the compositions of the
+partial functions that our Turing machines compute, rather than resort to
+talking about the Turing machines themselves.
+
+Although this characterisation may be sufficient for proofs in computability
+theory, it provides little comfort for the eloquent programmer. We seek a
+slightly more ``abstract'' characterisation of what it is a TM computes.
+
+We note that $\Sigma^*$ is a countably infinite set. This means that for any $s
+\in S$, for some countably infinite set $S$, there is a \textbf{unique
+representation} of $s$ in $\Sigma^*$. This permits an initial (mental)
+abstraction that a Turing machine computes a partial function between a pair of
+countably infinite sets.
+
+\begin{theorem} \label{thm:tm-countably-infinite} A TM \textbf{computes} a
+partial function $f : S \rightharpoonup T$, where $S$ and $T$ are countably
+infinite sets.  \end{theorem}
+
+\begin{proof} Without loss of generality, let a TM $M$ compute the partial
+function $h : \Sigma^* \rightharpoonup \Sigma^*$. By
+\refThm{kleene-star-countably-infinite}, $\Sigma^*$ is countably infinite. By
+\refThm{countably-infinite-to-countably-infinite}, there exist bijective
+functions $i : S \rightarrow \Sigma^*$ and $g : \Sigma^* \rightarrow T$.  Let
+$f \triangleq \p{g \circ \p{h \circ i}}$.\end{proof}
+
+\begin{remark} We have now completely dropped the components of a TM from the
+characterisation of what it is a TM computes, attaining hereby a
+``machine-independent'' characterisation.
+\end{remark}
+
+What's more, our mathematical foundations now discourage us from feeding a
+natural number to a machine that expects a string as input. Whereas before,
+there was no (mental) distinction between e.g. the natural numbers and strings.
+Thus, we have introduced the notion of \textbf{types}.
+
+This characterisation is still a little disappointing: the ``types'' we have at
+our disposal are rather large. There are, in fact, (countably) infinitely many
+values of each type. Some useful, intuitively computable functions work with a
+much smaller range of values, e.g. the basic operators of boolean logic work
+exclusively with the values \strue{} and \sfalse{}.
+
+To this end, it is easy to exploit both the partiality of the function that a
+TM computes and our mathematical foundations:
+
+\begin{theorem} \label{thm:tm-can-compute} A TM \textbf{can compute} a total
+function $f : S \rightarrow T$, where $S$ and $T$ are countable or countably
+infinite sets. \end{theorem}
+
+\begin{proof} Without loss of generality, let a TM $M$ compute the partial
+function $g : \Sigma^* \rightharpoonup \Sigma^*$, with the domain of definition
+$U \subseteq \Sigma^*$, and image $V \subseteq \Sigma ^*$. By
+\refSpec{partial-function}, $M$ computes the (total) function $i : U
+\rightarrow V$.
+
+By \refThm{kleene-star-countably-infinite}, $\Sigma^*$ is countably infinite.
+By \refThm{subset-of-countably-infinite}, $U$ and $V$ must be countable or
+countably infinite. Without loss of generality, let $\card{U}=\card{S}$ and let
+$\card{V}\leq\card{T}$. By \refDef{same-card}, there is a bijective function $j
+: S \rightarrow U$. By \refDef{leq-card}, there is an injective function $h : V
+\rightarrow T$. Let $f \triangleq \p{h \circ \p{i \circ j}}$.\end{proof}
+
+The change of wording between \refThm{tm-countably-infinite} and
+\refThm{tm-can-compute} from ``computes'' to ``can compute'' is intensional. It
+serves to signify the (sometimes) unreasonable requirement of the latter
+theorem that we know the total function that a TM computes. This requirement is
+unreasonable, as it is a well-known undecidable problem to find the domain of
+definition, let alone image, of the partial function that a TM computes.
 
 % and hereby lift the design of programming languages off the ground.
 
-\begin{theorem}\label{thm:unique-representation} For any countable set $S$, and
-alphabet $\Sigma$, for each $s\in S$ there is a \textbf{unique representation}
-of $s$ in $\Sigma^*$, written $\overline{s}\in\Sigma^*$. That is, there is a
-bijective function $e : S \rightarrow T$, for some $T \subseteq \Sigma^*$.
-\end{theorem}
 
-% a partial function $d_\bot : \Sigma^* \rightharpoonup S$ with the domain of
-% definition $T$.
 
-\begin{proof} By \refDef{countable}, we have an injective function $f : S
-\rightarrow \mathbb{N}$. By \refThm{kleene-star-countably-infinite}, $\Sigma^*$
-is countably infinite. By \refDef{countably-infinite} and \refDef{bijective},
-we have a bijective function $g:\mathbb{N}\rightarrow\Sigma^*$. Let $h = g\circ
-f$. By ... $h : S\rightarrow \Sigma^*$ is an injective function. 
 
-Let $T=h\seq{S}$ be the image of $h$. By \refDef{image}, $T \subseteq
-\Sigma^*$. Since $h$ is injective, we must have $\card{S}=\card{T}$. Then, by
-\refDef{same-card}, there must be a bijective function $e : S \rightarrow
-T$.\end{proof}
 
-By \refDef{tm-computes-sigma} and \refThm{unique-representation}, we can now
-say more generally, that a Turing machine computes a function $f:X\rightarrow
-\Sigma^*$, for some countable set $X$. This is better, but a little
-disappointing. It is a bit like saying if you throw in the ingredients of a
-cake, we promise to deliver you a string of symbols drawn from $\Sigma$, if
-anything. Recall that $\Sigma^*$ is a countably infinite set. This leads to the
-slightly more general characterisation of what it is that a TM computes.
 
 If two Turing machines share a tape alphabet, the output of one Turing machine
 can serve as the input to another.
 
 This can be modelled by the composition of the
 partial functions that the TMs compute.
-
-\begin{definition} If a TM $M_f$ computes a partial function $f_\bot : \Sigma^*
-\rightharpoonup \Sigma^*$, and a TM $M_g$ computes a partial function $g_\bot :
-\Sigma^* \rightharpoonup \Sigma^*$, then the composite TM $M_{g\circ f}$
-computes the composite partial function $\p{g_\bot \circ f_\bot} : \Sigma^*
-\rightharpoonup \Sigma^*$, such that $M_{g_\bot \circ f_\bot}\p{v}\downarrow w$
-for all $v\in S_f$, where $f\p{v}\in S_g$, and $M_{g_\bot \circ
-f_\bot}\p{v}\uparrow$ otherwise. \end{definition}
 
 \begin{theorem} If a TM $M_1$ computes a function $f : \Sigma^* \rightarrow
 \Sigma^*_\bot$, and a TM $M_2$ computes a function $g : \Sigma^* \rightarrow
@@ -384,25 +450,20 @@ U$. \end{lemma}
 T$, and let $h \triangleq \p{f \circ g}$. If $S$ is countable, then by
 \refThm{countable-to-countably-infinite} there is an injective function $g : S
 \rightarrow T$. If $S$ is countably infinite, then by
-\refThm{countably-infinite-to-countably-infinite} there is a bijective function
-$g : S \rightarrow T$, which by \refDef{bijective} is also
+\refThm{countably-infinite-to-countably-infinite}, there is a bijective
+function $g : S \rightarrow T$, which by \refDef{bijective} is also
 injective.\end{proof}
-
-\begin{lemma} \label{lem:tm-codomain} For any partial function $f : S
-\rightharpoonup T$, where $T$ is a countably infinite set, and any countable or
-countably infinite set $U$, there is a partial function $h : S \rightharpoonup
-U$. \end{lemma}
-
-\begin{proof} We show that there is a surjective function $g : T
-\rightharpoonup U$, and let $h \triangleq \p{g \circ f}$. \end{proof}
 
 \begin{theorem} \label{thm:tm-machine-independent} A TM computes a partial
 function $f : S \rightharpoonup T$, for some countable, or countably infinite
-sets $S$ and $T$. \end{theorem}
+sets $S$ and countably infinite set $T$. \end{theorem}
 
-\begin{proof} Let $\Sigma$ be the alphabet of some Turing machine $M$ ...
-Without loss of generality, let $M$ compute the partial function $h : \Sigma^*
-\rightharpoonup \Sigma^*$.  \end{proof} 
+\begin{proof} Without loss of generality, let $M$ compute the partial function
+$h : \Sigma^* \rightharpoonup \Sigma^*$. By
+\refThm{kleene-star-countably-infinite}, $\Sigma^*$ is countably infinite. Let
+$S$ and $T$ be either countable or countably infinite sets. By
+\refLem{tm-domain} and \refLem{tm-codomain}, $M$ computes the function $f : S
+\rightharpoonup T$. \end{proof}
 
 \begin{remark} We have now completely dropped the components of a TM from the
 characterisation of the function that the TM computes, attaining hereby a
@@ -414,7 +475,25 @@ is that we do not know the domain of definition of the partial function $f : S
 \rightharpoonup T$ that a TM computes. As we shall later prove, it is not
 possible in general, to deduce such a domain of definition from a TM.
 
+\begin{lemma} \label{lem:tm-codomain} For any partial function $f : S
+\rightharpoonup T$, where $T$ is a countably infinite set, and any countable or
+countably infinite set $U$, there is a partial function $h : S \rightharpoonup
+U$. \end{lemma}
+
+\begin{proof} We show that there is a surjective \emph{partial} function $g : T
+\rightharpoonup U$, and let $h \triangleq \p{g \circ f}$. If $U$ is countable,
+then by \refThm{countably-infinite-to-countable}, there is a surjective partial
+function $g : T \rightharpoonup U$. If $U$ is countably infinite, then by
+\refThm{countably-infinite-to-countably-infinite}, there is a bijective
+function $g : T \rightarrow U$, which by \refDef{bijective} is also surjective.
+By \refThm{total-has-partial}, we must also have a surjective partial function
+$g : T \rightharpoonup U$.\end{proof}
+
+
 \section{Church-Turing thesis}
+
+Assuming that whatever we may wish to ``compute'' can be characterised by a
+mathematical function, we now state the Church-Turing thesis:
 
 \begin{hypothesis} \textit{(Church-Turing thesis.)}
 
@@ -425,7 +504,7 @@ machine cannot compute.
 
 The Church-Turing thesis does not lend itself to mathematical proof. Rather, it
 is a proposed explanation of the natural phenomena of computation. The
-hypothesis remains to be disproven, and in the mean-while, computational models
+hypothesis remains to be falsified, and in the mean-while, computational models
 more convenient than the Turing machine have emerged, some of them, even useful
 in practice.
 

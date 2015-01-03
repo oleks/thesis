@@ -325,9 +325,9 @@ is \textbf{undefined} for all $s \in S \setminus T$.\end{specification}
 \begin{remark} For some partial functions, the domain of definition, or the
 underlying total function may be unknown. \end{remark}
 
-\begin{corollary} Every (total) function $f : S \rightarrow T$ is also a
-partial function $f_\bot : S \rightharpoonup T$ with the domain of definition
-$S$. \end{corollary}
+\begin{theorem} \label{thm:total-has-partial} For every (total) function $f : S
+\rightarrow T$, there is a partial function $g : S \rightharpoonup T$ with the
+domain of definition $S$.  \end{theorem}
 
 \begin{proof} Follows from \refSpec{partial-function}, as for any $S$, we have
 $S\subseteq S$.  \end{proof}
@@ -459,9 +459,10 @@ function $h : \mathbb{N} \rightarrow T$, which by \refDef{bijective} is also
 injective. Let $f \triangleq \p{h \circ g}$. By \refThm{injective-compose}, $f$
 is also injective. \end{proof}
 
-\begin{theorem} \label{thm:countably-infinite-to-countably-infinite} If $S$ is
-a countably infinite set, then there exists a bijective function $f : S
-\rightarrow T$, where $T$ is a countably infinite set. \end{theorem}
+\begin{theorem} \label{thm:countably-infinite-to-countably-infinite} If $S$ and
+$T$ are a countably infinite sets, then there exists a bijective function $f :
+S \rightarrow T$, or (equivalently) a bijective function $g : T \rightarrow S$.
+\end{theorem}
 
 \begin{proof} By \refDef{countably-infinite}, there is a bijective function $g
 : S \rightarrow \mathbb{N}$, and a bijective function $h : \mathbb{N}

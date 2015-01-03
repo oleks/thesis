@@ -71,15 +71,16 @@
 
 \NewDocumentCommand\fancyRef{mmm}%
 {%
-  \mbox{#1~\ref{#2:#3}/\pageref{#2:#3}}%
+  #1 \mbox{\ref{#2:#3}/\pageref{#2:#3}}%
 }%
 
 \NewDocumentCommand\refSection{m}{\fancyRef{\textsection}{sec}{#1}}
 
 \NewDocumentCommand\refDef{m}{\fancyRef{Definition}{def}{#1}}
+\NewDocumentCommand\refLem{m}{\fancyRef{Lemma}{lem}{#1}}
 \NewDocumentCommand\refSpec{m}{\fancyRef{Specification}{spec}{#1}}
 
-\NewDocumentCommand\refTheorem{m}{\fancyRef{Theorem}{thm}{#1}}
+\NewDocumentCommand\refThm{m}{\fancyRef{Theorem}{thm}{#1}}
 \NewDocumentCommand\refProof{m}{\fancyRef{Proof}{thm}{#1}}
 \NewDocumentCommand\refEqn{m}{\mbox{(\ref{eqn:#1})/\pageref{eqn:#1}}}
 \NewDocumentCommand\refNotion{m}{\fancyRef{Notion}{ntn}{#1}}
@@ -143,8 +144,8 @@
 
 \NewDocumentCommand\ceil{m}{\ensuremath{\mathopen{}\left\lceil{#1}\right\rceil\mathclose{}}}
 \NewDocumentCommand\floor{m}{\ensuremath{\mathopen{}\left\lfloor{#1}\right\rfloor\mathclose{}}}
-\NewDocumentCommand\set{m}{\ensuremath{\mathopen{}\left\{{#1}\right\}\mathclose{}}}
-\NewDocumentCommand\st{m}{\ensuremath{\mathopen{}\left|\ {#1}\right.\mathclose{}}}
+\NewDocumentCommand\set{m}{\ensuremath{\mathopen{}\left\{\mathrel{}{#1}\mathrel{}\right\}\mathclose{}}}
+\NewDocumentCommand\st{m}{\ensuremath{\mathrel{}\mid\mathrel{}{#1}}}
 \NewDocumentCommand\seq{m}{\ensuremath{\mathopen{}\left[{#1}\right]\mathclose{}}}
 \NewDocumentCommand\card{m}{\ensuremath{\mathopen{}\left|{#1}\right|\mathclose{}}}
 \NewDocumentCommand\p{m}{\ensuremath{\mathopen{}\left({#1}\right)\mathclose{}}}
