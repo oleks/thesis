@@ -406,8 +406,8 @@ abstraction that a Turing machine computes a partial function between a pair of
 countably infinite sets.
 
 \begin{theorem} \label{thm:tm-countably-infinite} A TM \textbf{computes} a
-partial function $f : S \rightharpoonup T$, where $S$ and $T$ are countably
-infinite sets.  \end{theorem}
+partial function $f : S \rightharpoonup T$, for some countably infinite sets
+$S$ and $T$.\end{theorem}
 
 \begin{proof} Without loss of generality, let a TM $M$ compute the partial
 function $h : \Sigma^* \rightharpoonup \Sigma^*$. By
@@ -435,42 +435,41 @@ work exclusively with the values \strue{} and \sfalse{}.
 To this end, it is easy to exploit both the partiality of the function that a
 TM computes and our mathematical foundations:
 
-\begin{theorem} \label{thm:tm-total} A TM \textbf{computes} a total
-function $f : S \rightarrow T$, where $S$ and $T$ are countable or countably
-infinite sets. \end{theorem}
+\begin{theorem} \label{thm:tm-total} A TM \textbf{computes} a total function $f
+: S \rightarrow T$, for some countable or countably infinite sets $S$ and $T$.
+\end{theorem}
 
-\begin{proof} Without loss of generality, let a TM $M$ compute the partial
-function $g : \Sigma^* \rightharpoonup \Sigma^*$, with the domain of definition
-$U \subseteq \Sigma^*$, and image $V \subseteq \Sigma ^*$. By
-\refSpec{partial-function}, $M$ computes the (total) function $i : U
-\rightarrow V$.
+\begin{proof} By \refThm{tm-countably-infinite}, a TM computes a partial
+function $g : U \rightharpoonup V$, for some countably infinite sets $U$ and
+$V$. Without loss of generality, let $X \subseteq U$ be the domain of
+definition of $g$, and let $Y \subseteq V$ be the image. By
+\refSpec{partial-function}, the TM computes the (total) function $i : X
+\rightarrow Y$.
 
-By \refThm{kleene-star-countably-infinite}, $\Sigma^*$ is countably infinite.
-By \refThm{subset-of-countably-infinite}, $U$ and $V$ must be countable or
-countably infinite. Without loss of generality, let $\card{U}=\card{S}$ and let
-$\card{V}\leq\card{T}$. By \refDef{same-card}, there is a bijective function $j
-: S \rightarrow U$. By \refDef{leq-card}, there is an injective function $h : V
+By \refThm{subset-of-countably-infinite}, $X$ and $Y$ must be countable or
+countably infinite. Without loss of generality, let $\card{X}=\card{S}$ and let
+$\card{Y}\leq\card{T}$. By \refDef{same-card}, there is a bijective function $j
+: S \rightarrow X$. By \refDef{leq-card}, there is an injective function $h : Y
 \rightarrow T$. Let $f \triangleq \p{h \circ \p{i \circ j}}$.\end{proof}
 
 The pitfall of \refThm{tm-total} is the (sometimes) unreasonable requirement
-that we know the total function of the partial function that a TM computes. It
-is a well known uncomputable problem, to pick just those $s \in \Sigma^*$ for
-which an arbitrary TM $M$ halts with some output $t \in \Sigma^*$.
+that we know the total function of the partial function that a TM computes.
+It is a well known uncomputable problem, to pick just those $s \in \Sigma^*$
+for which an arbitrary TM $M$ halts with some output $t \in \Sigma^*$.
 
 % and hereby lift the design of programming languages off the ground.
 
 It is the subject matter of much Computer Science, as well as the subsequent
 chapters, to limit eloquent programmers to talk just in terms of the
-composition of particular partial functions, for which the domain of definition
-and image (among other properties) are either known beforehand, or can be
-determined by finite means. 
+composition of particular (total) functions, which we know are computable.
 
 This motion, has so far, been adjourned. Most general purpose computational
 models today relax the termination requirement, and simply permit their
 programmers to talk in terms of the composition of particular partial functions
 of the form $f : S \rightharpoonup T$, for some countable or countably infinite
-sets $S$ and $T$. That is, $f$ takes a value of some type $S$ as input, and
+sets $S$ and $T$. Informally, $f$ takes a value of some type $S$ as input, and
 yields a value of some type $T$ as output, \emph{if} $f$ ever yields a value.
+This demands a relaxation of what it is a Turing machine computes.
 
 \begin{theorem} \label{thm:tm-partial} A TM \textbf{computes} a partial
 function $f : S \rightharpoonup T$, for some countable or countably infinite
@@ -485,19 +484,20 @@ $g=\p{h \circ \p{i \circ j}}$. We have $g : S \rightarrow T$. By
 \refThm{total-has-partial}, there is a partial function $f : S \rightharpoonup
 T$.\end{proof}
 
-\begin{remark} It would perhaps seem that we have retained the requirement that
-we know the total function of the partial function that a TM computes. It the
-last step in the proof that relaxes this requirement. \end{remark}
-
 We state the following definitions for completeness:
 
 \begin{definition} A partial function $f : S \rightharpoonup T$ is
-\textbf{recursively enumerable} if some TM computes it. \end{definition}
+\textbf{recursively enumerable} if there exists a TM that computes it.
+\end{definition}
 
 \begin{definition} A (total) function $f : S \rightarrow T$ is
-\textbf{recursive} if some TM computes it. \end{definition}
+\textbf{recursive} if there exists a TM that computes it. \end{definition}
 
-Inevitably, for both recursive and recursively enumerable functions, the domain
-and codomain must be either countable or countably infinite sets.
+Notably, we make no statement about the domain and codomain of a recursively
+enumerable or recursive function. These classical definitions.
+\refThm{tm-total} and \refThm{tm-partial} seek instead to give a
+machine-independent characterisation of what it is a Turing machine computes,
+permitting us to lift the machine-independent characterisations of other
+computational models off the ground.
 
-\section{Some uncomputable problems}
+%\section{Some uncomputable problems}
