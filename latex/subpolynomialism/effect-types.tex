@@ -1,0 +1,41 @@
+\chapter{Effect Types}
+
+The idea of effect types is to include in the type system not just information
+about the input/output relationship of computations, but also the effects of
+computations.
+
+In the functional programming community, the notion ``side-effects'' is often
+neglected and outright feared. It is hopefully non-negotiable however, that
+computations as a ``side-effect'' consume time and space. We thus find it only
+natural to employ the notion of effect types to decorate our type system with
+information about the complexities of our computations.
+
+In support of this motion, we may quote the seminal article by Gifford and
+Lucassen, entitled ``Integrating Functional and Imperative Programming'',
+regarding the intended purpose of effect types, in general:
+
+\begin{quotation}
+
+Every expression has an effect class; just as the \emph{type} of an expression
+describes the \emph{value} computed by the expression, the \emph{effect class}
+of an expression describes \emph{how} that value is computed \ldots
+
+% Examples of effect classes include ``OBSERVER'' and ``FUNCTION'': an
+% expression that is an OBSERVER can observe side-effects, but it can not cause
+% them, while a FUNCTION can neither cause nor observe side-effects.
+
+The effect class of an expression determines the sublanguage to which the
+expression must be confined, which in turn determines which language facilities
+the expression may use and what subroutines it may call. At the same time, the
+side-effect specification of a subroutine determines which sublanguages may
+call it.
+
+\begin{flushright}
+
+\footnotesize\sffamily
+
+--- \cite{gifford-lucassen-1986}
+
+\end{flushright}
+
+\end{quotation}

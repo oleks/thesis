@@ -1,0 +1,55 @@
+\part{Subpolynomialism}
+
+We turn now to the consideration of subpolynomial bounds. We wish for a
+baseline system which captures polynomial time, and admits subsystems with
+explicitly stated subpolynomial bounds.
+
+For lack of a better word, we draw inspiration from the term ``colonialism''.
+
+\begin{quotation}
+
+Colonialism is a practice of domination, which involves the subjugation of one
+people to another \ldots The term colony comes from the Latin word
+\emph{colonus}, meaning farmer. This root reminds us that the practice of
+colonialism usually involved the transfer of population to a new territory,
+where the arrivals lived as permanent settlers while maintaining political
+allegiance to their country of origin.
+
+\begin{flushright}
+
+\footnotesize\sffamily
+
+\upshape
+
+--- The Stanford Encyclopedia of Philosophy \itshape (Spring 2014 Edition)
+
+\end{flushright}
+
+\end{quotation}
+
+``Subpolynomailism'' is similar in this regard, as this too involves the
+``transfer of population (programmers) to a new territory'', where they can
+only write programs within a given subpolynomial bound, ``maintaining political
+allegiance to their country of origin'', in the sense that they can return to
+the baseline system, or move to another subsystem, for other lines of work.
+
+We consider two approaches to subpolynomialism. The approaches differ in a
+fundamental way:
+
+\begin{enumerate}
+
+\item The first takes a substructural approach, where we review earlier
+attempts to integrate bounds into the logic of the type system itself. In
+particular, we briefly review various bounded, light, and soft linear and
+affine logics.
+
+\item The second takes a substructural approach only to guarantee that a
+baseline system is bounded to PTIME. Subpolynomial bounds are achieved for
+subsystems by sprinkling effect types on top of this baseline system. To our
+knowledge, this is a novel approach.
+
+\end{enumerate}
+
+\input{subpolynomialism/substructural-bounds}
+
+\input{subpolynomialism/effect-types}
