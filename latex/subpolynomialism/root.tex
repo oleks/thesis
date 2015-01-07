@@ -4,20 +4,20 @@ We turn now to the consideration of subpolynomial bounds. We wish for a
 baseline system which captures polynomial time, and admits subsystems with
 explicitly stated subpolynomial bounds.
 
-For lack of a better word, we draw inspiration from the term ``colonialism''.
+For lack of a better word, we draw inspiration from the term ``colonialism'':
 
 \begin{quotation}
 
+\footnotesize\sffamily\itshape
+
 Colonialism is a practice of domination, which involves the subjugation of one
-people to another \ldots The term colony comes from the Latin word
+people to another [\ldots] The term colony comes from the Latin word
 \emph{colonus}, meaning farmer. This root reminds us that the practice of
 colonialism usually involved the transfer of population to a new territory,
 where the arrivals lived as permanent settlers while maintaining political
 allegiance to their country of origin.
 
 \begin{flushright}
-
-\footnotesize\sffamily
 
 \upshape
 
@@ -28,10 +28,11 @@ allegiance to their country of origin.
 \end{quotation}
 
 ``Subpolynomailism'' is similar in this regard, as this too involves the
-``transfer of population (programmers) to a new territory'', where they can
-only write programs within a given subpolynomial bound, ``maintaining political
-allegiance to their country of origin'', in the sense that they can return to
-the baseline system, or move to another subsystem, for other lines of work.
+``transfer of population'' (programmers) ``to a new territory'', where their
+programs can have at most a particular subpolynomial complexity, ``maintaining
+political allegiance to their country of origin'', in the sense that they can
+return to the baseline system, or move to another subsystem, for other lines of
+work.
 
 We consider two approaches to subpolynomialism. The approaches differ in a
 fundamental way:
@@ -40,7 +41,7 @@ fundamental way:
 
 \item The first takes a substructural approach, where we review earlier
 attempts to integrate bounds into the logic of the type system itself. In
-particular, we briefly review various bounded, light, and soft linear and
+particular, we briefly review various bounded, weak, light, and soft linear and
 affine logics.
 
 \item The second takes a substructural approach only to guarantee that a
@@ -49,6 +50,45 @@ subsystems by sprinkling effect types on top of this baseline system. To our
 knowledge, this is a novel approach.
 
 \end{enumerate}
+
+We compare these approaches according to two formal, and one informal criteria.
+We define these criteria as follows:
+
+
+Although the word ``extensional'' suggests perhaps a dependence upon the base
+system, extensional soundness can be proven independent of the base system.
+For instance, we may prove extensional soundness by simulating $\mathcal{S_C}$
+on a Turing machine with resources bounded to $\mathcal{C}$.
+
+\begin{definition} A subsystem $\mathcal{S_C}$, for some complexity class
+$\mathcal{C}$, is \textbf{intensionally complete} if all the programs in the
+base system which lie in $\mathcal{C}$ are in $\mathcal{S_C}$. \end{definition}
+
+% why is intensional completeness often not recursively enumerable?
+
+% we will not consider whether a system can embed other existing system
+% characterising the same classes, although this does increase confidence in
+% their expressiveness, perhaps this _is_ worth doing for the review of
+% polytime characterisations.
+
+% we do not consider type inference, not least because type inference will
+% oftentimes be undecidable when complexities are involved in the types.
+
+Following the criticisms made by various
+authors\cite{hofmann-2000,dal-lago-hofmann-2010}, it can be said that when
+bounds appear stated explicitly, then we are no longer dealing with truly
+\emph{implicit} computational complexity.
+
+We ignore this aspect partly out of practical motivations for this thesis, and
+partly as a simplifying assumption. We seek a programming language where bounds
+are initially stated explicitly for user-defined functions, and are known á
+priori for built-in functions. Having this in order, we conjecture that it
+could be a worth-while venture to consider a system of \emph{type inference}
+for, if nothing else, the lower order subpolynomial complexity classes. Here,
+we can employ the wealth of existing literature on the approximation of the
+complexity classes for user-defined programs. We conjecture, that the guarantee
+that all programs terminate, as otherwise there would be programs outside
+PTIME, can lift many hurdles of the inference of complexity classes.
 
 \input{subpolynomialism/substructural-bounds}
 

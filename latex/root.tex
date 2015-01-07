@@ -98,6 +98,14 @@
 \def\goleft{\symb{L}}
 \def\goright{\symb{R}}
 
+\DeclareDocumentCommand{\bib}{mmm}{%
+  \bibitem[#1]{#2}\hfill\newline\vspace{-0.18in}
+
+  #3
+
+  \backrefprint
+}
+
 \begin{document}
 
 %\maketitle
