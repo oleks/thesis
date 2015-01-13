@@ -10,6 +10,9 @@
 
 \usepackage{enumitem} % fixed-width description items
 
+%\usepackage[symbol]{footmisc} % use symbols for footnote marks
+\renewcommand{\thefootnote}{(\arabic{footnote})}
+
 \backrefparscanfalse % don't automatically add backrefs to references
 
 % custom layout for backrefs in references
@@ -40,10 +43,13 @@
 \newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}{Corollary}
+\newtheorem{conjecture}{Conjecture}
 \newtheorem{hypothesis}{Hypothesis}
 
 \numberwithin{textaxiom}{section}
 \numberwithin{theorem}{section}
+\numberwithin{corollary}{section}
+\numberwithin{conjecture}{section}
 \numberwithin{lemma}{section}
 \numberwithin{hypothesis}{section}
 
@@ -106,6 +112,12 @@
   \backrefprint
 }
 
+\DeclareDocumentCommand{\bibremark}{m}{%
+  \vspace{0.05in}\\
+  \emph{#1}
+}
+
+
 \begin{document}
 
 %\maketitle
@@ -117,7 +129,13 @@
 
 \input{background/root}
 
-\input{polytime/root}
+\pagebreak
+
+START READING HERE
+
+\pagebreak
+
+\input{feasibility/root}
 
 \input{subpolynomialism/root}
 

@@ -1,0 +1,188 @@
+\chapter{Implicit Computational Complexity} \label{sec:icc}
+
+In \refSec{computational-complexity}, we characterised a range of complexity
+classes in terms of the costs incurred on a particular machine model. This
+reflects perhaps a real-world motivation for the theory of computational
+complexity --- some interesting programs actually get executed by machines.
+Such characterisations have proven theoretically well-founded as well, as
+certain complexity classes appear nearly equivalent, regardless of the choice
+of machine model, e.g. PTIME.
+
+The field of \emph{Implicit Computational Complexity} (ICC) seeks instead to
+give ``machine-independent'' characterisations of these complexity classes.
+The motivation for such characterisations is twofold\cite{baillot-et-al-2006}:
+
+\begin{enumerate}
+
+\item to provide more ``natural'' (also called ``foundational'' and ``resource
+free'' in \cite{bellantoni-phd-1992}) characterisations of complexity classes,
+and
+
+% At its outset, researchers in computational complexity were concerned with
+% finding ``machine-independent'' measures of functional
+% complexity\cite{blum-1967}. At the time, it was unclear whether the choice of
+% machine model could wither away results in computational complexity, that is,
+% until e.g. the Hartmanis-Baker conjecture
+% (\refCjt{hartmanis-baker})\cite{young-1988}.
+%
+% It's more that the results seek to hold regardless of choice of machine
+% model.
+
+\item to design systems suitable for static verification of program complexity.
+ 
+% it can serve as a foundation for the design of programming languages where
+% all programs are guaranteed by construction to lie within the characterised
+% complexity class; this is in contrast to the common practice of working with
+% algorithms, where the complexity of an algorithm is analyzed after it is
+% written.
+
+\end{enumerate}
+
+There is a deep-rooted interest in ``machine-independence'' in Computational
+Complexity. The general independence of certain important complexity classes
+from the choice of machine model, e.g. PTIME as by the Hartmanis-Baker
+conjecture, has helped to establish Computational Complexity as a field. This
+strive for ``machine-independence'' is illustrated by several seminal works in
+Computational Complexity, e.g. \cite{cobham-1965, blum-1967}.
+
+% The other motivation is that such characterisations are perhaps more natural
+% and more general than those based on a particular machine model.
+
+% considering language restrictions or logical/computational principles entailing
+% complexity properties
+
+The second motivation is perhaps more recent. In the context reliable computer
+systems, it is sometimes important to certify not just that a computation has
+the intended input/output effect, but also that it does not exceed the
+allocated time or space resources. Implicit computational complexity works in
+this direction by seeking to characterise the complexity classes in a manner
+general enough to ``capture'' commonly used algorithms.
+
+We can say that in classical, i.e. explicit, computational complexity, we look
+for the boundaries where the increase in time or space available for a
+computation leads to a considerably larger class of problems that we can solve.
+In implicit computational complexity, we instead look for the boundaries where
+the change in program syntax or semantics necessarily leads to the same.
+
+In \refSec{computability}, where we introduced the notion of a Turing machine,
+we also gave a ``machine-independent'' characterisation of what it is that a
+Turing machine computes. This was a ``mathematical'' characterisation. With
+such a ``machine-avoidant'' foundation as classical mathematics, such
+characterisations are of little use, but it gave a motivating example. ICC is
+instead founded in either:
+
+\begin{itemize}
+
+\item recursion theory\cite{cobham-1965, clote-1990,
+bellantoni-cook-1992, leivant-1995, ishihara-1999, kristiansen-2005,
+marion-2009},
+
+\item logic\cite{fagin-1974,immerman},
+
+\item finite model theory\cite{?},
+
+\item proof theory\cite{girard-scedorov-scott-1992, leivant-1994, girard-1998,
+asperti-roversi-2002, lafont-2004, dal-lago-hofmann-2010},
+
+\item term rewriting
+systems\cite{beckmann-weiermann-1996, bonfante-et-al-1999, avanzini-et-al-2012,
+de-carvalho-simonsen-2014},
+
+\item programming languages\cite{voda-1994, jones-1999,
+kristiansen-niggl-2004, kristiansen-voda-2005, niggl-wunderlich-2006},
+
+\item type systems\cite{hofmann-2000b, crary-weirich-2000,
+bellantoni-et-al-2000, hofmann-2003}
+
+\hspace{-0.12in}\vdots
+
+\end{itemize}
+
+This diversity in foundations suggests that it is worthwhile to review and
+evaluate  at least some of these characterisations. The wealth of citations
+suggests that it is beyond the scope of this thesis to cover all of them.
+Instead, we will be guided by the surveys of \cite{clote-1999},
+\cite{hofmann-2000a}, and \cite{dal-lago-2012}, drawing on insights from
+\cite{jones-1999}, \cite{jones-2001}, \cite{niggl-2005},
+\cite{niggl-wunderlich-2006}, and \cite{jones-kristiansen-2009}.
+
+In general, we will evaluate a characterisation of a complexity class in terms
+of two formal, and one informal parameter.
+ 
+\begin{definition} \label{def:icc-soundness} A characterisation $S$, of a
+complexity class $C$, is \textbf{extensionally sound} if all functions
+computable in $S$ lie in the complexity class $C$.\end{definition} 
+
+For instance, we could prove that a characterisation $S$, of a complexity class
+$C$, is extensionally sound, by exhibiting a method of simulating a Turing
+machine with resources bounded to $C$ in $S$.
+
+\begin{definition} \label{def:icc-completeness} A characterisation $S$, of a
+complexity class $C$, is \textbf{extensionally complete} if all functions in
+the complexity class $C$ are computable in $S$.\end{definition}
+
+For instance, we could prove that a characterisation $S$, of a complexity class
+$C$, is extensionally complete, by exhibiting a method of simulating $S$ on a
+Turing machine with resources bounded to $C$.
+
+\begin{definition} \label{def:icc-capture} A characterisation $S$, of a
+complexity class $C$, \textbf{captures} the complexity class $C$, if $S$ is
+both extensionally sound and complete.  \end{definition}
+
+\refDef{icc-soundness} and \refDef{icc-completeness} appeal to the computation
+of (mathematical) functions rather than the expression of algorithms. Of
+course, there are (uncountably) infinitely many algorithms computing the same
+function. The vast majority of them may be rejected by a system $S$ in virtue
+of its characterisation of $C$. Perhaps so much so, that the eloquent
+programmer may find $S$ to be rather ineloquent.
+
+% It is commonplace to seek both \textbf{efficient} and
+% \textbf{elegant} algorithms. Let an \textbf{eloquent} algorithm be one which is
+% both elegant and efficient, at least from the point of view of some community
+% of programmers.
+
+This leads way for the last, informal parameter which we'll use for comparing
+ICC characterisations:
+
+% Programming paradigms
+
+\begin{notion} A system $S$ is \textbf{intensionally expressive} if it permits
+eloquent solutions to some set of practical programming problems.\end{notion}
+
+% ``Eloquence'' is both a matter aesthetics, and a matter of raw efficiency. It may be 
+
+A program that is easy to understand often fails to be efficient, and an
+efficient program often fails to be easy to understand.
+
+\begin{notion} A system $S$ is \textbf{relatively expressive} if there is no
+system $T$ which captures the same complexity class, but permits the expression
+of more efficient algorithms. (Due to \cite{jones-2001}.) \end{notion}
+
+It is not uncommon to seek a baseline characterisation of a complexity class
+first, and then later to seek to increase its ``intensionality'', which in
+itself may lead to new characterisations. This is indeed the motivation in e.g.
+\cite{hofmann-1999, niggl-2005, marion-pechoux-2008, jones-kristiansen-2009}.
+
+% not really aka, but in the spirit of the previous chapter, Implicit
+% Complexity, and hence Implicit Complexity Theory
+
+% Also, better suited as an introduction as it doesn't really say anything
+% about the choice of polynomial time from the get go. That's more a
+% coincidence, the following definitions will hold regardless. Perhaps it is
+% worth it calling this a Part I: Introduction and Background
+
+% Fragment of a logic means that we are restricted to a subset of the syntax,
+% but retain the same semantics. If we choose the combination of words -
+% subsystem of system, we are perhaps a little more free, but in either case,
+% we probably have to further specify what we keep and what we take out.
+
+% for the purposes of this thesis, we may regard logical systems equivalent to
+% programming languages - draw inspiration from Types of Crash Prevention - it
+% has a nice, human readable introduction to the whole thing.
+
+% A system that is both intensionally sound and complete is often not
+% recursively enumerable think, EQ(TM) which is neither Turing-recognisable,
+% nor co-Turing-recognisable.
+
+% Thus in practice, we strive to improve the intensional expressivitiy by
+% capturing important classes of examples and patterns.

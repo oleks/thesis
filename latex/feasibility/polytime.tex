@@ -1,10 +1,173 @@
-\chapter{Polytime}
+\chapter{PTIME}
 
-We cannot hope to review all these results in the context of this document
-alone. Instead, we summarise and extend the reviews given in \cite{hofman-2000}
-and ...
+\begin{quotation}
 
-Better title: Implicit Computational Complexity
+\footnotesize\sffamily\itshape
+
+\begin{flushright}
+
+there is a relationship between the absence and presence of successor-like
+functions and the computational complexity of programs
+
+\smallbreak
+
+\upshape
+
+--- \cite{jones-kristiansen-2009}
+
+\end{flushright}
+
+\end{quotation}
+
+The fundamental insight highlighted by the above quotation underpins much work
+done in \cite{jones-1999, jones-2001, kristiansen-voda-2005, hofmann-2003,
+kristiansen-2008}, and of course, \cite{jones-kristiansen-2009}, among others.
+We draw on this insight in a fundamental and perhaps extreme way, by taking the
+notion of ``successor-like function'' to roughly mean ``enumerator'', and
+consider the presence and absence of both particular successor-like \emph{and}
+predecessor-like functions.
+
+Implicit characterizations of complexity classes, e.g. PTIME, often start out
+by considering first-order programs on natural numbers. That is, the
+computation of (mathematical) functions of type $\mathbb{N} \rightarrow
+\mathbb{N}$. (For a counterexample, see \cite{hofmann-2003}.) 
+
+In lieu of \refThm{tm-total}, such results apply even if we replace
+$\mathbb{N}$ (on either side) by any countable or countably infinite set. That
+is, the results still hold even if we turn to the computation of (mathematical)
+functions of type $A \rightarrow B$ for some countable or countably infinite
+sets $A$ and $B$.
+
+Crucially, \refThm{tm-total} relies on \emph{mathematical} functions, not
+real-world transformations. Realistically, all we get is this: assuming that we
+have a representation of a value of type $A$ as a natural number, we can
+compute a natural number representation of the corresponding value of type $B$,
+within the characterised bounds.
+
+This outset of ``first-order programs on natural numbers'' ignores the
+real-life hurdle of dealing with \emph{data structures} rather than natural
+numbers. So such an exposition is arguably impractical, or more dramatically,
+ignores certain \emph{complexities} involved in dealing with data.
+
+Instead, we formalise a notion of ``successor'' and ``predecessor'', and
+present seminal results in the characterisation of PTIME in terms of this
+general framework. Informally, a successor or predecessor is any operation that
+may change the size of any value in the program (including time?). In practice,
+essentially any conceivable operation, except perhaps stalling.
+
+\section{Successors and Predecessors}
+
+% To this end we take a leap of faith into the realm of generalized abstract nonsense:
+
+One popular category-theoretic view of programming is to identify the realm of
+programming with some fixed category $\mathcal{C}$. In the context of
+``successor'' and ``predecessor'' operations, it is perhaps worthwhile to
+identify the realm of programming with a slightly more restrictive category:
+
+\begin{definition} A \textbf{generalized Reedy structure}
+\cite{berger-moerdijk-2011} on a \emph{small} category $\mathcal{R}$ consists
+of two \emph{wide} subcategories $\mathcal{R}^+$ and
+$\mathcal{R}^-$,\footnote{That is, both $Obj\p{\mathcal{R}}$ and
+$Mor\p{\mathcal{R}}$ form a set, and $Obj\p{\mathcal{R}} = Obj\p{\mathcal{R}^+}
+= Obj\p{\mathcal{R}^-}$.} and a degree function $d : Obj\p{\mathcal{R}}
+\rightarrow \mathbb{N}$, satisfying the follow axioms:
+
+\begin{enumerate}
+
+\item non-invertible morphisms in $\mathcal{R}^+$ increase degree;
+
+\item non-invertible morphisms in $\mathcal{R}^-$ decrease degree;
+
+\item isomorphisms in $\mathcal{R}$ preserve degree;
+
+\item $Iso\p{\mathcal{R}} = Mor\p{R^+} \cap Mor\p{R^-}$;
+
+\item every $f \in Mor\p{\mathcal{R}}$ factors as $f = h \circ g$ for some $h
+\in Mor\p{\mathcal{R}^-}$ and $g \in Mor\p{\mathcal{R}^+}$, uniquely up to
+isomorphism;
+
+\item if $h \circ i = h$ for some $i \in Iso\p{\mathcal{R}}$ and $h \in
+Mor\p{\mathcal{R}^-}$, then $i$ is an identity.
+
+\end{enumerate}
+
+The structure is \textbf{dualizable} if the following axiom also holds:
+
+\begin{enumerate}
+\setcounter{enumi}{6}
+
+\item if $i \circ g = g$ for some $i \in Iso\p{\mathcal{R}}$ and $g \in
+Mor\p{\mathcal{R}^+}$, then $i$ is an identity.
+
+\end{enumerate}
+
+A \textbf{(dualizable) generalized Reedy category} is a small category equipped
+with a (dualizable) generalized Reedy structure. 
+
+\end{definition}
+
+Generalized Reedy categories are interesting as they can form various ``shape
+categories'', such as cycle and tree categories.
+
+\begin{definition} A \textbf{successor} is a morphism which increases degree.
+\end{definition}
+
+\begin{definition} A \textbf{predecessor} is a morphism which decreases degree.
+\end{definition} 
+
+% Perhaps a neat way of categorise the wealth of data structures 
+
+% We take a programming languages approach, and in the process relax a couple
+% terms from modern programming nomenclature.
+
+% \begin{definition} A \textbf{program} is a countable set of functions.
+% \end{definition}
+
+% \begin{definition} For a given program, let the \textbf{$A$-valued functions}
+% be all the functions in $P$ with codomain $A$. \end{definition}
+
+% \begin{definition} A \textbf{data type} $A$ is given by a subset $S$ of the
+% $A$-valued functions $T$, such that all functions in $T \setminus S$ return
+% values constructed using functions in $S$. The functions in $S$ are called
+% \textbf{value constructors}. \end{definition}
+
+% \begin{remark} Typically, the value constructors are defined in a language
+% using designated syntax. \end{remark}
+
+% \begin{remark} For the functional programmer this is a degeneration of the
+% common term ``value constructor''. For her, a data type is defined by a
+% finite set of well-placed value constructors, and can only be constructed
+% using these value constructors. Value constructors are $O(1)$-time and
+% $O(1)$-space operations, each having an inverse ``value deconstructor'' for
+% use in e.g.  pattern matching. For the imperative programmer, this is a
+% degeneration of the common term ``constructor''. Here we lend the term from
+% C++, where a type can have multiple constructors taking an arbitrarily long
+% time and space, and having at least one common (but perhaps multiple)
+% inverses. \end{remark}
+
+% Typically a value constructor has an inverse: a value deconstructor.
+
+% In the presence of successors without pairing predecessors, we must do away
+% with such notions.
+
+% \begin{notation} Let $P_\mathbf{D}$ denote the data types induced by the
+% functions of program $P$, that is, the set of all codomains in $P$.
+% \end{notation}
+
+% \begin{definition} A value constructor is a \textbf{successor} \end{definition} 
+
+% Cobham: Let a function $f$ be defined by a range of base case clauses, and a
+% range of deconstructor clauses. The recursive clauses may use various
+% predecessor operations.
+
+% Size is always given relative to a particular predecessor operation.
+
+% Consider the predecessor (among those used in the function) that decreases
+% the value by the least amount. Assume that the predecessors are always
+% applicable to a given value, and that by iterated use of the predecessor, we
+% reach a base case. A function is defined by bounded primitive recursion, if
+% the number of applications of this most-basic predecessor is no more than as
+% given by the given bound.
 
 % Also, better suited as an introduction as it doesn't really say anything
 % about the choice of polynomial time from the get go. That's more a
@@ -20,36 +183,42 @@ Better title: Implicit Computational Complexity
 % programming languages - draw inspiration from Types of Crash Prevention - it
 % has a nice, human readable introduction to the whole thing.
 
-The correspondence between an ICC system and a complexity class is extensional,
-i.e. the class of function (or problems) representable in the system equals the
-complexity class.
+% The correspondence between an ICC system and a complexity class is
+% extensional, i.e. the class of function (or problems) representable in the
+% system equals the complexity class.
 
 % by this point we should have more precisely defined the notions of function
 % and problem.
 
-The systems that we will consider here will be subsystems of a larger base
-system, in which other functions, besides those in the complexity class of the
-system can be represented.
+% The systems that we will consider here will be subsystems of a larger base
+% system, in which other functions, besides those in the complexity class of
+% the system can be represented.
 
-\begin{definition} \textit{Intensional soundness}
+% \begin{definition} \textit{Intensional soundness}
 
-Any program representable in the ICC system, is within the given complexity
-class. Proven by showing equivalence of the class of problems to a complexity
-class.
+% Any program representable in the ICC system, is within the given complexity
+% class. Proven by showing equivalence of the class of problems to a complexity
+% class.
 
-\end{definition}
+% \end{definition}
 
-\begin{definition} \textit{Intensional completeness}
+% \begin{definition} \textit{Intensional completeness}
 
-All functions in the complexity class are representable in the ICC system.
+% All functions in the complexity class are representable in the ICC system.
 
-\end{definition}
+% \end{definition}
 
-\begin{definition} \textit{Extensional soundness}
+% \begin{definition} \textit{Extensional soundness}
 
-All functions in the complexity class are representable in the base system.
+% All functions in the complexity class are representable in the base system.
 
-\end{definition}
+% \end{definition}
+
+\pagebreak
+
+STOP READING HERE
+
+\pagebreak
 
 \section{Natural numbers}
 
@@ -466,9 +635,74 @@ We could try to mitigate for this, but this would be getting ahead of
 ourselves. Bounded primitive recursion bounds the primitive recursion in a more
 general way, by bounding $f$ itself.
 
+recursion on notation can simulate primitive recursion in the absence of any
+size bounds\cite{bellantoni-phd-1992}.
+
+From this perspective we can fit Cobham's characterization into the pattern of
+most (if not all) definitions of complexity classes: one defines a general
+model of computation and then cuts oôhe computation when certain resource
+bounds are exceeded.
+
+
 \section{Bounded primitive recursion}
 
-\section{Safe recursion}
+In 1964 Cobham [C] gave the rst recursion-theoretic characterization of
+polynomial time, using a recursion whose depth was the binary length of the
+number being re- cursed on, and using explicit polynomial bounds to control the
+size of the output.\cite{bellantoni-phd-1992}.
+
+\section{Predicative recursion}
+
+\begin{quotation}
+
+\footnotesize\sffamily\itshape
+
+\begin{flushright}
+
+What's in a name? that which we call a rose \\
+By any other name would smell as sweet;
+
+\smallbreak
+
+\upshape
+
+--- WILLIAM SHAKESPEARE, \emph{Romeo and Juliet}, Act II, Scene II
+
+\end{flushright}
+
+\end{quotation}
+
+That which we call ``predicative'' recursion is also referred to as
+``tiered''\cite{leivant-1990}, ``stratified''\cite{leivant-1993}, or
+``ramified''\cite{leivant-1995} recursion\footnote{This conflation of terms is
+prevalent in mathematics: it is not just Leivant who being confused.}. Our
+motivation is due to \cite{hofmann-2000a}, categorising in one fell swoop, both
+the seminal works \cite{bellantoni-cook-1992} and \cite{leivant-1995}, who was
+in turn motivated by \cite{bellantoni-phd-1992}.
+
+The use of term ``predicative'' itself is due to \cite{russel-1907}, who
+suggested ``predicative'' set-theory in order to deal with the paradoxes
+inherent in na\"ive set theory, calling the ways of na\"ive set theory
+``non-predicative'', or as it shall later be called, ``impredicative''.
+
+This is achieved by ``segregating the variables''.
+
+
+\subsection{Safe recursion}
 
 Safe recursion was independently introduced in \cite{simmons-1988},
 \cite{leivant-1990}, and \cite{bellantoni-cook-1992}.
+
+\subsection{Ramified recursion}
+
+Originally due to \cite{leivant-1995}. 
+
+Leivant’s ramified recurrence is one of the earliest examples of an implicit
+characterization of the polytime functions as a subalgebra of the primitive
+recursive functions. Leivant’s result, however, is originally stated and proved
+only for word algebras, i.e. free algebras whose constructors take at most one
+argument. This paper presents an extension of these results to ramified
+functions on any free algebras, provided the underlying terms are represented
+as graphs rather than trees, so that sharing of identical subterms can be
+exploited. \cite{dal-lago-et-al-2010}
+
