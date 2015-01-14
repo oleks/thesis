@@ -1,3 +1,17 @@
+Iterative literary formalisation.
+
+Start informally, and gradually increase the level of formalism until
+eventually the system becomes mutually recursively defined.
+
+No definition is really complete.
+
+To make a mutually recursive definition, you do not let one definition be
+complete without the other and vice versa. However, this leaves the reader in a
+cycle which the reader cannot break, unless there are multiple exit points from
+a definition.
+
+---
+
 Descriptive complexity
 
 Sublinear complexity classess.

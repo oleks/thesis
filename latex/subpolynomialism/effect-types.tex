@@ -5,10 +5,10 @@ about the input/output relationship of computations, but also the effects of
 computations.
 
 In the functional programming community, the notion ``side-effects'' is often
-neglected and outright feared. It is hopefully non-negotiable however, that
-computations as a ``side-effect'' consume time and space. We thus find it only
-natural to employ the notion of effect types to decorate our type system with
-information about the complexities of our computations.
+neglected and outright feared. It is hopefully non-negligible however, that
+computations as a ``side-effect'' consume time and recycle space. We thus find
+it only natural to employ the notion of effect types to decorate our type
+system with information about the complexities of our computations.
 
 In support of this motion, we may quote the seminal article by Gifford and
 Lucassen, entitled ``Integrating Functional and Imperative Programming'',
@@ -41,7 +41,9 @@ call it.
 The use of effect types to denote the time or space complexity of a computation
 is not new, aka. cost systems: a mix of time systems and sized types, is not
 new. It has previously been used in connection with \emph{estimating} such
-complexities\cite{dornic-et-al-1992,dornic-1993,reistad-gifford-1994}. Their
-use for space complexity analysis is however somewhat
-disputed\cite{crary-weirich-2000}. The use in connection with ICC is (to our
-knowledge) new.
+complexities\cite{dornic-et-al-1992,dornic-1993,reistad-gifford-1994}. The use
+of effect types for space complexity analysis is however somewhat disputed: it
+is discouraged in \cite{crary-weirich-2000}, but employed to practical merit in
+\cite{hofmann-jost-2003}. The possibility of using traditional effect types in
+connection with ICC was also pointed out as a possible future line of work in
+\cite{hofmann-2003}.
