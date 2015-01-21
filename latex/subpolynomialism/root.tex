@@ -76,10 +76,10 @@ base system which lie in $\mathcal{C}$ are in $\mathcal{S_C}$. \end{definition}
 % we do not consider type inference, not least because type inference will
 % oftentimes be undecidable when complexities are involved in the types.
 
-Following the criticisms made by various
-authors\cite{hofmann-2000,dal-lago-hofmann-2010}, it can be said that when
-bounds appear stated explicitly, then we are no longer dealing with truly
-\emph{implicit} computational complexity.
+Following the criticisms made by various authors\cite{bellantoni-cook-1992,
+hofmann-2000, dal-lago-hofmann-2010}, it can be said that when bounds appear
+stated explicitly, then we are no longer dealing with truly \emph{implicit}
+computational complexity.
 
 We ignore this aspect partly out of practical motivations for this thesis, and
 partly as a simplifying assumption. We seek a programming language where bounds
@@ -91,6 +91,8 @@ we can employ the wealth of existing literature on the approximation of the
 complexity classes for user-defined programs. We conjecture, that the guarantee
 that all programs terminate, as otherwise there would be programs outside
 PTIME, can lift many hurdles of the inference of complexity classes.
+
+Although our ways involve explicit bounds, none include ``machine models'' as such.
 
 \input{subpolynomialism/substructural-bounds}
 

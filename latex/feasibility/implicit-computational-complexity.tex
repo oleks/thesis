@@ -77,12 +77,13 @@ instead founded in either:
 bellantoni-cook-1992, leivant-1995, ishihara-1999, kristiansen-2005,
 marion-2009},
 
-\item logic\cite{fagin-1974,immerman},
-
-\item finite model theory\cite{?},
+\item finite model theory\cite{fagin-1974, vardi-1982, immerman-1982,
+immerman-1986, immerman-1987},
 
 \item proof theory\cite{girard-scedorov-scott-1992, leivant-1994, girard-1998,
 asperti-roversi-2002, lafont-2004, dal-lago-hofmann-2010},
+
+% see also [L3] and [L4] in bellantoni's thesis
 
 \item term rewriting
 systems\cite{beckmann-weiermann-1996, bonfante-et-al-1999, avanzini-et-al-2012,
@@ -94,7 +95,7 @@ kristiansen-niggl-2004, kristiansen-voda-2005, niggl-wunderlich-2006},
 \item type systems\cite{hofmann-2000b, crary-weirich-2000,
 bellantoni-et-al-2000, hofmann-2003}
 
-\hspace{-0.12in}\vdots
+\hspace{-0.125in}\vdots\hspace{0.06in} (This list is intensionally left incomplete.)
 
 \end{itemize}
 
@@ -161,7 +162,19 @@ of more efficient algorithms. (Due to \cite{jones-2001}.) \end{notion}
 It is not uncommon to seek a baseline characterisation of a complexity class
 first, and then later to seek to increase its ``intensionality'', which in
 itself may lead to new characterisations. This is indeed the motivation in e.g.
-\cite{hofmann-1999, niggl-2005, marion-pechoux-2008, jones-kristiansen-2009}.
+\cite{hofmann-1999, marion-moyen-2000, niggl-2005, niggl-wunderlich-2006,
+marion-pechoux-2008, jones-kristiansen-2009}.
+
+"Language of the characterisation"
+"Subclass"
+"Class of $\mathtt{R}$."
+"Class of $\mathtt{PR}$ (when talking about primitive recursion)."
+
+Implicit complexity theory is intricately related to termination analysis. For
+instance, if we characterise any subclass of $\mathtt{R}$, all programs in the
+language of this characterisation are guaranteed to terminate by construction.
+On the other hand, the methods of termination analysis can motivate and even
+underpin implicit characterisations (see e.g.  \cite{marion-2003}).
 
 % not really aka, but in the spirit of the previous chapter, Implicit
 % Complexity, and hence Implicit Complexity Theory

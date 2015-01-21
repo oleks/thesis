@@ -1,0 +1,122 @@
+\chapter{Future Work}
+
+\section{Generalized Reedy categories}
+
+% To this end we take a leap of faith into the realm of generalized abstract nonsense:
+
+One popular category-theoretic view of programming is to identify the realm of
+programming with some fixed category $\mathcal{C}$. In the context of
+``successor'' and ``predecessor'' operations, it is perhaps worthwhile to
+identify the realm of programming with a slightly more restrictive category:
+
+\begin{definition} A \textbf{generalized Reedy structure}
+\cite{berger-moerdijk-2011} on a \emph{small} category $\mathcal{R}$ consists
+of two \emph{wide} subcategories $\mathcal{R}^+$ and
+$\mathcal{R}^-$,\footnote{That is, both $Obj\p{\mathcal{R}}$ and
+$Mor\p{\mathcal{R}}$ form a set, and $Obj\p{\mathcal{R}} = Obj\p{\mathcal{R}^+}
+= Obj\p{\mathcal{R}^-}$.} and a degree function $d : Obj\p{\mathcal{R}}
+\rightarrow \mathbb{N}$, satisfying the follow axioms:
+
+\begin{enumerate}
+
+\item non-invertible morphisms in $\mathcal{R}^+$ increase degree;
+
+\item non-invertible morphisms in $\mathcal{R}^-$ decrease degree;
+
+\item isomorphisms in $\mathcal{R}$ preserve degree;
+
+\item $Iso\p{\mathcal{R}} = Mor\p{R^+} \cap Mor\p{R^-}$;
+
+\item every $f \in Mor\p{\mathcal{R}}$ factors as $f = h \circ g$ for some $h
+\in Mor\p{\mathcal{R}^-}$ and $g \in Mor\p{\mathcal{R}^+}$, uniquely up to
+isomorphism;
+
+\item if $h \circ i = h$ for some $i \in Iso\p{\mathcal{R}}$ and $h \in
+Mor\p{\mathcal{R}^-}$, then $i$ is an identity.
+
+\end{enumerate}
+
+The structure is \textbf{dualizable} if the following axiom also holds:
+
+\begin{enumerate}
+\setcounter{enumi}{6}
+
+\item if $i \circ g = g$ for some $i \in Iso\p{\mathcal{R}}$ and $g \in
+Mor\p{\mathcal{R}^+}$, then $i$ is an identity.
+
+\end{enumerate}
+
+A \textbf{(dualizable) generalized Reedy category} is a small category equipped
+with a (dualizable) generalized Reedy structure. 
+
+\end{definition}
+
+Generalized Reedy categories are interesting as they can form various ``shape
+categories'', such as cycle and tree categories.
+
+\begin{definition} A \textbf{successor} is a morphism which increases degree.
+\end{definition}
+
+\begin{definition} A \textbf{predecessor} is a morphism which decreases degree.
+\end{definition}
+
+\section{Natural numbers}
+
+We begin by defining a theory of natural numbers, $\mathcal{N}$. This is
+distinct from the set of natural numbers, $\mathbb{N}$, which may form the
+universe of a model of $\mathcal{N}$.
+
+\begin{definition} \textit{The theory of natural numbers, $\mathcal{N}$.}
+
+Let the language
+$\mathcal{L}_{\mathcal{N}}=\chev{\set{0},\set{s(x)},\set{x<y,x=y}}$, consist of
+a constant symbol $0$ (read: zero), a unary function $s$ (read: successor), and
+a binary relation $<$ (read: less than). The class of natural numbers is
+axiomatized by the $\mathcal{L}_{\mathcal{N}}$-sentences
+
+\begin{align}
+&\vdash 0 < s(x) \\
+x < y &\vdash s(x) < s(y)
+\end{align}
+
+\end{definition}
+
+\begin{example} \textit{A model $\mathcal{M}$ of $\mathcal{N}$.}
+
+Let the universe be the set of natural numbers, $\mathbb{N}$. Let the constant
+zero be the numeral $0$, and the successor function be the mathematical
+function $s(x)=x+1$. Let the less than relation be the usual $<$ relation on
+$\mathbb{N}$.
+
+Notably, if $\mathcal{M}$ is a model of $\mathcal{N}$, satisfying the above
+axioms, $s$ is an \emph{injective} function, and $<$ is an \emph{irreflexive}
+and \emph{transitive} relation.
+
+\end{example}
+
+\begin{remark}
+
+The theory of natural numbers as defined above, closely resembles the notion of
+natural numbers as originally given by Dedekind\cite{beman-1901,joyce-2005}.
+Unlike the more conventional Peano/Dedekind axioms, which you might be familiar
+with, this notion focuses on the ordered nature of the natural numbers.
+
+\end{remark}
+
+\begin{definition} \emph{The theory of strings over an alphabet $\Sigma$}
+
+Let the language
+$\mathcal{L}_\Sigma=\chev{\set{\varepsilon}\cup\Sigma,\set{x\cdot y},\set{}}$,
+consist of the constant symbols $\Sigma$, the empty symbol $\varepsilon \notin
+\Sigma$, and a binary function $\cdot$ (read: concatenate). The class of
+strings over an alphabet $\Sigma$ is axiomatized by the
+$\mathcal{L}_\Sigma$-sentences
+
+\begin{align}
+&\vdash \varepsilon \cdot x = x & \text{(left identity)} \\
+&\vdash x \cdot \varepsilon = x & \text{(right identity)} \\
+&\vdash \p{ x \cdot y } \cdot z = x \cdot \p{ y \cdot z } & \text{(associativity)}
+\end{align}
+
+\end{definition}
+

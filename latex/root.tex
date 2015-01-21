@@ -10,6 +10,8 @@
 
 \usepackage{enumitem} % fixed-width description items
 
+\usepackage{stmaryrd} % llbracket, rrbracket
+
 %\usepackage[symbol]{footmisc} % use symbols for footnote marks
 \renewcommand{\thefootnote}{(\arabic{footnote})}
 
@@ -117,6 +119,9 @@
   \emph{#1}
 }
 
+\DeclareDocumentCommand{\FPTIME}{}{\ensuremath{\mathtt{FPTIME}}}
+
+\DeclareDocumentCommand{\algebra}{mm}{\ensuremath{\seq{#1\mathrel{};\mathrel{}#2}}}
 
 \begin{document}
 
@@ -128,12 +133,6 @@
 \input{introduction/root}
 
 \input{background/root}
-
-\pagebreak
-
-START READING HERE
-
-\pagebreak
 
 \input{feasibility/root}
 

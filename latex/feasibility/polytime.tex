@@ -19,6 +19,30 @@ functions and the computational complexity of programs
 
 \end{quotation}
 
+\begin{quotation}
+
+\footnotesize\sffamily\itshape
+
+\begin{flushright}
+
+{\upshape PETER HILTON} \\
+Christ!! What happens now?!\\
+{\upshape ALAN TURING} \\
+It should tell use the day's Enigma settings!\\
+{\upshape HUGH ALEXANDER} \\
+How long!?!
+
+\smallbreak
+
+\upshape
+
+--- Graham More, The Imitaiton Game (2014)
+
+\end{flushright}
+
+\end{quotation}
+
+
 The fundamental insight highlighted by the above quotation underpins much work
 done in \cite{jones-1999, jones-2001, kristiansen-voda-2005, hofmann-2003,
 kristiansen-2008}, and of course, \cite{jones-kristiansen-2009}, among others.
@@ -55,65 +79,221 @@ general framework. Informally, a successor or predecessor is any operation that
 may change the size of any value in the program (including time?). In practice,
 essentially any conceivable operation, except perhaps stalling.
 
-\section{Successors and Predecessors}
+\section{Programs}
 
-% To this end we take a leap of faith into the realm of generalized abstract nonsense:
+% Many high-level programming languages have data types, and these data types
+% cannot be coerced.
 
-One popular category-theoretic view of programming is to identify the realm of
-programming with some fixed category $\mathcal{C}$. In the context of
-``successor'' and ``predecessor'' operations, it is perhaps worthwhile to
-identify the realm of programming with a slightly more restrictive category:
+In the interest of capturing a wide range of programming paradigms in one
+discussion, we give only a general specification of what we deem a program to
+be. This specification will later be specialized for more concrete purposes. We
+make no claim however, that in so doing, we capture all conceivable programming
+paradigms.
 
-\begin{definition} A \textbf{generalized Reedy structure}
-\cite{berger-moerdijk-2011} on a \emph{small} category $\mathcal{R}$ consists
-of two \emph{wide} subcategories $\mathcal{R}^+$ and
-$\mathcal{R}^-$,\footnote{That is, both $Obj\p{\mathcal{R}}$ and
-$Mor\p{\mathcal{R}}$ form a set, and $Obj\p{\mathcal{R}} = Obj\p{\mathcal{R}^+}
-= Obj\p{\mathcal{R}^-}$.} and a degree function $d : Obj\p{\mathcal{R}}
-\rightarrow \mathbb{N}$, satisfying the follow axioms:
+\begin{specification}
+
+A \textbf{program} $P = \p{P_\mathbf{D}, P_\mathbf{F}}$ is a finite set of
+\textbf{data types} $P_\mathbf{D}$, and a finite set of \textbf{functions}
+$P_\mathbf{F}$, subject to the following laws:
 
 \begin{enumerate}
 
-\item non-invertible morphisms in $\mathcal{R}^+$ increase degree;
+\item [P-1] Every data type $A \in P_\mathbf{D}$ forms a set.
 
-\item non-invertible morphisms in $\mathcal{R}^-$ decrease degree;
+\item [P-2] Every function $f \in P_\mathbf{F}$ computes a partial function $f
+: A \rightharpoonup B$, for some $A, B\in P_\mathbf{D}$. We write $f : A
+\rightharpoonup B \in P_\mathbf{F}$.
 
-\item isomorphisms in $\mathcal{R}$ preserve degree;
-
-\item $Iso\p{\mathcal{R}} = Mor\p{R^+} \cap Mor\p{R^-}$;
-
-\item every $f \in Mor\p{\mathcal{R}}$ factors as $f = h \circ g$ for some $h
-\in Mor\p{\mathcal{R}^-}$ and $g \in Mor\p{\mathcal{R}^+}$, uniquely up to
-isomorphism;
-
-\item if $h \circ i = h$ for some $i \in Iso\p{\mathcal{R}}$ and $h \in
-Mor\p{\mathcal{R}^-}$, then $i$ is an identity.
+\item [P-3] For every data type $A \in P_\mathbf{D}$ there is a \textbf{size
+function} $\card{\cdot} : A \rightarrow \mathbb{N}$, so for every $a \in A$ we
+have $\card{a} \in \mathbb{N}$.
 
 \end{enumerate}
 
-The structure is \textbf{dualizable} if the following axiom also holds:
+\end{specification}
+
+\begin{remark} We do not require that a function $f \in P_\mathbf{F}$ can
+compute a partial function $f : A \rightharpoonup B$ between \emph{any} given
+data types $A, B \in P_\mathbf{D}$, merely that it is a partial function
+between \emph{some} given data types $A, B \in P_\mathbf{D}$.  \end{remark}
+
+\begin{remark} The purpose of the size function is primarily semantic, and so
+it need not be in $P_\mathbf{F}$, but of course, it could be. \end{remark}
+
+\subsection{Successors and Predecessors}
+
+\begin{definition} A partial function $s : X \rightharpoonup Y \in
+P_\mathbf{F}$ is a \textbf{successor function} for some $x \in X$ iff $s\p{x}$
+is defined and $\card{x} < \card{s\p{x}}$. \end{definition}
+
+\begin{definition} A partial function $p : X \rightharpoonup Y \in
+P_\mathbf{F}$ is a \textbf{predecesor function} for some $x \in X$ iff $p\p{x}$
+is defined and $\card{p\p{x}} < \card{x}$. \end{definition}
+
+That is, a successor function produces an output \emph{strictly greater} in
+size than its input, and a predecessor function produces an output
+\emph{strictly lesser} in size than its input.
+
+Note in particular, that whether a given partial function $f : X
+\rightharpoonup Y \in P_\mathbf{F}$ is a successor or predecessor function, if
+either, \emph{depends} on the value $x \in X$ which $f$ is applied to. If $X$
+is a countably infinite data type, there may exist functions which are
+successor functions, \emph{independent} of the value that they are applied to.
+
+\begin{definition} A partial function $c : X \rightharpoonup Y \in
+P_\mathbf{F}$, is a \textbf{constructor} iff $X$ is the domain of definition of
+$c$, so $c : X \rightarrow Y \in P_\mathbf{F}$, and $c$ is a successor function
+\emph{for all} $x \in X$. \end{definition}
+
+On the other hand, for any data type $X$, there must exist some value $x \in
+X$, for which any given function is \emph{not} a predecessor function, as
+otherwise there would be a natural number less than $0$.
+
+\subsection{Defining Functions}
+
+For the purposes of a further discussion about programming, we adopt an
+equational programming style, in line with classical recursion theory and
+functional programming.
+
+\begin{definition} For any program $P = \p{P_\mathbf{D}, P_\mathbf{F}}$, let
+$P_\mathbf{F}$ form the \textbf{signature} of $P$, that is, for every $f : X
+\rightharpoonup Y \in P_\mathbf{F}$, we say that $f$ is a \textbf{symbol}, and
+$X \rightharpoonup Y$ is the \textbf{arity} of symbol $f$. \end{definition}
+
+\begin{definition} A \textbf{variable} $v$ of type $Y \in P_\mathbf{D}$, is a
+symbol $v$, which does not occur in $P_\mathbf{F}$. \end{definition}
+
+\begin{definition} A \textbf{term} $t$ of type $Y$, written $t : Y$, is either
+a variable $t \equiv v$, or a \textbf{compound term} $t \equiv f\p{x}$, where
+$f : X \rightharpoonup Y$ and $x \in X$. \end{definition} 
+
+\begin{definition} A \textbf{ground term} $t : Y$, is a either a variable $t
+\equiv v$, or a compound term $t \equiv f\p{x}$, where $f : X \rightharpoonup
+Y$ is a \emph{constructor} and $x : X$ is also a \emph{ground term}.
+\end{definition}
+
+\begin{definition} If $x$ is a ground term and $y$ is a term, then $x \leadsto
+y$ is a \textbf{clause}.  \end{definition}
+
+\begin{remark} We deviate from the classical use of the symbol $=$ (equals),
+frequent in recursion theory and functional programming. We are not concerned
+with any notion of ``equality'' between the left- and right-hand side of a
+clause. Instead, a clause should state how the left-hand side \emph{leads to}
+the right hand side. That is, we have chosen which way evaluation flows. To the
+acute reader this sounds an awful lot like term-rewriting, and though it is, we
+see no need to dive further into term-rewriting terminology. \end{remark}
+
+\begin{definition} A function is given by a finite set of clauses, where no
+pair of left-hand sides unify using the conventional algorithm.
+\end{definition}
+
+\subsection{Examples}
+
+\begin{example} Peano numbers in one programming language or another. Model
+theory? \end{example}
+
+\subsection{Programming with algebraic data types}
+
+To this end we adopt the notation of \cite{marion-2003}.
+
+\begin{definition} A \textbf{sort} $\mathcal{S}$ is a set. \end{definition}
+
+\begin{specification} The set of \textbf{types} $\mathcal{T}$ over a sort
+$\mathcal{S}$ is  built from either the elements of $\mathcal{S}$ or
+\textbf{type constructors}. \end{specification}
+
+\begin{definition} A \textbf{vocabulary} is a set of symbols \end{definition} 
+
+We follow the approach and notation of \cite{clote-1999}, where many of the
+below results are presented using a single-sorted word algebra. We consider
+generalizing the presentation to many-sorted algebras where this has already
+been done by others, and otherwise.
+
+A recursion scheme will be given over a particular algebra, where an algebra is
+given over a signature.
+
+\begin{definition} A \textbf{signature} is a triple $\Sigma = \p{\mathbf{B},
+\mathbf{T}, \mathbf{C}}$, where
 
 \begin{enumerate}
-\setcounter{enumi}{6}
 
-\item if $i \circ g = g$ for some $i \in Iso\p{\mathcal{R}}$ and $g \in
-Mor\p{\mathcal{R}^+}$, then $i$ is an identity.
+\item [$\mathbf{B}$] is a set of \textbf{base types},
+
+\item [$\mathbf{T}$] is a set of \textbf{type constructors}, and
+
+\item [$\mathbf{V}$] is a set of \textbf{value constructors}.
 
 \end{enumerate}
 
-A \textbf{(dualizable) generalized Reedy category} is a small category equipped
-with a (dualizable) generalized Reedy structure. 
+\end{definition}
+
+The set of base types and type constructors can be deduced from the set of
+value constructors in a signature. We choose to mark these elements in a
+distinct manner to make the following notions straight forward to discuss.
+
+\begin{definition} A signature is \textbf{single-sorted} if it has exactly one
+base type $B$, written $\Sigma = \p{\set{B}, -, -}$. A signature that is not
+single-sorted is \textbf{many-sorted}.  \end{definition}
+
+\begin{definition} For a set of base types $\mathbf{B}$, let $*$ denote any
+base type in $\mathbf{B}$. \end{definition}
+
+\begin{definition} A \textbf{word} signature is a signature having just the
+type constructors $*$ and $* \rightarrow *$, written $\p{\mathbf{B}, \set{*, *
+\rightarrow *}, \mathbf{V}}$.  \end{definition}
+
+% \begin{example} A single-sorted word signature is a signature $\p{\set{B},
+% \set{*, * \rightarrow *}, \mathbf{V}}$. That is, for each $v \in \mathbf{V}$
+% we either have $v : B$ or $v : B\rightarrow B$. \end{example}
+
+As an example, we now turn to the Peano numbers:
+
+\begin{definition} The \textbf{Peano numbers} is the single-sorted word
+signature
+
+$$\Pi \triangleq \p{\set{N}, \set{*, * \rightarrow *}, \set{\mathtt{z} : N,
+\mathtt{s} : N \rightarrow N}}.$$
 
 \end{definition}
 
-Generalized Reedy categories are interesting as they can form various ``shape
-categories'', such as cycle and tree categories.
+% \begin{definition} A \textbf{tree} algebra is an algebra having the type
+% constructors $\mathbf{T} = \set{*, \mathbf{T} \rightarrow \mathbf{T}}$,
+% written $\p{\mathbf{B}, \mathbf{T} = \set{*, \mathbf{T} \rightarrow
+% \mathbf{T}}, \mathbf{V}}$. \end{definition}
 
-\begin{definition} A \textbf{successor} is a morphism which increases degree.
+% \begin{example} A single-sorted binary tree algebra is an algebra over the
+% signature $\p{\set{B}, \set{*, * \rightarrow * \rightarrow *}, \mathbf{V}}$,
+% where for each $v \in \mathbf{V}$ we either have $v : B$ or $v : B\rightarrow
+% B \rightarrow B$. \end{example}
+
+\begin{definition} The set of \textbf{$n$-ary} value constructors over $\Sigma
+= \p{-, -, \mathbf{V}}$ is
+
+$$\mathbf{V}_n \triangleq \set{v \in \mathbf{V} \st{v : *_0 \rightarrow *_1
+\rightarrow \cdots \rightarrow *_n}}$$
+
 \end{definition}
 
-\begin{definition} A \textbf{predecessor} is a morphism which decreases degree.
-\end{definition} 
+\begin{definition} The set of \textbf{constructor terms} over
+$\Sigma=\p{-, -, \mathbf{V}}$ is
+
+$$\mathcal{C}_\Sigma \triangleq \set{v\p{t_1,t_2,\ldots,t_n} \st{n \in
+\mathbb{N} \wedge v \in \mathbf{V}_n \wedge t_1,t_2,\ldots,t_n \in
+\mathcal{C}_\Sigma}}$$
+
+\end{definition}
+
+\begin{example} The set of constructor terms over the Peano numbers is
+
+$$\mathcal{C}_\Pi = \set{\mathtt{z}, \mathtt{s}\p{\mathtt{z}},
+\mathtt{s}\p{\mathtt{s}\p{\mathtt{z}}},
+\mathtt{s}\p{\mathtt{s}\p{\mathtt{s}\p{\mathtt{z}}}}, \ldots}$$
+
+\end{example}
+
+% recursive call stack
+
+% purely functional programs? no data other than what you put in.
 
 % Perhaps a neat way of categorise the wealth of data structures 
 
@@ -214,71 +394,8 @@ categories'', such as cycle and tree categories.
 
 % \end{definition}
 
-\pagebreak
 
-STOP READING HERE
 
-\pagebreak
-
-\section{Natural numbers}
-
-We begin by defining a theory of natural numbers, $\mathcal{N}$. This is
-distinct from the set of natural numbers, $\mathbb{N}$, which may form the
-universe of a model of $\mathcal{N}$.
-
-\begin{definition} \textit{The theory of natural numbers, $\mathcal{N}$.}
-
-Let the language
-$\mathcal{L}_{\mathcal{N}}=\chev{\set{0},\set{s(x)},\set{x<y,x=y}}$, consist of
-a constant symbol $0$ (read: zero), a unary function $s$ (read: successor), and
-a binary relation $<$ (read: less than). The class of natural numbers is
-axiomatized by the $\mathcal{L}_{\mathcal{N}}$-sentences
-
-\begin{align}
-&\vdash 0 < s(x) \\
-x < y &\vdash s(x) < s(y)
-\end{align}
-
-\end{definition}
-
-\begin{example} \textit{A model $\mathcal{M}$ of $\mathcal{N}$.}
-
-Let the universe be the set of natural numbers, $\mathbb{N}$. Let the constant
-zero be the numeral $0$, and the successor function be the mathematical
-function $s(x)=x+1$. Let the less than relation be the usual $<$ relation on
-$\mathbb{N}$.
-
-Notably, if $\mathcal{M}$ is a model of $\mathcal{N}$, satisfying the above
-axioms, $s$ is an \emph{injective} function, and $<$ is an \emph{irreflexive}
-and \emph{transitive} relation.
-
-\end{example}
-
-\begin{remark}
-
-The theory of natural numbers as defined above, closely resembles the notion of
-natural numbers as originally given by Dedekind\cite{beman-1901,joyce-2005}.
-Unlike the more conventional Peano/Dedekind axioms, which you might be familiar
-with, this notion focuses on the ordered nature of the natural numbers.
-
-\end{remark}
-
-\begin{definition} \emph{The theory of strings over an alphabet $\Sigma$}
-
-Let the language
-$\mathcal{L}_\Sigma=\chev{\set{\varepsilon}\cup\Sigma,\set{x\cdot y},\set{}}$,
-consist of the constant symbols $\Sigma$, the empty symbol $\varepsilon \notin
-\Sigma$, and a binary function $\cdot$ (read: concatenate). The class of
-strings over an alphabet $\Sigma$ is axiomatized by the
-$\mathcal{L}_\Sigma$-sentences
-
-\begin{align}
-&\vdash \varepsilon \cdot x = x & \text{(left identity)} \\
-&\vdash x \cdot \varepsilon = x & \text{(right identity)} \\
-&\vdash \p{ x \cdot y } \cdot z = x \cdot \p{ y \cdot z } & \text{(associativity)}
-\end{align}
-
-\end{definition}
 
 % we want natural numbers, but we don't want the successor and predecessor
 % operations to always be blindly permitted.
@@ -300,32 +417,33 @@ $\mathcal{L}_\Sigma$-sentences
 % creep up.
 
 % although we can always convert a unique string to a unique natural number, it
-% may take a long time to do so. Furthermore, the successor operation is a polynomial time oper
+% may take a long time to do so. Furthermore, the successor operation is a
+% polynomial time oper
 
-Any more definite attempt at a definition of the natural numbers seems to
-arrive at a philosophical impasse.
+% Any more definite attempt at a definition of the natural numbers seems to
+% arrive at a philosophical impasse.
 
-The natural numbers have never-the-less shown to be of prime importance due to
-the concept of recursive enumerability.
+% The natural numbers have never-the-less shown to be of prime importance due to
+% the concept of recursive enumerability.
 
-Use sets rather than ``language'' to avoid mixing up inputs/outputs of machines
-and the programming languages that we design. Languages refer specifically to
-sets of strings.
+% Use sets rather than ``language'' to avoid mixing up inputs/outputs of
+% machines and the programming languages that we design. Languages refer
+% specifically to sets of strings.
 
-\begin{definition}
+% \begin{definition}
 
-Define enumerator.
+% Define enumerator.
 
-\end{definition}
+% \end{definition}
 
-\begin{definition}
+% \begin{definition}
 
-Define recursively enumerable sets.
+% Define recursively enumerable sets.
 
-\end{definition}
+% \end{definition}
 
-Dealing with natural numbers is bad as we would quickly regard the successor
-(and predecessor) operations to be paired and unit-cost operations.
+% Dealing with natural numbers is bad as we would quickly regard the successor
+% (and predecessor) operations to be paired and unit-cost operations.
 
 % You cannot take the successor operation to be a unit-cost operation, nor can
 % you assume that it is paired with a predecessor.
@@ -360,42 +478,38 @@ Dealing with natural numbers is bad as we would quickly regard the successor
 % practical programming languages comes with manifolds of ways of defining
 % natural numbers.
 
-This makes it enticive to accept the natural numbers as a basic primitive
-
 % is all this because we want to deal in the natural numbers?
 
-Our choice of available successor and predecessor
+% In practice, we often deal with recursive sets, as by the Church-Turing thesis,
+% these are  the computable functions. This makes it attractive to deal merely in
+% the natural numbers as introduced above. Although this is perhaps a useful
+% definition of natural numbers, the pairing of a recursively enumerable set with
+% the natural numbers can be a rather complex procedure.
 
-In practice, we often deal with recursive sets, as by the Church-Turing thesis,
-these are  the computable functions. This makes it attractive to deal merely in
-the natural numbers as introduced above. Although this is perhaps a useful
-definition of natural numbers, the pairing of a recursively enumerable set with
-the natural numbers can be a rather complex procedure.
+% We intend to model this complexity by permitting a more elaborate definition of
+% natural numbers:
 
-We intend to model this complexity by permitting a more elaborate definition of
-natural numbers:
+% \begin{notion}
 
-\begin{notion}
+% A \textbf{value} is either $0$, a successor, or a predecessor of a value. A
+% successor and predecessor need not take $O(1)$ to compute.
 
-A \textbf{value} is either $0$, a successor, or a predecessor of a value. A
-successor and predecessor need not take $O(1)$ to compute.
+% \end{notion}
 
-\end{notion}
-
-The notions of successor and predecessor are defined below.
+% The notions of successor and predecessor are defined below.
 
 % It is intentional that we do not denote the syntax of $x$.
 
 % what is a data type?
 
-\begin{definition}
+% \begin{definition}
 
-The \textbf{notation} of a particular data type is a specification of how
-values of that data type may be constructed and deconstructed.
+% The \textbf{notation} of a particular data type is a specification of how
+% values of that data type may be constructed and deconstructed.
 
-\end{definition}
+% \end{definition}
 
-\section{Successors}
+% \section{Successors}
 
 % multiple possible successor and predecessor functions.
 
@@ -407,49 +521,49 @@ values of that data type may be constructed and deconstructed.
 % that these rules must hold, either as part of the definition of a successor
 % s, or as an admissible rule.
 
-\begin{definition}
+% \begin{definition}
 
-A function $s$ is a \textbf{successor} function iff
+% A function $s$ is a \textbf{successor} function iff
 
-\begin{align}
-&\vdash 0 < s(x) \\
-x < y &\vdash s(x) < s(y)
-\end{align}
+% \begin{align}
+% &\vdash 0 < s(x) \\
+% x < y &\vdash s(x) < s(y)
+% \end{align}
 
-\end{definition}
+% \end{definition}
 
-Successor functions play a key role in the remainder of the thesis, as they
-form the basis of our measure of the size of a value.
+% Successor functions play a key role in the remainder of the thesis, as they
+% form the basis of our measure of the size of a value.
 
-\begin{definition}
+% \begin{definition}
 
-The \textbf{size} of a value $x$, the minimum number of successor applications
-necessary to construct $x$.
+% The \textbf{size} of a value $x$, the minimum number of successor
+% applications necessary to construct $x$.
 
-\end{definition}
+% \end{definition}
 
-For instance, a language $\mathcal{B}$ that uses binary notation may have two
-successors, one that doubles the value, $s_0$, and another that doubles the
-value and adds a one, $s_1$. The value $5$ is then represented in $\mathcal{B}$
-as $s_1\p{s_0\p{s_1\p{0}}}$, and so the size of the value $5$ in $\mathcal{B}$
-is $3$. Analytically, the size of a value $x$ in $\mathcal{B}$ is
-$\ceil{\log_2\p{x}}$.
+% For instance, a language $\mathcal{B}$ that uses binary notation may have two
+% successors, one that doubles the value, $s_0$, and another that doubles the
+% value and adds a one, $s_1$. The value $5$ is then represented in
+% $\mathcal{B}$ as $s_1\p{s_0\p{s_1\p{0}}}$, and so the size of the value $5$
+% in $\mathcal{B}$ is $3$. Analytically, the size of a value $x$ in
+% $\mathcal{B}$ is $\ceil{\log_2\p{x}}$.
 
-\section{Predecessors}
+% \section{Predecessors}
 
-\begin{definition}
+% \begin{definition}
 
-A function $p$ is a \textbf{predecessor} function iff
+% A function $p$ is a \textbf{predecessor} function iff
 
 % no cycles?
 
-\begin{align}
-&\vdash p\p{0} = 0 \\
-&\vdash p\p{x} < x & x \neq 0 \\
-x < y &\vdash p\p{x} < p\p{y}
-\end{align}
+% \begin{align}
+% &\vdash p\p{0} = 0 \\
+% &\vdash p\p{x} < x & x \neq 0 \\
+% x < y &\vdash p\p{x} < p\p{y}
+% \end{align}
 
-\end{definition}
+% \end{definition}
 
 For instance, the language $\mathcal{B}$ above, may have a predecessor function
 $dec$ (read: decrement) defined as follows:
@@ -643,13 +757,230 @@ most (if not all) definitions of complexity classes: one defines a general
 model of computation and then cuts oôhe computation when certain resource
 bounds are exceeded.
 
+An operator is a mapping from ground terms over a signature to ground terms
+over a signature. An algebra is a signature coupled with a set of operators.
+
+The semantics of composition is given by
+
+$$\sem{\mathtt{COMP}\p{h,g_0,g_1,\ldots,g_i}} = f$$
+
+\begin{align*}
+%
+f\p{\vect{x}} = \sem{h}\p{\sem{g_0}\p{\vect{x}}, \sem{g_1}\p{\vect{x}}, \ldots,
+\sem{g_i}\p{\vect{x}}}
+%
+\end{align*}
 
 \section{Bounded primitive recursion}
 
-In 1964 Cobham [C] gave the rst recursion-theoretic characterization of
-polynomial time, using a recursion whose depth was the binary length of the
-number being re- cursed on, and using explicit polynomial bounds to control the
-size of the output.\cite{bellantoni-phd-1992}.
+Perhaps the most obvious way to characterise \FPTIME{}, is to explicitly bound
+the definable functions to be ``at most as complex to compute'' as some
+polynomial in the size of the input, without further reflections on how such a
+bound may be instated.
+
+Such a general characterisation appears in the seminal conference paper
+\cite{cobham-1965}, which consequently helped to establish computational
+complexity theory as a field\cite{clote-1999}. The original characterisation
+was given in terms of a single-sorted word signature, in particular, the
+natural numbers in decimal notation. The detailed proofs that this
+characterisation is indeed extensionally sound and complete, appeared later in
+e.g.  \cite{rose-1984}, using decimal notation, and in \cite{tourlakis-1984,
+clote-1999}, using binary notation.
+
+\def\smashf{\ensuremath{\mathtt{\#}}}
+
+We give the characterisation in terms of the following signature:
+
+\begin{definition} A \textbf{single-sorted (finitary) word signature}, $\Psi$,
+has $n \in \mathbb{N}$ symbols, $m \in \mathbb{N}$ of which, where $m \leq n$,
+are nullary, and $\p{n-m}$ of which are unary. More formally, let
+
+$$\Psi \triangleq \p{\set{-}, \set{v_0 : 0, \; \ldots, \; v_m : 0, \; v_{m+1} :
+1, \; \ldots, \; v_n : 1}}.$$
+
+\end{definition}
+
+\begin{example} Let $B \triangleq \p{\set{-}, \set{\varepsilon : 0, \symb{0} :
+1, \symb{1} : 1}}$ be a single-sorted word signature with the context-free
+grammar
+
+$$B ::= \symb{0} \cdot B \mid \symb{1} \cdot B \mid \varepsilon.$$
+
+For instance, $\varepsilon$, $\symb{0}$, $\symb{1}\symb{0}$,
+$\symb{1}\symb{0}\symb{1}$, $\symb{1}\symb{0}\symb{1}\symb{0}\symb{1}\symb{0}$,
+etc. are all terms over $B$. We will use $B$ in subsequent examples.
+
+\end{example}
+
+% \begin{definition} Let the size of a term over $\Sigma$ be the number of
+% symbols involved in the construction of the term:
+
+% \begin{align*}
+% \card{v_0}        &=  0 \\
+% \card{v_1\p{x}}   &=  \card{x} + 1 \\
+%                  &   \vdots \\
+% \card{v_{i}\p{x}} &=  \card{x} + 1
+% \end{align*}
+
+% \end{definition}
+
+% To get a closed form for the size function, we make a simplifying assumption
+% that there is at most 
+
+% \begin{example} The size of a term over $B$ is given by
+
+% \begin{align*}
+% \card{\varepsilon} &= 1 \\
+% \card{\mathtt{0} \cdot x} &= \card{x} + 1 \\
+% \card{\mathtt{1} \cdot x} &= \card{x} + 1
+% \end{align*}
+
+% For instance, $\card{\varepsilon}=1$, $\card{\symb{0}} = 2$,
+% $\card{\symb{1}\symb{0}} = 3$, $\card{\symb{1}\symb{0}\symb{1}} = 4$,
+% $\card{\symb{1}\symb{0}\symb{1}\symb{0}\symb{1}\symb{0}} = 7$, etc. The fact
+% that an empty string has a non-zero size is intuitively justifiable as even the
+% lack of data is data in itself.
+
+% \end{example}
+
+% \begin{lemma} If $\Sigma$ is a single-sorted signature, then
+% $\card{x}<\card{v_k\p{x}}$ for all $\p{i+1} \leq k \leq j$.  \end{lemma}
+
+The bounding inequality 
+
+\begin{definition} The \textbf{smash function} over a single-sorted word
+signature $\Psi$, with $i$ nullary and $\p{j-i}$ unary symbols, is a binary
+symbol \smashf{}, written in infix notation, with the semantics given by
+$\sem{x \smashf{} y} = i + \p{j-i}^{\card{x}\cdot\card{y}}$.\end{definition}
+
+\begin{example} The smash function over $B$ is given by $\sem{x \smashf{} y} =
+2^{\card{x} \cdot \card{y}}$. \end{example}
+
+\begin{definition} A single-sorted word signature $\Sigma = \set{ \mathbf{B},
+\mathbf{V} }$ ``enriched'' with a smash function is $\Sigma^\smashf{} = \set{
+\mathbf{B}, \mathbf{V} \cup \set { \smashf{} : 2 } }$. \end{definition}
+
+The semantics of bounded primitive recursion on notation is given by
+
+$$\sem{\mathtt{BPRN}\p{g_0, \ldots, g_i, g_{i+1}, \ldots, g_j, k}} = f$$
+
+where
+
+\begin{align*}
+f\p{c_0,y} &= \sem{g_0}\p{y} \\
+          & \vdots \\
+f\p{c_i,y} &= \sem{g_i}\p{y} \\
+f\p{c_{i+1}\p{x},y} &= \sem{g_{i+1}}\p{x,y,f\p{x,y}} \\
+          & \vdots \\
+f\p{c_j\p{x},y} &= \sem{g_j}\p{x,y,f\p{x,y}} \\
+f\p{x,y} &\leq \sem{k}\p{x,y}
+\end{align*}
+
+We now characterise \FPTIME{} as the function algebra
+$\algebra{\Sigma^\smashf{}}{\mathtt{COMP}, \mathtt{BPRN}}$.
+
+\begin{remark} \cite{cobham-1965} originally characterised \FPTIME{} using the
+function $x^\card{y}$, i.e. $x$ concatenated with itself $\card{y}$ times, in
+place of a ``smash'' function as above. Of course, in case of binary notation,
+$x^\card{y} = \p{2^{\log_2{x}}}^\card{y} \leq \p{2^{\ceil{\log_2\p{x+1}}}}^\card{y}
+= \p{2^\card{x}}^\card{y} = 2^{\card{x} \cdot \card{y}}$, and $x^\card{y}$ is
+still not in \FPTIME{}, but we have not seen any proofs using this original
+characterisation. \cite{cook-1975} uses the original characterisation, but
+refers to proofs in unpublished work.  The first reference to the choice of
+words ``smash function'' seems to be \cite{buss-phd-1985-6}.  \end{remark}
+
+\begin{theorem} The algebra $\algebra{\Sigma}{\mathtt{BPRN}}$ over a
+single-sorted word signature $\Sigma$ is \FPTIME{}-sound.\end{theorem}
+
+\begin{proof} Proof by simulation by an \FPTIME{} TM. \end{proof}
+
+\begin{theorem} \label{thm:bprn-fptime-complete} The algebra
+$\algebra{\Sigma}{\mathtt{BPRN},\mathtt{\#}}$ over a single-sorted word
+signature $\Sigma$ is \FPTIME{}-complete.\end{theorem}
+
+\begin{proof} Proof by simulation of an \FPTIME{} TM. \end{proof}
+
+The crucially unsatisfying aspect of \cite{thm:bprn-fptime-complete} is that it requires a function outside \FPTIME{} to be in the.
+
+% In 1964 Cobham [C] gave the first recursion-theoretic characterization of
+% polynomial time, using a recursion whose depth was the binary length of the
+% number being recursed on, and using explicit polynomial bounds to control the
+% size of the output.\cite{bellantoni-phd-1992}.
+
+Although bounded primitive recursion has led to some interesting work
+\cite{cook-1975, buss-phd-1985-6, cook-urquhart-1993}, the bounds are enforced
+in an ``extensional'' manner, rather than being an ``intensional'' property of
+the system. This statement is intensionally vague. To put a bounded primitive
+recursive function to good use, we need to \emph{prove} the bounding inequality
+of the function definition. This leads to grave complications in the cited
+work, but is sometimes outwitted by assuming bounded execution model, which
+simply cuts off at overflow:
+
+% recursion scheme over an inductively or coinductively defined data type (an
+% algebra).
+
+% recursion schemes in multiple variables?
+
+% recursion scheme over   a
+
+\begin{specification} A function $f : B \rightarrow \vect{B} \rightarrow B$
+over a single-sorted word algebra over the signature $\p{\set{B},\set{B, B
+\rightarrow B},\mathbf{V}}$, is given by \textbf{bounded primitive recursion on
+notation} using the following recursion scheme:
+ 
+\begin{align}
+%
+f\p{v_i, \vect{y}} &\leadsto g_i\p{v_i, \vect{y}} & \text{for all $\set{v_i \in
+\mathbf{V} \st{ v_i : B}}$} \\
+%
+f\p{v_j\p{x}, \vect{y}} &\leadsto h_j\p{x, \vect{y}, f\p{x, \vect{y}}} &
+\text{for all $\set{v_j \in \mathbf{V} \st{ v_j : B \rightarrow B}}$}
+%
+\end{align}
+
+where for each $v_i : B$ we have $g_i : B \rightarrow \vect{B} \rightarrow B$,
+and for each $v_j : B \rightarrow B$ we have $h_j : B \rightarrow \vect{B}
+\rightarrow B \rightarrow B$, and lastly, there is the \emph{semantic}
+requirement that $f\p{x,\vect{y}} \leq k\p{x,\vect{y}}$ for some $k : B
+\rightarrow \vect{B} \rightarrow B$, for all $x \in B$.
+
+\end{specification}
+
+\begin{remark} It seems a bit superfluous to deal in the additional argument
+vector $\vect{y}$ which we simply pass down to our base and step functions.
+This could be handled by e.g. partially applying $\vect{y}$ on the given
+functions.  Although not important to the recursion scheme, we will soon take
+the stance that the arguments in $\vect{y}$ are of a different ``nature'' than
+the arguments we recur on.\end{remark}
+
+It seems straight forward to generalize bounded primitive recursion on notation
+to many-sorted free algebras, although we have not seen others do this:
+
+\begin{specification} Given a single-sorted algebra over the signature
+$\p{\mathbf{B},\set{\rightarrow},\mathcal{C}}$, a function $f : S \rightarrow
+U$ is given by \textbf{bounded primitive recursion on notation}, if it is given
+by the scheme
+
+\begin{align}
+%
+f\p{c_i} &\leadsto g_i\p{c_i} & \text{for all $\set{c_i \in \mathcal{C} \st{ c_i :
+S}}$} \\
+%
+f\p{c_j\p{\vect{x}}} &\leadsto h_j\p{\vect{x}} & \text{for all $\set{c_j \in
+\mathcal{C} \st{ c_j : \vect{T} \rightarrow S}}$}
+%
+\end{align}
+
+where for each $c_i : S$ we have $g_i : S \rightarrow U$, and for each $c_j :
+\vect{T} \rightarrow S$ we have $h_j : \vect{T} \rightarrow U$, and lastly,
+there is the \emph{semantic} requirement that $f\p{s} \leq k\p{s}$ for some $k
+: S \rightarrow V$.
+
+\end{specification}
+
+\begin{definition} A function is \textbf{bounded primitive recursive} if it is
+given by an algebra closed under composition and bounded primitive recursion.
+\end{definition}
 
 \section{Predicative recursion}
 
@@ -680,32 +1011,98 @@ appears prevalent in mathematics.) Our motivation is due to
 \cite{bellantoni-cook-1992} and \cite{leivant-1995}. Hofmann was in turn
 motivated by \cite{bellantoni-phd-1992}.
 
-The use of the term ``predicative'' itself is due to \cite{russel-1907}, who
+The use of the term ``predicative'' itself is due to \cite{russell-1907}, who
 suggested a ``predicative'' theory of sets in order to deal with the paradoxes
-inherent in na\"ive set theory, calling the ways of na\"ive set theory
-``non-predicative'', or as it will later be called\cite{kleene-1952},
-``impredicative''.
+of na\"ive set theory. Informally, the definition of an entity is
+``impredicative''\cite{goedel-1944}, if it refers (directly, or indirectly) to
+the entity being defined (self-reference). Two classical examples of
+impredicative definitions gone rogue are the Russell's and Liar paradoxes: 
+
+\begin{description}
+
+\item [Russell's paradox] Define the set $R$ to be the set of all sets which
+are not members of themselves. If $R$ is a member of itself, then it should not
+be a member of itself; if it is not a member of itself, then it should be a
+member of itself. Paradox by indirect self-reference.
+
+\item [Liar paradox] Define the liar sentence ``This sentence is false.'' If
+the sentence is true, then it is false; if it is false, then it is true.
+Paradox by direct self-reference.
+
+\end{description} 
 
 This is achieved by ``segregating the variables''.
 
 
-\subsection{Safe recursion}
+\subsection{Two-tiered recursion}
 
-Safe recursion was independently introduced in \cite{simmons-1988},
-\cite{leivant-1990}, and \cite{bellantoni-cook-1992}.
+Two-tiered recursion is also referred to as ``safe recursion'' and was
+independently introduced in \cite{simmons-1988}, \cite{leivant-1990}, and
+\cite{bellantoni-cook-1992}.
 
-\subsection{Ramified recursion}
+\subsection{Many-tiered recursion}
 
-Originally due to \cite{leivant-1995}. 
+The generalization of two-tiered recursion to many-tiered recursion is
+generally attributed to \cite{leivant-1995}. Leivant proved his results in
+terms of single-sorted word algebras.
 
-Leivant’s ramified recurrence is one of the earliest examples of an implicit
-characterization of the polytime functions as a subalgebra of the primitive
-recursive functions. Leivant’s result, however, is originally stated and proved
-only for word algebras, i.e. free algebras whose constructors take at most one
-argument. This paper presents an extension of these results to ramified
-functions on any free algebras, provided the underlying terms are represented
-as graphs rather than trees, so that sharing of identical subterms can be
-exploited. \cite{dal-lago-et-al-2010}
+\begin{definition} A \textbf{single-sorted} algebra is an algebra over the
+signature $\p{\set{B}, \mathcal{T}, \mathcal{V}}$, i.e. there is just a single
+base type, $B$. \end{definition}
+
+\begin{definition} A \textbf{word} algebra is an algebra over the signature
+$\p{\mathbf{B}, \set{\rightarrow}, \mathcal{V}}$, where each $v \in
+\mathcal{V}$ either has the kind $v : *$ or $v : *\rightarrow *$.
+\end{definition}
+
+\begin{example} A single-sorted word algebra is an algebra over the signature
+$\p{\set{B},\set{\rightarrow}, \mathcal{V}}$, where for each $v \in
+\mathcal{V}$ we either have $v : B$ or $v : B\rightarrow B$. \end{example}
+
+\begin{definition} A \textbf{Peano numbers} algebra is a single-sorted word
+algebra over the signature $\p{\set{N}, \set{\rightarrow},\set{\mathtt{0} : N,
+\mathtt{s} : N \rightarrow N}}$. \end{definition}
+
+
+This is sufficient to deal in all finite types and string types, e.g.  the
+peano numbers or binary strings. Making our way towards mixed data types and
+tuples, \cite{marion-2003} generalized tiered recursion to simple algebras.
+ 
+\begin{definition} A \textbf{simple algebra} is an algebra over the signature
+$\p{\mathbf{B}, \set{\rightarrow}, \mathcal{C}}$, where each value constructor
+$c \in \mathcal{C}$ has the type $\tau_1 \rightarrow \tau_2 \rightarrow \cdots
+\rightarrow \tau_n \rightarrow \tau$, for some $n\in \mathbb{N}$, such that
+$\tau$ occurs at most once amongst the $\tau_i$.  \end{definition}
+
+If we curry our eyes a bit, we can see how this leads way to ``simple'' tuples.
+Indeed, \cite{marion-2003} employs the more concise notation
+$\p{\tau_1,\tau_2,\cdots,\tau_n}\rightarrow \tau$ instead.  Although this
+admits a slightly more eloquent class of data types, we need more ``complex''
+tuples to even model good old trees.
+
+Worse yet, the results in \cite{leivant-1995} rely on a size function where the
+size of a term is the ``height of the parse-tree'' of the term. Leading to the
+plausible deniability that tiered recursion still captures $\mathtt{FPTIME}$
+when defined over any free algebra\cite{caseiro-1996}.
+
+The generalization to \emph{any} free algebra comes about in
+\cite{dal-lago-et-al-2010}. Their insight is that there is no need to copy (or
+recompute) a value if it appears more than once in a term --- we could just
+\emph{refer} to the same value. In a programming language without destructive
+assignment, this is perhaps a natural optimization technique. Hence ``trees''
+are really represented as graphs.
+
+\begin{example} \cite{dal-lago-et-al-2003} Consider a program $\p{\p{\p{N,T}, N
+\cup T, \set{z : N, s : N \rightarrow N, \mathtt{leaf} : T, \mathtt{node} : T
+\times T \rightarrow T}}, \set{f}}$, where $f$ is given by the following set of
+clauses:
+
+\begin{align}
+f\p{\symb{z}}       &\leadsto \symb{leaf} \\
+f\p{\symb{s}\p{w}}  &\leadsto \symb{node}\p{f\p{w}, f\p{w}}
+\end{align}
+
+\end{example}
 
 \section{Non-size increasing computation}
 
@@ -716,3 +1113,14 @@ drawing such a cleavage might charm us in the wrong direction.
 We now abandon the onset that those variables we recurse on, ``are of a
 different nature'', and reinstate the point of view that all values are created
 equal, but do differ in size.
+
+The insights regarding non-size increasing computation, also led to a
+generalization of the results in \cite{marion-2003} in
+\cite{marion-moyen-2000}. The authors replace the use of predicative recursion
+by a semantic argument and show how primitive recursion over non-size
+increasing base and step functions now admits e.g. LCS and insertion sort. The
+results never made it past the conference, perhaps due to the use of simple
+algebras in light of more generally applicable results in e.g.
+\cite{aehlig-schwichtenberg-2002, hofmann-2003}.
+
+\section{Polynomially-bounded values}

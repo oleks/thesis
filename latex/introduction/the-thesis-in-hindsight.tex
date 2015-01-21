@@ -1,0 +1,135 @@
+\section{The Thesis in Hindsight}
+
+Canvasing the literature on Implicit Computational Complexity, we can't help
+but notice that the complexity of definable programs depends on the choice of
+laws that govern what constitutes a valid program; govern these laws the
+manipulation of values, the formation of functions, or the construction of
+types.
+
+\section{Signatures, Grammars, Semantics, and Types}
+
+We survey a wealth of results in Implicit Computational Complexity.  To a
+(somewhat) generalized end, we employ the notion of \emph{signatures} from
+mathematical logic. Informally, a signature characterises the means of
+constructing the non-logical elements of a logical system. We will use
+signatures to both characterise
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item the means of constructing \emph{data types}, and
+
+\item the means of manipulating \emph{data} in a programming language.
+
+\end{enumerate}
+
+A \emph{signature} is a collection of \emph{symbols}, individually coupled with
+\emph{arities}. A \emph{variable} over the signature, is a symbol which does
+not occur in the signature. A \emph{term} over the signature is either a
+variable, or an \emph{application} of a symbol to a number of already formed
+terms, in accordance with the arity of the symbol.
+
+The use of the indefinite notion of ``application'' highlights the relevance of
+signatures to a discussion about programming language design. Recall the
+classical notion of \emph{grammars}: A grammar specifies the valid
+\emph{juxtaposition} of symbols, i.e. the valid formation of \emph{symbolic
+strings}.
+
+A term over a signature, with due slack over variables and notation, also forms
+such a string. So signatures specify a kind of grammar as well, where we do,
+never-the-less, abstract away from ``juxtaposition'' to mere ``application''.
+
+\begin{example} \label{ex:first-signature} Let a signature $\Sigma$ compose the
+symbols $\symb{+}$ and $\symb{-}$, both of a binary arity, where $x$, $y$, and
+$z$ form variables.
+
+Valid terms over $\Sigma$ are $x$, $\symb{+}\p{x,y}$,
+$\symb{+}\p{x,\symb{-}\p{y,z}}$, etc.  \end{example}
+
+\begin{example} \label{ex:first-grammar} Consider a context-free grammar
+composed of the non-terminals $V$ and $E$, given as follows:
+
+\begin{align*}
+V &\rightarrow x \mid y \mid z \\
+S &\rightarrow \symb{+} \mid \symb{-} \\
+E &\rightarrow V \mid E \; S \; E
+\end{align*}
+
+Valid terms over $E$ are $x$, $x \symb{+} y$, $x \symb{+} y \symb{-} z$,
+etc. \end{example}
+
+In need of some choice of notation, we assumed in \refEx{first-signature}
+perhaps a ``functional, prefix notation'', more formally, if $V$ is a non-terminal for variables, and $S$ is a non-terminal for symbols in $\Sigma$, then :
+
+\begin{align*}
+T &\rightarrow V \mid S \symb{(} T \symb{,} T \symb{)}
+\end{align*}
+
+In times of dire need of neater notation, we can supplement a signature with a
+richer context-free grammar, e.g. supplement the signature in
+\refEx{first-signature} with the grammar in \refEx{first-grammar}.
+
+Terms over signatures are stratified into \emph{types}, the most basic of which
+are called \emph{sorts}. A \emph{single-sorted} (finitary) signature, is a
+signature where the arity of a constructor is a mere natural number.
+Classically, as we generalize to \emph{many-sorted} (finitary) signatures, we
+generalize the notion of arity to the more intricate \emph{type construction}
+$\sigma_1 \times \sigma_2 \times \cdots \times \sigma_n \rightarrow \sigma$,
+where $\sigma_1$, $\sigma_2$, \ldots, $\sigma_n$, and $\sigma$ are all
+\emph{sorts}.
+
+% free algebra over the signature
+
+% Terms formed via signatures are well-typed.
+
+Whereas a grammar specifies the valid juxtaposition of symbols, a signature
+merely specifies how many (and the type of) syntactical elements, that a given
+symbol must be put in juxtaposition with, to be valid.
+
+
+As we move into the realm of richer types, e.g. higher-order types, or types
+modeling resources, the arities are better characterised by ever more intricate
+constructions of types. To this end, we can characterize the arities themselves
+by a \emph{type signature}.
+
+% example of types as in hofmann
+
+A signature governs the construction of terms, but not the formation of
+functions. To this end, we lend from the classical notion of \emph{recursion
+schemes} from recursion theory. A function is formed over a signature, in the
+sense that the domain and image of the function are values described by the
+signature.
+
+The results surveyed cover the characterisation of polynomial-time bounded
+programs. We explore how a couple of these techniques may be specialised
+further to specify and enforce subpolynomial bounds.
+
+% WN: formation -- (an arrangement of people or things acting as a unit; "a
+% defensive formation"; "a formation of planes")
+
+% iterators as in hofmann
+
+% although we could use mere grammars (to e.g. simplify notation), using
+% signatures allows even more intricate types.
+
+% We use signatures rather than grammars for values to give basic syntactic
+% constructions a type. The same can be done using a grammar and a typing
+% judgement. This however, would not entail natural ``syntactic'' restrictions,
+% as matters of syntax are typically not discussed at the level of types.
+
+% Besides, grammars are not typically stratified, as signatures are, to e.g.
+% single- and many-sorted grammars, or first- and higher-order grammars. We
+% admit that never-the-less a signature admits a direct translation to a
+% grammar of terms and types and a set of axioms for a more elaborate type
+% system.
+
+% Instead of putting a type system on top of a syntax, we are inlining the type
+% system into the syntax. This is not unusual programming practice, but is
+% perhaps putting the cart before the horse.
+
+% hofmann speaks of arities of operators, which indeed would be captured by our
+% signatures.
+
+% This choice of semantics is due to \cite{hofmann-2003}. Although
+% \cite{aehlig-schwichtenberg-2002} provide perhaps a more interesting proof of
+% the results in \cite{hofmann-2003} from the point of view of lambda calculus,
+% it seems more permissive to deal in set theory rather than lambda calculus. 
