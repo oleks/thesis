@@ -1,4 +1,4 @@
-\chapter{PTIME}
+\chapter{\PTIME{} and \FPTIME{}}
 
 \begin{quotation}
 
@@ -771,7 +771,7 @@ f\p{\vect{x}} = \sem{h}\p{\sem{g_0}\p{\vect{x}}, \sem{g_1}\p{\vect{x}}, \ldots,
 %
 \end{align*}
 
-\section{Bounded primitive recursion}
+\section{Bounded primitive recursion on notation}
 
 Perhaps the most obvious way to characterise \FPTIME{}, is to explicitly bound
 the definable functions to be ``at most as complex to compute'' as some
@@ -789,28 +789,127 @@ clote-1999}, using binary notation.
 
 \def\smashf{\ensuremath{\mathtt{\#}}}
 
-We give the characterisation in terms of the following signature:
+We give the characterisation on the following terms:
 
-\begin{definition} A \textbf{single-sorted (finitary) word signature}, $\Psi$,
-has $n \in \mathbb{N}$ symbols, $m \in \mathbb{N}$ of which, where $m \leq n$,
-are nullary, and $\p{n-m}$ of which are unary. More formally, let
+\begin{definition} A \textbf{single-sorted word signature}, $\Psi$, has $n \in
+\mathbb{N}$ symbols, $m \in \mathbb{N}$ of which, where $m \leq n$, are
+nullary, and $\p{n-m}$ of which are unary, m.f.
 
-$$\Psi \triangleq \p{\set{-}, \set{v_0 : 0, \; \ldots, \; v_m : 0, \; v_{m+1} :
-1, \; \ldots, \; v_n : 1}}.$$
+$$\Psi \triangleq \set{s_1 : 0, \; \ldots, \; s_m : 0, \; s_{m+1} : 1, \;
+\ldots, \; s_n : 1}.$$
 
 \end{definition}
 
-\begin{example} Let $B \triangleq \p{\set{-}, \set{\varepsilon : 0, \symb{0} :
-1, \symb{1} : 1}}$ be a single-sorted word signature with the context-free
-grammar
+\begin{example} Let $B \triangleq \set{\varepsilon : 0, \; \symb{0} : 1, \;
+\symb{1} : 1}$ be a single-sorted word signature for use in subsequent
+examples, having the context-free grammar
 
-$$B ::= \symb{0} \cdot B \mid \symb{1} \cdot B \mid \varepsilon.$$
+$$B ::= \symb{0} \cdot B \mid \symb{1} \cdot B \mid \varepsilon$$
 
 For instance, $\varepsilon$, $\symb{0}$, $\symb{1}\symb{0}$,
 $\symb{1}\symb{0}\symb{1}$, $\symb{1}\symb{0}\symb{1}\symb{0}\symb{1}\symb{0}$,
-etc. are all terms over $B$. We will use $B$ in subsequent examples.
+are all terms over $B$.
 
 \end{example}
+
+\begin{definition} \label{def:single-sort-word-term-size} The size of a term $t
+\in \mathcal{T}\p{\Psi}$, written $\card{t} \in \mathbb{N}$, is the cumulative
+number of occurrences of symbols and variables in $t$, m.f.
+
+\begin{align*}
+\card{v_i} &= 1 & \text{for all $v_i \in Var$} \\
+\card{s_i} &= 1 & \text{for all $s_i\in \Psi^0$} \\
+\card{s_j\p{x}} &= \card{x} + 1 & \text{for all $s_j \in \Psi^1$}
+\end{align*}
+
+\end{definition}
+
+\begin{example} The size of a term over $B$ is given by
+
+\begin{align*}
+\card{\varepsilon} &= 1 \\
+\card{\mathtt{0} \cdot x} &= \card{x} + 1 \\
+\card{\mathtt{1} \cdot x} &= \card{x} + 1
+\end{align*}
+
+For instance, $\card{\varepsilon}=1$, $\card{\symb{0}} = 2$,
+$\card{\symb{1}\symb{0}} = 3$, $\card{\symb{1}\symb{0}\symb{1}} = 4$,
+$\card{\symb{1}\symb{0}\symb{1}\symb{0}\symb{1}\symb{0}} = 7$, etc. The fact
+that an empty string has a non-zero size is perhaps intuitively justifiable as
+follows: even the lack of data is data in itself.
+
+Intuitively, the terms of a single-sorted word signature $\Psi$ with $m$
+nullary symbols and $\p{n-m}$ unary symbols span a forest $\mathcal{F}\p{\Psi}$
+of $m$ full $\p{n-m}$-ary trees of unbounded height.
+
+\begin{tikzpicture}[>=Stealth]
+\graph[binary tree layout]{
+  a -> {   
+    b -> { 
+      c -> { 
+        d -> { e, f }, 
+        g 
+      }, 
+    h -> { i, j }
+    },
+    k -> {
+      l -> {
+        m -> { n, o },
+        p -> { q, r }
+      }, 
+      s -> {
+        v -> {w, x},
+        y -> {z}
+      }
+    }
+  }
+};
+\end{tikzpicture}
+
+The number of terms of size $i\in\mathbb{N}$ is the number of nodes of tree
+depth at most $i-1$ in $\mathcal{F}\p{\Psi}$. This is the cumulative sum of the
+number of nodes in $m$ full $\p{n-m}$-ary trees of height $i-1$. It is well
+known that the number of nodes in a full $\p{n-m}$-ary tree of height $\p{i-1}$
+is $\p{n-m}^\p{i-1}-1$. This gives in total, $m \cdot \p{\p{n-m}^\p{i-1}-1}$
+terms of size $i\in\mathbb{N}$.
+
+\end{example}
+
+\begin{definition} Let $\mathcal{T}_\downarrow\p{\Psi}$ denote the
+\textbf{ground terms} over $\Psi$. \end{definition}
+
+\begin{definition} Let $\mathcal{T}_\downarrow\p{\Psi}^{\leq i}$ denote the ground terms
+over $\Psi$ of size at most $i$, m.f.
+
+$$\mathcal{T}_\downarrow\p{\Psi}^{\leq i} \triangleq
+\set{t\in\mathcal{T}_\downarrow\p{\Psi} \st{\card{t} \leq i}}.$$
+
+\end{definition}
+
+The following corollary follows directly from the above definitions:
+
+\begin{corollary}
+
+$$\card{\mathcal{T}_\downarrow\p{\Psi}^{\leq i}} = \card{\Psi^0} +
+\card{\Psi^1}^\p{i-1} = m + \p{n-m}^\p{i-1}$$
+
+\end{corollary}
+
+\begin{example} $\card{\mathcal{T}_\downarrow\p{B}^{\leq i}} = 1 + 2^i$.
+(Recall that we also count the empty string.) \end{example}
+
+As illustrated by \refThm{bprn-fptime-complete}, key to the
+\FPTIME{}-completeness of the characterisation in \cite{cobham-1965} is to
+permit the construction of a value polynomial in size in the size of the input.
+That is, given a term $t \in \mathcal{T}\p{\Psi}$, we want to construct a term
+$u \in \mathcal{T}\p{\Psi}$, such that $p\p{\card{t}} \leq \card{u}$, for some
+polynomial
+
+$$p\p{x}=c_1 \cdot x^{e_1} + c_2 \cdot x^{e_2} + \cdots + c_k \cdot x^{e_k}$$
+ 
+To attain this with primitive recursion on notation, which
+permits only a recursive call depth linear in the size of the input, we need a
+superpolynomial mechanism called the ``smash function'': 
 
 % \begin{definition} Let the size of a term over $\Sigma$ be the number of
 % symbols involved in the construction of the term:
@@ -827,52 +926,43 @@ etc. are all terms over $B$. We will use $B$ in subsequent examples.
 % To get a closed form for the size function, we make a simplifying assumption
 % that there is at most 
 
-% \begin{example} The size of a term over $B$ is given by
-
-% \begin{align*}
-% \card{\varepsilon} &= 1 \\
-% \card{\mathtt{0} \cdot x} &= \card{x} + 1 \\
-% \card{\mathtt{1} \cdot x} &= \card{x} + 1
-% \end{align*}
-
-% For instance, $\card{\varepsilon}=1$, $\card{\symb{0}} = 2$,
-% $\card{\symb{1}\symb{0}} = 3$, $\card{\symb{1}\symb{0}\symb{1}} = 4$,
-% $\card{\symb{1}\symb{0}\symb{1}\symb{0}\symb{1}\symb{0}} = 7$, etc. The fact
-% that an empty string has a non-zero size is intuitively justifiable as even the
-% lack of data is data in itself.
-
-% \end{example}
-
 % \begin{lemma} If $\Sigma$ is a single-sorted signature, then
 % $\card{x}<\card{v_k\p{x}}$ for all $\p{i+1} \leq k \leq j$.  \end{lemma}
 
-The bounding inequality 
-
 \begin{definition} The \textbf{smash function} over a single-sorted word
-signature $\Psi$, with $i$ nullary and $\p{j-i}$ unary symbols, is a binary
-symbol \smashf{}, written in infix notation, with the semantics given by
-$\sem{x \smashf{} y} = i + \p{j-i}^{\card{x}\cdot\card{y}}$.\end{definition}
+signature $\Psi$, with $m$ nullary and $\p{n-m}$ unary symbols, is a binary
+symbol \smashf{}, written in infix notation, with the property that $\card{x
+\smashf{} y} = {\card{x}\cdot\card{y}}$.\end{definition}
 
-\begin{example} The smash function over $B$ is given by $\sem{x \smashf{} y} =
-2^{\card{x} \cdot \card{y}}$. \end{example}
+The usefulness of the smash function is illustrated by the fact that $\card{x
+\smashf{} y} = 2^3$
 
-\begin{definition} A single-sorted word signature $\Sigma = \set{ \mathbf{B},
-\mathbf{V} }$ ``enriched'' with a smash function is $\Sigma^\smashf{} = \set{
-\mathbf{B}, \mathbf{V} \cup \set { \smashf{} : 2 } }$. \end{definition}
+\begin{example} The smash function over $B$ has the semantics $\sem{x \smashf{}
+y} = 2^{\card{x} \cdot \card{y}}$. \end{example}
 
-The semantics of bounded primitive recursion on notation is given by
+\begin{definition} A single-sorted word signature $\Sigma$, extended with a
+smash function is $\Sigma^\smashf{} \triangleq \Sigma \cup \set { \smashf{} : 2
+}$. \end{definition}
 
-$$\sem{\mathtt{BPRN}\p{g_0, \ldots, g_i, g_{i+1}, \ldots, g_j, k}} = f$$
+We now define the operator of bounded primitive recursion on notation, written
+$\mathtt{BPRN}$, having the type:
+
+$$\mathtt{BPRN} : \p{T \rightarrow U}^m \rightarrow \p{S \rightarrow T
+\rightarrow U}^\p{n-m} \rightarrow S \rightarrow T \rightarrow U.$$
+
+The operator has the following semantics:
+
+$$\sem{\mathtt{BPRN}\p{g_0, \ldots, g_m, g_{m+1}, \ldots, g_n, k}} = f$$
 
 where
 
 \begin{align*}
 f\p{c_0,y} &= \sem{g_0}\p{y} \\
           & \vdots \\
-f\p{c_i,y} &= \sem{g_i}\p{y} \\
-f\p{c_{i+1}\p{x},y} &= \sem{g_{i+1}}\p{x,y,f\p{x,y}} \\
+f\p{c_m,y} &= \sem{g_m}\p{y} \\
+f\p{c_{m+1}\p{x},y} &= \sem{g_{m+1}}\p{x,y,f\p{x,y}} \\
           & \vdots \\
-f\p{c_j\p{x},y} &= \sem{g_j}\p{x,y,f\p{x,y}} \\
+f\p{c_n\p{x},y} &= \sem{g_n}\p{x,y,f\p{x,y}} \\
 f\p{x,y} &\leq \sem{k}\p{x,y}
 \end{align*}
 
@@ -889,8 +979,9 @@ characterisation. \cite{cook-1975} uses the original characterisation, but
 refers to proofs in unpublished work.  The first reference to the choice of
 words ``smash function'' seems to be \cite{buss-phd-1985-6}.  \end{remark}
 
-\begin{theorem} The algebra $\algebra{\Sigma}{\mathtt{BPRN}}$ over a
-single-sorted word signature $\Sigma$ is \FPTIME{}-sound.\end{theorem}
+\begin{theorem} \label{thm:bprn-fptime-sound} The algebra
+$\algebra{\Sigma}{\mathtt{BPRN}}$ over a single-sorted word signature $\Sigma$
+is \FPTIME{}-sound.\end{theorem}
 
 \begin{proof} Proof by simulation by an \FPTIME{} TM. \end{proof}
 
@@ -898,7 +989,10 @@ single-sorted word signature $\Sigma$ is \FPTIME{}-sound.\end{theorem}
 $\algebra{\Sigma}{\mathtt{BPRN},\mathtt{\#}}$ over a single-sorted word
 signature $\Sigma$ is \FPTIME{}-complete.\end{theorem}
 
-\begin{proof} Proof by simulation of an \FPTIME{} TM. \end{proof}
+\begin{proof} (Sketch, see also \cite{rose-1984}.) Proof by simulation of an
+\FPTIME{} TM. Performing primitive recursion on notation on $u$, we can
+simulate $p\p{\card{t}}$-time TM, by simulating the transition function of the
+TM with the step function of the primitive recursion. \end{proof}
 
 The crucially unsatisfying aspect of \cite{thm:bprn-fptime-complete} is that it requires a function outside \FPTIME{} to be in the.
 
@@ -1091,6 +1185,11 @@ recompute) a value if it appears more than once in a term --- we could just
 \emph{refer} to the same value. In a programming language without destructive
 assignment, this is perhaps a natural optimization technique. Hence ``trees''
 are really represented as graphs.
+
+\begin{remark} With this generalisation we move away from the conventional
+notion of the \emph{length} of a term $t$ being the cumulative number of
+occurrences of symbols and variables in $t$, as in first-order term
+rewriting\cite{klop-vrijer-2003}. \end{remark}
 
 \begin{example} \cite{dal-lago-et-al-2003} Consider a program $\p{\p{\p{N,T}, N
 \cup T, \set{z : N, s : N \rightarrow N, \mathtt{leaf} : T, \mathtt{node} : T

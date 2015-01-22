@@ -8,6 +8,9 @@
 \usepackage{tikz}
 \usetikzlibrary{calc, chains, decorations.pathmorphing}
 
+\usetikzlibrary{graphs,graphdrawing,arrows.meta}
+\usegdlibrary{trees}
+
 \usepackage{enumitem} % fixed-width description items
 
 \usepackage{stmaryrd} % llbracket, rrbracket
@@ -120,6 +123,7 @@
 }
 
 \DeclareDocumentCommand{\FPTIME}{}{\ensuremath{\mathtt{FPTIME}}}
+\DeclareDocumentCommand{\PTIME}{}{\ensuremath{\mathtt{PTIME}}}
 
 \DeclareDocumentCommand{\algebra}{mm}{\ensuremath{\seq{#1\mathrel{};\mathrel{}#2}}}
 
@@ -136,9 +140,9 @@
 
 \input{feasibility/root}
 
-\input{subpolynomialism/root}
+%\input{subpolynomialism/root}
 
-\input{appendix/root}
+%\input{appendix/root}
 
 \input{references}
 
