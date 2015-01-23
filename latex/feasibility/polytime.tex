@@ -771,6 +771,54 @@ f\p{\vect{x}} = \sem{h}\p{\sem{g_0}\p{\vect{x}}, \sem{g_1}\p{\vect{x}}, \ldots,
 %
 \end{align*}
 
+\begin{definition} Let $\sem{\mathtt{PROJ}} : \set{1,\ldots, n} \times S^n
+\rightarrow S$, for some $n \in \mathbb{N}$, be a \textbf{projection} operator,
+having the semantics $\sem{\mathtt{PROJ}\p{j, e_1,\ldots,e_n}} =
+\sem{e_\sem{j}}$.  \end{definition}
+
+\begin{remark} $\sem{\mathtt{PROJ}}$ is parametric in the type $S$.
+\end{remark}
+
+\begin{definition} Let $\sem{\mathtt{COMP}}$ be a \textbf{composition}
+operator, having the semantics $\sem{\mathtt{COMP}\p{h,g_1,\ldots,g_m}} = f$,
+where $\sem{h} : T^m \rightarrow U$, $\sem{g_1}, \ldots, \sem{g_m} : S^n
+\rightarrow T$, for some $m,n \in \mathbb{N}$, and $f$ has type $S^n
+\rightarrow U$, given by the following recursion scheme, where $\vect{x} =
+x_1,\ldots,x_n$:\begin{align*}
+%
+f\p{\vect{x}} = \sem{h}\p{\sem{g_1}\p{\vect{x}}, \ldots,
+\sem{g_m}\p{\vect{x}}}.
+%
+\end{align*}
+
+\end{definition}
+
+\begin{remark} $\sem{\mathtt{COMP}}$ is parametric in the types $S$, $T$, and
+$U$. \end{remark}
+
+\begin{definition} \cite[p. 21]{smullyan-1961} Let $\sem{\mathtt{EXTR}}$ be an
+\textbf{explicit transformation} operator, having the semantics
+$\sem{\mathtt{EXTR}\p{h,e_1,\ldots,e_m}} = f$, where $\sem{h} : S^m \rightarrow
+T$ and $\sem{e_1}, \ldots, \sem{e_m} : S + \set{1,\ldots,n}$, for some $m,n \in
+\mathbb{N}$. So $\sem{e_i}$ is either $\mathtt{inl} \; s$ for some $s \in S$,
+or $\mathtt{inr} \; j$ for some $j \in \set{1,\ldots, n}$.
+
+The function $f : S^n \rightarrow S$ itself is given by the following recursion
+scheme:\begin{alignat*}{3}
+%
+f\p{x_1,\ldots,x_n} &= \sem{h}\p{g\p{\sem{e_1}},\ldots,g\p{\sem{e_m}}} \\
+%
+& & \text{where} \; g\p{\mathtt{inl} \; s} &= s \\
+%
+& & g\p{\mathtt{inr} \; j} &= x_j
+%
+\end{alignat*}
+
+\end{definition}
+
+\begin{remark} $\sem{\mathtt{EXTR}}$ is parametric in the types $S$ and $T$.
+\end{remark}
+
 \section{Bounded primitive recursion on notation}
 
 Perhaps the most obvious way to characterise \FPTIME{}, is to explicitly bound
@@ -782,12 +830,67 @@ Such a general characterisation appears in the seminal conference paper
 \cite{cobham-1965}, which consequently helped to establish computational
 complexity theory as a field\cite{clote-1999}. The original characterisation
 was given in terms of a single-sorted word signature, in particular, the
-natural numbers in decimal notation. The detailed proofs that this
-characterisation is indeed extensionally sound and complete, appeared later in
-e.g.  \cite{rose-1984}, using decimal notation, and in \cite{tourlakis-1984,
-clote-1999}, using binary notation.
+natural numbers in decimal notation. The following characterisation equivalent
+up to choice of words and (typographic) notation. 
 
 \def\smashf{\ensuremath{\mathtt{\#}}}
+\def\cdotnot{\ensuremath{\cdot}}
+
+\begin{definition} \cite{cobham-1965}
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item Let $\sem{s_i} : \mathbb{N} \rightarrow \mathbb{N}$ be a
+\textbf{generalized successor} operator, having the semantics $\sem{s_i\p{x}} =
+10 \cdot \sem{x} + i$. In particular, $\sem{s_0\p{0}} = 0$, $\sem{s_0\p{1}} =
+10$, $\sem{s_5\p{0}} = 5$, $\sem{s_5\p{1}} = 15$, etc. (Recall that $\sem{n} =
+n$ for all $n \in \mathbb{N}$.)
+
+\item Let $\sem{\mathtt{BPRN}}$ be a \textbf{bounded primitive recursion on
+notation} operator, having the semantics
+$\sem{\mathtt{BPRN}\p{g,h_0,\ldots,h_9,k}} = f$, for some $\sem{g} :
+\mathbb{N}^n \rightarrow \mathbb{N}$, $\sem{h_0}, \ldots, \sem{h_9} :
+\mathbb{N} \times \mathbb{N}^n \times \mathbb{N} \rightarrow \mathbb{N}$ and
+$\sem{k} : \mathbb{N} \times \mathbb{N}^n \rightarrow \mathbb{N}$, where $f$
+has type $\mathbb{N} \times \mathbb{N}^n \rightarrow \mathbb{N}$, and $f$ is
+given by the following recursion scheme, where $\vect{y} =
+y_1,\ldots,y_n$:\begin{align*}
+%
+f\p{s_0\p{0}, \vect{y}} &= \sem{g}\p{\vect{y}} \\
+%
+f\p{s_0\p{x}, \vect{y}} &= \sem{h_0}\p{x, \vect{y}, f\p{x, \vect{y}}} &
+\text{if $x\neq 0$}\\
+%
+f\p{s_i\p{x}, \vect{y}} &= \sem{h_i}\p{x, \vect{y}, f\p{x, \vect{y}}} &
+\text{for $i=1,\ldots,9$} \\
+%
+f\p{x, \vect{y}} &\leq \sem{k}\p{x, \vect{y}}.
+%
+\end{align*}
+
+\item Let $\card{\mathrel{}\cdotnot\mathrel{}} : \mathbb{N} \rightarrow
+\mathbb{N}$ be a \textbf{size function} such that $\card{x} = \log_{10}\p{x}$.
+
+\item Let $\sem{\cdotnot \; \smashf{} \; \cdotnot} : \mathbb{N} \times
+\mathbb{N} \rightarrow \mathbb{N}$ be a \textbf{smash} operator, having the
+semantics $\sem{x \smashf{} y} = \sem{x}^\card{\sem{y}}$.
+
+\item Let $\mathcal{L} = \seq{s_i, \smashf{}, \mathtt{EXTR}, \mathtt{COMP},
+\mathtt{BPRN}}$. That is, $\mathcal{L}$ is the smallest class of functions
+containing the generalized successor and smash functions, closed under the
+operations of explicit transformation, composition, and bounded primitive
+recursion on notation.
+ 
+\end{enumerate}
+
+\end{definition}
+
+The detailed proofs that $\mathcal{L}$ is indeed \FPTIME-sound and
+\FPTIME-complete, appeared later in e.g.  \cite{rose-1984}, using decimal
+notation, and in \cite{tourlakis-1984, clote-1999}, using binary notation.
+
+\begin{lemma} $\mathcal{L}$ is \FPTIME{}-sound and \FPTIME{}-complete.
+\end{lemma}
 
 We give the characterisation in terms of the following:
 
