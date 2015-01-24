@@ -1479,7 +1479,8 @@ operator, having the following semantics:\begin{align*}
 %
 }{
 %
-  \mathtt{sprn}\p{g,-,-}\p{\mathtt{z}, \vect{y} \semic{} \vect{a}} \goesto c
+  \mathtt{sprn}\p{g,h_0,h_1}\p{\mathtt{z}, \vect{y} \semic{} \vect{a}} \goesto
+c
 %
 }\end{align*}\begin{align*}
 %
@@ -1499,7 +1500,8 @@ operator, having the following semantics:\begin{align*}
 
 \item Let $\mathcal{B} = \p{\set{\mathtt{s}_0, \mathtt{s}_1, \mathtt{p}, \pi_j,
 \mathtt{cond}},\set{\mathtt{comp}, \mathtt{sprn}}} $, where $\mathtt{comp}$ is
-as in \refDef{operational-comp}, with $S=\mathbb{N}$ and $T=U=\Box\mathbb{N}$.
+defined as in \refDef{operational-comp}, with $S=\mathbb{N}$ and
+$T=U=\Box\mathbb{N}$.
 
 \end{enumerate}
 
@@ -1508,6 +1510,23 @@ as in \refDef{operational-comp}, with $S=\mathbb{N}$ and $T=U=\Box\mathbb{N}$.
 \begin{remark} The size function is defined as before. In particular, for
 binary notation, $\card{n}=\ceil{\log_2\p{n+1}}$ for all $n \in \mathbb{N}$.
 \end{remark}
+
+\begin{lemma} \label{lem:b-fptime-sound} $\mathcal{B}$ is \FPTIME{}-sound.
+\end{lemma}
+
+\begin{proof} (Sketch, see also \cite{bellantoni-cook-1992}.) By simulating
+$\mathcal{B}$ in $\mathcal{L}$.  \todo{Rest of sketch missing.} \end{proof}
+
+\begin{lemma} \label{lem:b-fptime-complete} $\mathcal{B}$ is
+\FPTIME{}-complete.  \end{lemma}
+
+\begin{proof} (Sketch, see also \cite{bellantoni-cook-1992}.) By simulating
+$\mathcal{L}$ in $\mathcal{B}$. \todo{Rest of sketch missing.} \end{proof}
+
+\begin{theorem} $\mathcal{B}$ captures \FPTIME{}. \end{theorem}
+
+\begin{proof} Follows directly from \refLem{b-fptime-sound} and
+\refLem{b-fptime-complete}. \end{proof}
 
 \subsection{Many-tiered recursion}
 
