@@ -122,7 +122,13 @@
 \DeclareDocumentCommand{\FPTIME}{}{\ensuremath{\mathtt{FPTIME}}}
 \DeclareDocumentCommand{\PTIME}{}{\ensuremath{\mathtt{PTIME}}}
 
+\DeclareDocumentCommand{\goesto}{}{\hookrightarrow}
+
+\DeclareDocumentCommand{\semic}{}{\ensuremath{\mathrel{};\mathrel{}}}
+
 \DeclareDocumentCommand{\algebra}{mm}{\ensuremath{\seq{#1\mathrel{};\mathrel{}#2}}}
+
+\DeclareDocumentCommand{\todo}{m}{{\bfseries\color{red}#1}}
 
 \begin{document}
 
@@ -137,7 +143,7 @@
 
 \input{feasibility/root}
 
-%\input{subpolynomialism/root}
+\input{subpolynomialism/root}
 
 %\input{appendix/root}
 

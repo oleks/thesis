@@ -38,11 +38,24 @@ girard-1998}.
 
 \end{enumerate}
 
-Besides sketching \emph{how well} these methods ``capture'' \PTIME{} or
-\FPTIME{}, their applicability to enforcing subpolynomial time bounds is
-considered.  Space, or at least, value size bounds, often shape the time bounds
-at hand, but are not considered on their own right. This is left to future
-survey work.
+Starting out recursion theoretically, the low order numerals above deal in the
+computation of functions over natural numbers, at best in natural numbers in
+$n$-ary notation.  We explore the horizon of their applicability to more
+colloqial data types, hereunder general lists, trees, graphs, and of course,
+functions.
+
+Bearing similar clothes, recursion theoretic results are notoriously limited in
+algorithmic expressiveness, not least because the leap from ``primitive
+recursion'' to ``general recursion'' (and so to Turing-completeness) can be
+taken by adding a mere ``minimization operator''. It appears that tighter
+characterisations are better thought in studying the use and abuse of values
+throughout a recursion, which is the subject matter of the high order numerals
+above.
+
+Besides sketching ``how well'' these methods ``capture'' \PTIME{} or \FPTIME{},
+their applicability to enforcing subpolynomial time bounds is considered.
+Space, or at least, value size bounds, often shape the time bounds at hand, but
+are not considered on their own right. This is left to future survey work.
 
 In attempt to ``capture'' some subpolynomial time bounds, enriching the
 ``resource type'' of \cite{hofmann-2003, aehlig-schwichtenberg-2002} to

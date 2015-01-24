@@ -771,20 +771,47 @@ f\p{\vect{x}} = \sem{h}\p{\sem{g_0}\p{\vect{x}}, \sem{g_1}\p{\vect{x}}, \ldots,
 %
 \end{align*}
 
-\begin{definition} Let $\sem{\mathtt{PROJ}} : \set{1,\ldots, n} \times S^n
-\rightarrow S$, for some $n \in \mathbb{N}$, be a \textbf{projection} operator,
-having the semantics $\sem{\mathtt{PROJ}\p{j, e_1,\ldots,e_n}} =
-\sem{e_\sem{j}}$.  \end{definition}
+\subsubsection{Projection}
 
-\begin{remark} $\sem{\mathtt{PROJ}}$ is parametric in the type $S$.
+\begin{definition} Let $\sem{\mathtt{PROJ}_j} : S_1 \times \cdots \times S_n
+\rightarrow T$ be a \textbf{generalized projection} operator, having the
+denotational semantics $\sem{\mathtt{PROJ}_j\p{e_1,\ldots,e_n}} = \sem{e_j}$,
+for some $j,n \in \mathbb{N}$, such that $1 \leq j \leq n$.  \end{definition}
+
+\begin{remark} $\sem{\mathtt{PROJ}}$ is parametric in the type $S_1,\ldots,S_n$
+and $T$. In simpler cases, we might let $S_1 = \cdots S_n = S$, and have
+$\sem{\mathtt{PROJ}}$ parametrized in $S$ and $T$; perhaps even let $S = T$.
 \end{remark}
 
+\begin{definition} \label{def:operational-proj} \todo{Not used} Let
+$\mathtt{proj}_j$ be the operational interpretation of $\sem{\mathtt{PROJ}_j}$,
+having in particular, the following semantics:\begin{align*}
+%
+\axiom{ \mathtt{proj}_j\p{x_1,\ldots,x_{n}} \goesto x_j }
+%
+\end{align*}
+
+\end{definition}
+
+\subsubsection{Composition}
+
 \begin{definition} Let $\sem{\mathtt{COMP}}$ be a \textbf{composition}
-operator, having the semantics $\sem{\mathtt{COMP}\p{h,g_1,\ldots,g_m}} = f$,
-where $\sem{h} : T^m \rightarrow U$, $\sem{g_1}, \ldots, \sem{g_m} : S^n
-\rightarrow T$, for some $m,n \in \mathbb{N}$, and $f$ has type $S^n
-\rightarrow U$, given by the following recursion scheme, where $\vect{x} =
-x_1,\ldots,x_n$:\begin{align*}
+operator, having the denotational semantics
+$\sem{\mathtt{COMP}\p{h,g_1,\ldots,g_m}} = f$, for some $m,n\in \mathbb{N}$,
+where \begin{align*}
+%
+\sem{h} & : T_1 \times \cdots \times T_m \rightarrow U \\
+%
+\sem{g_1} & : S_1 \times \cdots \times S_n \rightarrow T_1 \\
+%
+& \ldots \\
+%
+\sem{g_m} & : S_1 \times \cdots \times S_n \rightarrow T_m \\
+%
+f & : S_1 \times \cdots \times S_n \rightarrow U
+%
+\end{align*} and $f$ is given by the following recursion scheme, where
+$\vect{x} = x_1,\ldots,x_n$:\begin{align*}
 %
 f\p{\vect{x}} = \sem{h}\p{\sem{g_1}\p{\vect{x}}, \ldots,
 \sem{g_m}\p{\vect{x}}}.
@@ -793,8 +820,33 @@ f\p{\vect{x}} = \sem{h}\p{\sem{g_1}\p{\vect{x}}, \ldots,
 
 \end{definition}
 
-\begin{remark} $\sem{\mathtt{COMP}}$ is parametric in the types $S$, $T$, and
-$U$. \end{remark}
+\begin{remark} $\sem{\mathtt{COMP}}$ is parametric in the types
+$S_1,\ldots,S_n$, $T_1,\ldots,T_m$, and $U$. In simpler cases, we might let
+$S_1 = \cdots = S_n = S$ and let $T_1 = \cdots T_m = T$, and have
+$\sem{\mathtt{COMP}}$ parametrized in $S$, $T$, and $U$; perhaps even let
+$S=T=U$. \end{remark}
+
+\begin{definition} \label{def:operational-comp} Let $\mathtt{comp}$ be the
+operational interpretation of $\sem{\mathtt{COMP}}$, having in particular, the
+following operational semantics, where $\vect{x} = x_1, \ldots,
+x_n$:\begin{align*}
+%
+\judgement{
+%
+  g_1\p{\vect{x}} \goesto y_1 \quad \cdots \quad g_m\p{\vect{x}} \goesto y_m
+\quad h\p{y_1,\ldots, y_m} \goesto z
+%
+}{
+%
+  \mathtt{comp}\p{h,g_1,\ldots,g_m}\p{\vect{x}} \goesto z
+%
+}
+%
+\end{align*}
+
+\end{definition}
+
+\subsubsection{Explicit Transformation}
 
 \begin{definition} \cite[p. 21]{smullyan-1961} Let $\sem{\mathtt{EXTR}}$ be an
 \textbf{explicit transformation} operator, having the semantics
@@ -819,6 +871,18 @@ f\p{x_1,\ldots,x_n} &= \sem{h}\p{g\p{\sem{e_1}},\ldots,g\p{\sem{e_m}}} \\
 \begin{remark} $\sem{\mathtt{EXTR}}$ is parametric in the types $S$ and $T$.
 \end{remark}
 
+$\sem{\mathtt{EXTR}}$ is a generalized substitution operator. Using
+$\sem{\mathtt{EXTR}}$, we can obtain not only $\sem{\mathtt{PROJ}}$ and
+$\sem{\mathtt{COMP}}$, but also identity and permutation functions.  On the
+other hand, we can obtain $\sem{\mathtt{EXTR}}$ from $\sem{\mathtt{PROJ}}$,
+$\sem{\mathtt{COMP}}$, and the {\bfseries \color{red} initial operators}
+\cite{rose-1984}. The theorem follows:
+
+\begin{theorem}\label{thm:extr-comp-proj} $\p{\Sigma,\set{\mathtt{EXTR}} \cup
+O} = \p{\Sigma,\set{\mathtt{COMP}, \mathtt{PROJ}} \cup O}$. \end{theorem}
+
+\begin{proof} \todo{Missing} \end{proof}
+
 \section{Bounded primitive recursion on notation}
 
 Perhaps the most obvious way to characterise \FPTIME{}, is to explicitly bound
@@ -831,7 +895,7 @@ Such a general characterisation appears in the seminal conference paper
 complexity theory as a field\cite{clote-1999}. The original characterisation
 was given in terms of a single-sorted word signature, in particular, the
 natural numbers in decimal notation. The following characterisation equivalent
-up to choice of words and (typographic) notation. 
+up to choice of words and notation. 
 
 \def\smashf{\ensuremath{\mathtt{\#}}}
 \def\cdotnot{\ensuremath{\cdot}}
@@ -869,7 +933,8 @@ f\p{x, \vect{y}} &\leq \sem{k}\p{x, \vect{y}}.
 \end{align*}
 
 \item Let $\card{\mathrel{}\cdotnot\mathrel{}} : \mathbb{N} \rightarrow
-\mathbb{N}$ be a \textbf{size function} such that $\card{x} = \log_{10}\p{x}$.
+\mathbb{N}$ be a \textbf{size function} such that $\card{x} =
+\ceil{\log_{10}\p{x+1}}$.
 
 \item Let $\sem{\cdotnot \; \smashf{} \; \cdotnot} : \mathbb{N} \times
 \mathbb{N} \rightarrow \mathbb{N}$ be a \textbf{smash} operator, having the
@@ -885,12 +950,71 @@ recursion on notation.
 
 \end{definition}
 
-The detailed proofs that $\mathcal{L}$ is indeed \FPTIME-sound and
-\FPTIME-complete, appeared later in e.g.  \cite{rose-1984}, using decimal
-notation, and in \cite{tourlakis-1984, clote-1999}, using binary notation.
+The detailed proofs that $\mathcal{L}$ is \FPTIME-sound and \FPTIME-complete,
+appeared later in e.g.  \cite{rose-1984,clote-1999} using binary notation, and
+in \cite{tourlakis-1984} using $n$-ary notation for any $n>1$.  The proofs are
+sketched below. 
 
-\begin{lemma} $\mathcal{L}$ is \FPTIME{}-sound and \FPTIME{}-complete.
+Firstly, as we go from decimal to binary, or, in general, to $n$-ary notation,
+we need to adequately change the size function:
+
+\begin{definition} For $n$-ary notation, for any $n>1$, let the size function be
+given as $\card{x} = \ceil{\log_n\p{x+1}}$. As for the special cases, for
+$n=1$, let $\card{x}=x$, and for $n=0$, let $\card{x}=0$.  \end{definition}
+
+Two other prominent changes are often done to the definition of $\mathcal{L}$
+(see e.g. \cite{rose-1984, buss-phd-1985-6, bellantoni-cook-1992, clote-1999},
+but somewhat surprisingly, not \cite{tourlakis-1984}):
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item $\sem{\mathtt{EXTR}}$ is replaced by $\sem{\mathtt{PROJ}}$. In the
+presence of $\sem{\mathtt{COMP}}$, by \refThm{extr-comp-proj}, this is
+admissible.
+
+\item For binary notation, the smash operator, is instead given the semantics
+$\sem{x \smashf{} y} = 2^{\card{\sem{x}} \cdot \card{\sem{y}}}$. For binary
+notation, we have $s^\card{t} = \p{2^{\log_2{s}}}^\card{t} \leq
+\p{2^{\ceil{\log_2\p{s+1}}}}^\card{t} = \p{2^\card{s}}^\card{t} = 2^{\card{s}
+\cdot \card{t}}$, so this too, is admissible\footnote{The diligent reader might
+find it peculiar that polynomial time is stable under small perturbations of
+``smash''; contrast the proofs in \cite{tourlakis-1984} and
+\cite{clote-1999}.}.
+
+\end{enumerate}
+
+The latter choice of smash operator is perhaps best motivated by the fact that,
+for binary notation, $\card{2^{p\p{\card{s}}}} = p\p{\card{s}}$, for any
+monotone polynomial $p$.
+
+Such a smash operator, in the context of $n$-ary notation,  perhaps more
+naturally admits the construction of a value of size $p\p{\card{s}}$, given a
+value of the size $\card{s}$. In particular, with this notion of smash,
+
+$$\card{\sem{\underbrace{x \smashf{} \cdots \smashf{} x}_{\text{$k$ times}}}} =
+\card{\sem{x}}^k.$$
+
+\begin{lemma} \label{lem:l-fptime-sound} $\mathcal{L}$ is \FPTIME{}-sound.
 \end{lemma}
+
+\begin{proof} (Sketch, see also \cite{rose-1984, tourlakis-1984, clote-1999}.)
+Proof by simulation of $\mathcal{L}$ on an \FPTIME{} TM.  \todo{Rest of sketch
+missing.} \end{proof}
+
+\begin{lemma} \label{lem:l-fptime-complete} $\mathcal{L}$ is
+\FPTIME{}-complete. \end{lemma}
+
+\begin{proof} (Sketch, see also \cite{rose-1984}.) Proof by simulation of an
+\FPTIME{} TM in $\mathcal{L}$. Performing primitive recursion on notation on
+$u$, we can simulate $p\p{\card{t}}$-time TM, by simulating the transition
+function of the TM with the step function of the primitive recursion.
+\todo{Rest of sketch missing.} \end{proof}
+
+\begin{theorem} \label{thm:l-captures-fptime} $\mathcal{L}$ captures \FPTIME{}.
+\end{theorem}
+
+\begin{proof} Follows directly from \refLem{l-fptime-sound} and
+\refLem{l-fptime-complete}. \end{proof}
 
 We give the characterisation in terms of the following:
 
@@ -1016,7 +1140,8 @@ $$\card{\mathcal{T}_\downarrow\p{\Psi}^{\leq i}} = m \cdot \iverson{i>0}$$
 \begin{proof} For any $i$, consider the forest
 $\mathcal{F}_\downarrow\p{\Psi}^{< i}$. If $i=0$, the forest has $0$ nodes.  If
 $i>0$, the forest has exactly $m$ nodes. \end{proof}
-
+ of the methods
+surveyed to conventional data types in general, in particular, 
 \begin{theorem} For a single-sorted word signature $\Psi$, having exactly one
 unary symbol, so $\p{n-m}=1$, e.g. the Peano naturals, we have
 
@@ -1101,79 +1226,13 @@ f\p{c_n\p{x},y} &= \sem{g_n}\p{x,y,f\p{x,y}} \\
 f\p{x,y} &\leq \sem{k}\p{x,y}
 \end{align*}
 
-We now characterise \FPTIME{} as the function algebra
-$\algebra{\Sigma^\smashf{}}{\mathtt{COMP}, \mathtt{BPRN}}$.
-
-\begin{remark} \cite{cobham-1965} originally characterised \FPTIME{} using the
-function $x^\card{y}$, i.e. $x$ concatenated with itself $\card{y}$ times, in
-place of a ``smash'' function as above. Of course, in case of binary notation,
-$x^\card{y} = \p{2^{\log_2{x}}}^\card{y} \leq \p{2^{\ceil{\log_2\p{x+1}}}}^\card{y}
-= \p{2^\card{x}}^\card{y} = 2^{\card{x} \cdot \card{y}}$, and $x^\card{y}$ is
-still not in \FPTIME{}, but we have not seen any proofs using this original
-characterisation. \cite{cook-1975} uses the original characterisation, but
-refers to proofs in unpublished work.  The first reference to the choice of
-words ``smash function'' seems to be \cite{buss-phd-1985-6}.  \end{remark}
-
-\begin{theorem} \label{thm:bprn-fptime-sound} The algebra
-$\algebra{\Sigma}{\mathtt{BPRN}}$ over a single-sorted word signature $\Sigma$
-is \FPTIME{}-sound.\end{theorem}
-
-\begin{proof} Proof by simulation by an \FPTIME{} TM. \end{proof}
-
-\begin{theorem} \label{thm:bprn-fptime-complete} The algebra
-$\algebra{\Sigma}{\mathtt{BPRN},\mathtt{\#}}$ over a single-sorted word
-signature $\Sigma$ is \FPTIME{}-complete.\end{theorem}
-
-\begin{proof} (Sketch, see also \cite{rose-1984}.) Proof by simulation of an
-\FPTIME{} TM. Performing primitive recursion on notation on $u$, we can
-simulate $p\p{\card{t}}$-time TM, by simulating the transition function of the
-TM with the step function of the primitive recursion. \end{proof}
-
-The crucially unsatisfying aspect of \cite{thm:bprn-fptime-complete} is that it requires a function outside \FPTIME{} to be in the.
-
 % In 1964 Cobham [C] gave the first recursion-theoretic characterization of
 % polynomial time, using a recursion whose depth was the binary length of the
 % number being recursed on, and using explicit polynomial bounds to control the
 % size of the output.\cite{bellantoni-phd-1992}.
 
-Although bounded primitive recursion has led to some interesting work
-\cite{cook-1975, buss-phd-1985-6, cook-urquhart-1993}, the bounds are enforced
-in an ``extensional'' manner, rather than being an ``intensional'' property of
-the system. This statement is intensionally vague. To put a bounded primitive
-recursive function to good use, we need to \emph{prove} the bounding inequality
-of the function definition. This leads to grave complications in the cited
-work, but is sometimes outwitted (see \cite{cook-urquhart-1993}) by changing
-the semantics of $\mathtt{BPRN}$ to simply cut off at overflow.
-
 % recursion scheme over an inductively or coinductively defined data type (an
 % algebra).
-
-% recursion schemes in multiple variables?
-
-% recursion scheme over   a
-
-\begin{specification} A function $f : B \rightarrow \vect{B} \rightarrow B$
-over a single-sorted word algebra over the signature $\p{\set{B},\set{B, B
-\rightarrow B},\mathbf{V}}$, is given by \textbf{bounded primitive recursion on
-notation} using the following recursion scheme:
-
-\begin{align}
-%
-f\p{v_i, \vect{y}} &\leadsto g_i\p{v_i, \vect{y}} & \text{for all $\set{v_i \in
-\mathbf{V} \st{ v_i : B}}$} \\
-%
-f\p{v_j\p{x}, \vect{y}} &\leadsto h_j\p{x, \vect{y}, f\p{x, \vect{y}}} &
-\text{for all $\set{v_j \in \mathbf{V} \st{ v_j : B \rightarrow B}}$}
-%
-\end{align}
-
-where for each $v_i : B$ we have $g_i : B \rightarrow \vect{B} \rightarrow B$,
-and for each $v_j : B \rightarrow B$ we have $h_j : B \rightarrow \vect{B}
-\rightarrow B \rightarrow B$, and lastly, there is the \emph{semantic}
-requirement that $f\p{x,\vect{y}} \leq k\p{x,\vect{y}}$ for some $k : B
-\rightarrow \vect{B} \rightarrow B$, for all $x \in B$.
-
-\end{specification}
 
 \begin{remark} It seems a bit superfluous to deal in the additional argument
 vector $\vect{y}$ which we simply pass down to our base and step functions.
@@ -1182,34 +1241,52 @@ functions.  Although not important to the recursion scheme, we will soon take
 the stance that the arguments in $\vect{y}$ are of a different ``nature'' than
 the arguments we recur on.\end{remark}
 
-It seems straight forward to generalize bounded primitive recursion on notation
-to many-sorted free algebras, although we have not seen others do this:
+% It seems straight forward to generalize bounded primitive recursion on notation
+% to many-sorted free algebras.
 
-\begin{specification} Given a single-sorted algebra over the signature
-$\p{\mathbf{B},\set{\rightarrow},\mathcal{C}}$, a function $f : S \rightarrow
-U$ is given by \textbf{bounded primitive recursion on notation}, if it is given
-by the scheme
+% \begin{definition} A function is \textbf{bounded primitive recursive} if it is
+% given by an algebra closed under composition and bounded primitive recursion.
+% \end{definition}
 
-\begin{align}
-%
-f\p{c_i} &\leadsto g_i\p{c_i} & \text{for all $\set{c_i \in \mathcal{C} \st{ c_i :
-S}}$} \\
-%
-f\p{c_j\p{\vect{x}}} &\leadsto h_j\p{\vect{x}} & \text{for all $\set{c_j \in
-\mathcal{C} \st{ c_j : \vect{T} \rightarrow S}}$}
-%
-\end{align}
 
-where for each $c_i : S$ we have $g_i : S \rightarrow U$, and for each $c_j :
-\vect{T} \rightarrow S$ we have $h_j : \vect{T} \rightarrow U$, and lastly,
-there is the \emph{semantic} requirement that $f\p{s} \leq k\p{s}$ for some $k
-: S \rightarrow V$.
+Although bounded primitive recursion on notation has led to some interesting
+work \cite{cook-1975, buss-phd-1985-6, cook-urquhart-1993}, it is generally
+discarded\cite{bellantoni-cook-1992}, based on either that:
 
-\end{specification}
+\begin{enumerate}[label=(\arabic*)]
 
-\begin{definition} A function is \textbf{bounded primitive recursive} if it is
-given by an algebra closed under composition and bounded primitive recursion.
-\end{definition}
+\item the smash operator is not ``small''; or
+
+\item the bounds are enforced in an ``extensional'' manner, rather than being
+an ``intensional'' property of the system.
+
+\end{enumerate}
+
+The first trouble is perhaps best delineated by \cite{cobham-1965} himself.
+Neither $x^\card{y}$ for $n$-ary notation, nor $2^{\card{x} \cdot \card{y}}$
+for binary notation, is in $\mathcal{E}^2$, i.e. the second level of the
+so-called Grzegorczyk hierarchy\cite{grzegorczyk-1953}. Specifically,
+$\mathcal{E}^2$ is \todo{the smallest class of functions over $n$-ary notation,
+containing multiplication}, and closed under the operations of explicit
+transformation, composition and bounded primitive recursion. In other words, we
+cannot smash in linear space, that is, using an $O\p{\card{x}+\card{y}}$-space
+Turing machine\cite{ritchie-1963}. On the other hand, \cite{buss-phd-1985-6}
+finds the use of \smashf{} ``natural and elegant'', as it has precisely the
+growth rate necessary to fund the \todo{polynomial-time hierarchy}.
+
+As to the other trouble, to put a $\mathtt{BPRN}$ operator to good use, we need
+to prove that the bounding inequality is satisfied.  This leads to grave
+complications in the cited work, but is sometimes outwitted (see e.g.
+\cite{cook-urquhart-1993}) by changing the semantics of $\mathtt{BPRN}$ to
+simply cut off at overflow. This is perhaps indifferent to a classical
+characterisation of \FPTIME{}.
+
+Considering the techniques one might employ for proving such a bound, one
+quickly finds oneself counting and guessing, rather than the bound being
+``guaranteed by construction''.  It is perhaps this quality that makes bounded
+primitive recursion on notation inherently ``inintrinsic'', rather than the
+mere fact that the bounds are stated explicitly, as criticised by e.g.
+\cite{hofmann-2000a}.
 
 \section{Predicative recursion}
 
@@ -1241,39 +1318,196 @@ appears prevalent in mathematics.) Our motivation is due to
 motivated by \cite{bellantoni-phd-1992}.
 
 The use of the term ``predicative'' itself is due to \cite{russell-1907}, who
-suggested a ``predicative'' theory of sets in order to deal with the paradoxes
-of na\"ive set theory. Informally, the definition of an entity is
+suggested a ``predicative'' theory of sets to deal with the plaguing paradoxes
+in na\"ive set theory. Informally, the definition of an entity is
 ``impredicative''\cite{goedel-1944}, if it refers (directly, or indirectly) to
-a totality to which the entity being defined belongs. Two classical examples of
-an impredicative definition gone rogue are Russell's and the Liar paradoxes: 
+a totality to which the entity being defined itself belongs. Recursive
+definitions fall squarely into such totalities. 
 
-\begin{description}
+The refinement due in this section is based on the idea that the values we
+recur on in a recursive definition are of a ``different nature'' from the
+rest\cite{caseiro-1996}. Consequently, a segregation of values must commence.
+\todo{Segregation is done on the input values. Distinction between two-tiered
+and many-tiered recursion (and mu measure?).}
 
-\item [Russell's paradox] Define the set $R$ to be the set of all sets which
-are not members of themselves. If $R$ is a member of itself, then it should not
-be a member of itself; if it is not a member of itself, then it should be a
-member of itself. Paradox by indirect self-reference.
+% Two classical examples of an impredicative definition gone rogue are
+% Russell's and the Liar paradoxes: 
 
-\item [Liar paradox] Define the liar sentence ``This sentence is false.'' If
-the sentence is true, then it is false; if it is false, then it is true.
-Paradox by direct self-reference.
+% \begin{description}
 
-\end{description} 
+% \item [Russell's paradox] Define the set $R$ to be the set of all sets which
+% are not members of themselves. If $R$ is a member of itself, then it should
+% not be a member of itself; if it is not a member of itself, then it should be
+% a member of itself. Paradox by indirect self-reference.
+
+% \item [Liar paradox] Define the liar sentence ``This sentence is false.'' If
+% the sentence is true, then it is false; if it is false, then it is true.
+% Paradox by direct self-reference.
+
+% \end{description} 
 
 
-
-This is achieved by ``segregating the variables''.
-
-Variables that we recur on are of a different nature.
 
 \subsection{Two-tiered recursion}
 
-Two-tiered recursion is also referred to as ``safe recursion'' and was
-independently introduced in \cite{simmons-1988}, \cite{leivant-1990}, and
-\cite{bellantoni-cook-1992}. The general idea is an application of the idea that the variables we recur in a recursion scheme are of a different ``nature'' than the variables we don't recur on.
+Two-tiered recursion, also referred to as ``safe'' or ``controlled'' recursion,
+was independently introduced in \cite{simmons-1988}, \cite{leivant-1990}, and
+\cite{bellantoni-cook-1992}, and generally attributed to the latter.
 
+The idea, as indicated above, is to segregate the values into ``normal'' and
+``safe'' values. The normal values are assumed known in their totality. The
+safe values are those (perhaps) obtained by impredicative means, i.e. via
+recursion\cite{bellantoni-cook-1992, clote-1999}. Safely, as in, without
+exceeding \FPTIME{}.
 
-Although the original presentation and proofs were in terms of a single-sorted word algebra, as noted in \cite[\textsection 5]{bellantoni-cook-1992}, the results generalise in a straight-forward manner to 
+The variables are segregated purely syntactically, e.g. using a semicolon. In
+particular, if $f$ is an $m+n$-ary symbol, with $m$ normal inputs and $n$ safe
+inputs, it is written as $f\p{x_1,\ldots,x_m \semic{} x_{m+1},\ldots,x_{m+n}}$,
+where $x_1,\ldots,x_m$ are the $m$ normal inputs, and $x_{m+1},\ldots,x_{m+n}$
+are the $n$ safe inputs. If the eloquent programmer finds the explicit
+segregation ineloquent, the segregation can be inferred from how the values
+$x_1,\ldots,x_n$ are used\cite{caseiro-1996}.
+
+The characterisation in \cite{bellantoni-cook-1992} is again given in terms of
+a single-sorted word signature, in particular, the natural numbers in binary
+notation. We give a characterisation equivalent up to choice of words and
+notation, except that
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item we give a (syntax-directed) operational semantics of the operators to
+emphasise the syntactic nature of the characterisation; and
+
+\item we make the distinction between normal and safe inputs explicit in the
+type system, as suggested in \cite[\textsection\ 5]{bellantoni-cook-1992}.
+
+\end{enumerate}
+
+\begin{definition} \cite{bellantoni-cook-1992}
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item Let $\mathbb{N}$ and $\Box\mathbb{N}$ denote the normal and safe data
+types, respectively.
+
+\item Let $\mathtt{z} : \Box\mathbb{N}$ be a \textbf{constant} operator, having
+the following semantics:$$
+%
+\axiom{ \mathtt{z} \goesto \repr{0} }
+%
+$$
+
+\item Let $\mathtt{s}_0,\mathtt{s}_1 : \Box\mathbb{N} \rightarrow
+\Box\mathbb{N}$ be (binary) \textbf{successor} operators, having the following
+semantics:$$
+%
+\judgement{ a \goesto \repr{n} }{
+%
+  \mathtt{s}_0\p{\semic{} a} \goesto \repr{2n}
+%
+} \quad
+%
+\judgement{ a \goesto \repr{n} }{
+%
+  \mathtt{s}_1\p{\semic{} a} \goesto \repr{2n + 1}
+%
+}
+%
+$$
+
+\item Let $\mathtt{p} : \Box\mathbb{N} \rightarrow \Box\mathbb{N}$ be a
+(binary) \textbf{predecessor} operator, having the following semantics: $$
+%
+\axiom{
+%
+  \mathtt{p}\p{\semic{} \mathtt{z}} \goesto \repr{0}
+%
+}
+%
+\quad\axiom{
+%
+  \mathtt{p}\p{\semic{} \mathtt{s}_i\p{\semic{} a}} \goesto a
+%
+}\p{\text{for $i \in \set{0,1}$}}
+%
+$$
+
+\item Let $\pi_j : \mathbb{N}^m \times \Box\mathbb{N}^n \rightarrow
+\Box\mathbb{N}$ be a generalized (safe) \textbf{projection} operator, for all
+$1 \leq j \leq m+n$, given by the following semantics:$$
+%
+\axiom{ \pi_j\p{x_1,\ldots,x_m \semic{} x_{m+1},\ldots,x_{m+n}} \goesto x_j }
+%
+$$
+
+Note, in particular, $\pi_j$ projects the input safe, and so $\pi_j$ is
+\emph{not} a mere operational interpretation of the generalized projection
+operator $\sem{\mathtt{PROJ}_j}$.
+
+\item Let $\mathtt{cond} : \Box\mathbb{N} \times \Box\mathbb{N} \times
+\Box\mathbb{N} \rightarrow \Box\mathbb{N}$ be a (safe) \textbf{conditional}
+operator, having the following semantics:$$
+%
+\judgement{
+%
+  a \goesto \repr{n} \quad b \goesto m
+%
+}{
+%
+  \mathtt{cond}\p{\semic{} a, b, c} \goesto m
+%
+}\p{n \bmod 2 = 0}
+%
+\quad\judgement{
+%
+  a \goesto \repr{n} \quad c \goesto m
+%
+}{
+%
+  \mathtt{cond}\p{\semic{} a, b, c} \goesto m
+%
+}\p{n \bmod 2 \neq 0}
+%
+$$
+
+\item Let $\mathtt{sprn}$ be a \textbf{safe primitive recursion on notation}
+operator, having the following semantics:\begin{align*}
+%
+\judgement{
+%
+  g\p{\vect{y} \semic{} \vect{a}} \goesto c
+%
+}{
+%
+  \mathtt{sprn}\p{g,-,-}\p{\mathtt{z}, \vect{y} \semic{} \vect{a}} \goesto c
+%
+}\end{align*}\begin{align*}
+%
+\judgement{
+%
+  h_i\p{x, \vect{y} \semic{} \vect{a}, \mathtt{sprn}\p{g,h_0,h_1}\p{x,\vect{y}
+\semic{} \vect{a}}} \goesto c
+%
+}{
+%
+  \mathtt{sprn}\p{g,h_0,h_1}\p{\mathtt{s}_i\p{x}, \vect{y} \semic{} \vect{a}}
+\goesto c
+%
+}\p{\text{for $i\in\set{0,1}$}}
+%
+\end{align*}
+
+\item Let $\mathcal{B} = \p{\set{\mathtt{s}_0, \mathtt{s}_1, \mathtt{p}, \pi_j,
+\mathtt{cond}},\set{\mathtt{comp}, \mathtt{sprn}}} $, where $\mathtt{comp}$ is
+as in \refDef{operational-comp}, with $S=\mathbb{N}$ and $T=U=\Box\mathbb{N}$.
+
+\end{enumerate}
+
+\end{definition}
+
+\begin{remark} The size function is defined as before. In particular, for
+binary notation, $\card{n}=\ceil{\log_2\p{n+1}}$ for all $n \in \mathbb{N}$.
+\end{remark}
 
 \subsection{Many-tiered recursion}
 
