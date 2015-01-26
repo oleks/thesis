@@ -35,6 +35,7 @@ else
   COMMAND="\\input{$BASENAME}"
 fi
 
+(cd $OUTDIR && makeindex $JOBNAME)
 pdflatex -output-directory=$OUTDIR -file-line-error \
   -jobname $JOBNAME \
   $COMMAND

@@ -776,7 +776,7 @@ f\p{\vect{x}} = \sem{h}\p{\sem{g_0}\p{\vect{x}}, \sem{g_1}\p{\vect{x}}, \ldots,
 \label{sec:generalised-projection}
 
 \begin{definition} Let $\sem{\mathtt{PROJ}_j} : S_1 \times \cdots \times S_n
-\rightarrow T$ be a \textbf{generalized projection} operator, having the
+\rightarrow T$ be a \textbf{generalised projection} operator, having the
 denotational semantics $\sem{\mathtt{PROJ}_j\p{e_1,\ldots,e_n}} = \sem{e_j}$,
 for some $j,n \in \mathbb{N}$, such that $1 \leq j \leq n$.  \end{definition}
 
@@ -874,7 +874,7 @@ f\p{x_1,\ldots,x_n} &= \sem{h}\p{g\p{\sem{e_1}},\ldots,g\p{\sem{e_m}}} \\
 \begin{remark} $\sem{\mathtt{EXTR}}$ is parametric in the types $S$ and $T$.
 \end{remark}
 
-$\sem{\mathtt{EXTR}}$ is a generalized substitution operator. Using
+$\sem{\mathtt{EXTR}}$ is a generalised substitution operator. Using
 $\sem{\mathtt{EXTR}}$, we can obtain not only $\sem{\mathtt{PROJ}}$ and
 $\sem{\mathtt{COMP}}$, but also identity and permutation functions.  On the
 other hand, we can obtain $\sem{\mathtt{EXTR}}$ from $\sem{\mathtt{PROJ}}$,
@@ -888,7 +888,16 @@ O} = \p{\Sigma,\set{\mathtt{COMP}, \mathtt{PROJ}} \cup O}$. \end{theorem}
 
 \subsubsection{Primitive Recursion}
 
-Motivated by \cite{leivant-1995}, we define the following:
+\index{base functions}
+\index{step functions}
+\index{recurrence!functions}
+\index{recurrence!argument}
+\index{critical arguments}
+
+Motivated by \cite{leivant-1995}, we introduce a generalised form of primitive
+recursion, also referred to as ``structural recursion''\cite{hofmann-2002}:
+
+\index{recursion!primitive} \index{recursion!structural|see {primitive}}
 
 \begin{definition} Let $\mathbf{T} \triangleq T_1 \times \cdots \times T_n$,
 and let $\mathbf{U} \triangleq U_1 \times \cdots \times U_m$, for some $m, n
@@ -912,6 +921,16 @@ f\p{c_1\p{\vect{x}},\vect{y}} = \sem{g_n}\p{\vect{x}, f\p{x_1,
 
 \end{definition}
 
+\todo{base function}
+
+\todo{step function}
+
+\todo{recurrence argument}
+
+\todo{critical arguments}
+
+\todo{recurrence functions}
+
 \section{Bounded primitive recursion on notation}
 
 Perhaps the most obvious way to characterise \FPTIME{}, is to explicitly bound
@@ -934,7 +953,7 @@ up to choice of words and notation.
 \begin{enumerate}[label=(\arabic*)]
 
 \item Let $\sem{s_i} : \mathbb{N} \rightarrow \mathbb{N}$ be a
-\textbf{generalized successor} operator, having the semantics $\sem{s_i\p{x}} =
+\textbf{generalised successor} operator, having the semantics $\sem{s_i\p{x}} =
 10 \cdot \sem{x} + i$. In particular, $\sem{s_0\p{0}} = 0$, $\sem{s_0\p{1}} =
 10$, $\sem{s_5\p{0}} = 5$, $\sem{s_5\p{1}} = 15$, etc. (Recall that $\sem{n} =
 n$ for all $n \in \mathbb{N}$.)
@@ -971,7 +990,7 @@ semantics $\sem{x \smashf{} y} = \sem{x}^\card{\sem{y}}$.
 
 \item Let $\mathcal{L} = \seq{s_i, \smashf{}, \mathtt{EXTR}, \mathtt{COMP},
 \mathtt{BPRN}}$. That is, $\mathcal{L}$ is the smallest class of functions
-containing the generalized successor and smash functions, closed under the
+containing the generalised successor and smash functions, closed under the
 operations of explicit transformation, composition, and bounded primitive
 recursion on notation.
  
@@ -1323,7 +1342,7 @@ primitive recursion on notation inherently ``inintrinsic'', rather than the
 mere fact that the bounds are stated explicitly, as criticised by e.g.
 \cite{hofmann-2000a}.
 
-\section{Predicative recursion}
+\section{Predicative Recursion}
 
 \begin{quotation}
 
@@ -1358,6 +1377,11 @@ in na\"ive set theory. Informally, the definition of an entity is
 ``impredicative''\cite{goedel-1944}, if it refers (directly, or indirectly) to
 a totality to which the entity being defined itself belongs. Recursive
 definitions fall squarely into such totalities. 
+
+\todo{It is forbidden to do recursion on a critical argument, i.e.
+specifically, the result of a self-recursive call.}
+
+\todo{Set theory moved away from predicativity by restricting comprehension.}
 
 The refinement due in this section is based on the idea that the values we
 recur on in a recursive definition are of a ``different nature'' from the
@@ -1468,7 +1492,7 @@ $$
 $$
 
 \item Let $\pi_j : \mathbb{N}^m \times \Box\mathbb{N}^n \rightarrow
-\Box\mathbb{N}$ be a generalized (safe) \textbf{projection} operator, for all
+\Box\mathbb{N}$ be a generalised (safe) \textbf{projection} operator, for all
 $1 \leq j \leq m+n$, given by the following semantics:$$
 %
 \axiom{ \pi_j\p{x_1,\ldots,x_m \semic{} x_{m+1},\ldots,x_{m+n}} \goesto x_j }
@@ -1476,7 +1500,7 @@ $1 \leq j \leq m+n$, given by the following semantics:$$
 $$
 
 Note, in particular, $\pi_j$ projects the input safe, and so $\pi_j$ is
-\emph{not} a mere operational interpretation of the generalized projection
+\emph{not} a mere operational interpretation of the generalised projection
 operator $\sem{\mathtt{PROJ}_j}$.
 
 \item Let $\mathtt{cond} : \Box\mathbb{N} \times \Box\mathbb{N} \times
@@ -1711,8 +1735,8 @@ algebra over the signature $\p{\set{N}, \set{\rightarrow},\set{\mathtt{0} : N,
 
 This is sufficient to deal in all finite types and string types, e.g.  the
 peano numbers or binary strings. Making our way towards mixed data types and
-tuples, \cite{marion-2003} generalized tiered recursion to simple algebras.
- 
+tuples, \cite{marion-2003} generalised tiered recursion to simple algebras.
+
 \begin{definition} A \textbf{simple algebra} is an algebra over the signature
 $\p{\mathbf{B}, \set{\rightarrow}, \mathcal{C}}$, where each value constructor
 $c \in \mathcal{C}$ has the type $\tau_1 \rightarrow \tau_2 \rightarrow \cdots
@@ -1754,23 +1778,48 @@ f\p{\symb{s}\p{w}}  &\leadsto \symb{node}\p{f\p{w}, f\p{w}}
 
 \end{example}
 
-\section{Non-size increasing computation}
+\section{Non-Size Increasing Computation}
 
-Although it might seem proper to name this section ``impredicative recursion'',
-it is perhaps too general a name for the section to end up concise. Besides,
+Although it might seem due to name this section ``Impredicative Recursion'', it
+is perhaps too general a name for this section to end up concise. Besides,
 drawing such a cleavage might charm us in the wrong direction.
 
-We now abandon the onset that those variables we recurse on, ``are of a
-different nature'', and reinstate the point of view that all values are created
-equal, but do differ in size.
+Some impredicative definitions cause us trouble --- but certainly not all.  In
+a similar vein, a purely ``predicative'' theory of sets did not catch on
+either, in lieu of softer restrictions one could impose on set comprehension
+(for more, see \cite{feferman-1964}). An adequate choice of axioms for a theory
+of sets, remains a context-dependent question.
 
-The insights regarding non-size increasing computation, also led to a
-generalization of the results in \cite{marion-2003} in
-\cite{marion-moyen-2000}. The authors replace the use of predicative recursion
-by a semantic argument and show how primitive recursion over non-size
-increasing base and step functions now admits e.g. LCS and insertion sort. The
-results never made it past the conference, perhaps due to the use of simple
-algebras in light of more generally applicable results in e.g.
-\cite{aehlig-schwichtenberg-2002, hofmann-2003}.
+% What makes the techniques presented in this section ``impredicative'', is
+% that we abandon the onset that the inputs we recur on, are of a ``different
+% nature'' from the rest, and reinstate the point of view that all inputs are
+% created equal, but do differ in how they're used.
+
+An early investigation into when impredicative recursion causes trouble is
+perhaps due to \cite{caseiro-1996}. She notes that ``the real problem [...] is
+not that [...] recurs on its input, but that [...] \emph{doubles} its input''.
+This leads to the development of a technique she calls ``Don't Double
+Criticals'' (DDC), where the critical arguments are inferred automatically, and
+the recurrence function is \emph{semantically} prohibited in doubling the
+result of a recursive call. A proof that DDC captures \FPTIME{} does appear in
+\cite{caseiro-1996}, but the work was never published. Instead, in its attempt
+to ``investigate how to treat critical arguments linearly'', it inspired the
+many works of others.
+
+The work we focus on here is \cite{aehlig-schwichtenberg-2002}, which is
+considered an alternate take on the results of \cite{hofmann-2003}.
+
+\subsection{Discussion}
+
+The insights of Caseiro et al., also led to a generalisation of the results of
+\cite{marion-2003} in the conference paper \cite{marion-moyen-2000}. In both,
+the authors deal in simple algebras, i.e.  algebras with types $\sigma_1 \times
+\cdots \times \sigma_n \rightarrow \sigma$, where each $\sigma_i$ occurs at
+most once among $\sigma_1 \times \cdots \times \sigma_n$ (so a tree algebra is
+not a simple algebra). \todo{The conference paper captures \FPTIME{} with a
+semantic argument, and shows that the given system admits e.g.  $\proc{LCS}$
+and $\proc{Insertion-Sort}$.} The results never made it past the conference,
+perhaps due to the use of simple algebras, in lieu of the more general results
+of e.g.  \cite{aehlig-schwichtenberg-2002} and \cite{hofmann-2003}.
 
 \section{Polynomially-bounded values}

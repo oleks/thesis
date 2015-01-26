@@ -1,0 +1,46 @@
+\chapter{Feasibility}
+
+\begin{quotation}
+
+\footnotesize\sffamily\itshape
+
+\begin{flushright}
+
+Anyone familiar with theory of computability will be aware that practical
+conclusions from the theory must be drawn with caution.
+
+\smallbreak
+
+\upshape
+
+--- MEYER \& RITCHIE, \emph{Proc. of the 22nd ACM National Conference} (1967)
+
+\end{flushright}
+
+\end{quotation}
+
+\begin{hypothesis} \emph{(Cobham-Edmonds thesis)}
+
+\FPTIME{} is the class of practically feasible functions.
+
+\end{hypothesis}
+
+Unfortunately, this thesis is easily disproven in practice.
+
+A mere exponential growth rate does not always tell a sufficient story --- much
+like the mean value does not always tell a sufficient story of a normal
+distribution.  Exponential functions have perhaps a ``point of equilibrium'',
+beyond which they ferociously outgrow any given polynomial. This point may only
+come about at infeasibly large numbers.
+
+For instance, 
+
+As a particular example, $c_1 \cdot n^{\log\log{n}} \leq c_2 \cdot n^{100}$
+
+A right off the bat argument is that the number of atoms
+
+None-the-less, the thesis stands on firm ground when backed by the following conjecture:
+
+Once we've found an \PTIME{} algorithm for a problem, we tend to find faster
+algorithms. Whereas \NPTIME{} is often associated with ``brute-force''
+techniques.
