@@ -12,6 +12,10 @@
 
 \usepackage{stmaryrd} % llbracket, rrbracket
 
+\usepackage{tensor} % left sub/sup scripts
+
+\setcounter{secnumdepth}{3} % number subsubsections
+
 %\usepackage[symbol]{footmisc} % use symbols for footnote marks
 \renewcommand{\thefootnote}{(\arabic{footnote})}
 
@@ -119,8 +123,10 @@
   \emph{#1}
 }
 
-\DeclareDocumentCommand{\FPTIME}{}{\ensuremath{\mathtt{FPTIME}}}
+\DeclareDocumentCommand{\TIME}{}{\ensuremath{\mathtt{TIME}}}
+\DeclareDocumentCommand{\FPTIME}{}{\ensuremath{\mathcal{F}\mathtt{PTIME}}}
 \DeclareDocumentCommand{\PTIME}{}{\ensuremath{\mathtt{PTIME}}}
+\DeclareDocumentCommand{\NPTIME}{}{\ensuremath{\mathtt{NPTIME}}}
 
 \DeclareDocumentCommand{\goesto}{}{\hookrightarrow}
 

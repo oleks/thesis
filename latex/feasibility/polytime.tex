@@ -773,6 +773,8 @@ f\p{\vect{x}} = \sem{h}\p{\sem{g_0}\p{\vect{x}}, \sem{g_1}\p{\vect{x}}, \ldots,
 
 \subsubsection{Projection}
 
+\label{sec:generalised-projection}
+
 \begin{definition} Let $\sem{\mathtt{PROJ}_j} : S_1 \times \cdots \times S_n
 \rightarrow T$ be a \textbf{generalized projection} operator, having the
 denotational semantics $\sem{\mathtt{PROJ}_j\p{e_1,\ldots,e_n}} = \sem{e_j}$,
@@ -783,9 +785,9 @@ and $T$. In simpler cases, we might let $S_1 = \cdots S_n = S$, and have
 $\sem{\mathtt{PROJ}}$ parametrized in $S$ and $T$; perhaps even let $S = T$.
 \end{remark}
 
-\begin{definition} \label{def:operational-proj} \todo{Not used} Let
-$\mathtt{proj}_j$ be the operational interpretation of $\sem{\mathtt{PROJ}_j}$,
-having in particular, the following semantics:\begin{align*}
+\begin{definition} Let $\mathtt{proj}_j$ be the operational interpretation of
+$\sem{\mathtt{PROJ}_j}$, having in particular, the following
+semantics:\begin{align*}
 %
 \axiom{ \mathtt{proj}_j\p{x_1,\ldots,x_{n}} \goesto x_j }
 %
@@ -794,6 +796,8 @@ having in particular, the following semantics:\begin{align*}
 \end{definition}
 
 \subsubsection{Composition}
+
+\label{sec:generalised-composition}
 
 \begin{definition} Let $\sem{\mathtt{COMP}}$ be a \textbf{composition}
 operator, having the denotational semantics
@@ -811,7 +815,7 @@ where \begin{align*}
 f & : S_1 \times \cdots \times S_n \rightarrow U
 %
 \end{align*} and $f$ is given by the following recursion scheme, where
-$\vect{x} = x_1,\ldots,x_n$:\begin{align*}
+$\vect{x} \triangleq x_1,\ldots,x_n$:\begin{align*}
 %
 f\p{\vect{x}} = \sem{h}\p{\sem{g_1}\p{\vect{x}}, \ldots,
 \sem{g_m}\p{\vect{x}}}.
@@ -826,10 +830,9 @@ $S_1 = \cdots = S_n = S$ and let $T_1 = \cdots T_m = T$, and have
 $\sem{\mathtt{COMP}}$ parametrized in $S$, $T$, and $U$; perhaps even let
 $S=T=U$. \end{remark}
 
-\begin{definition} \label{def:operational-comp} Let $\mathtt{comp}$ be the
-operational interpretation of $\sem{\mathtt{COMP}}$, having in particular, the
-following operational semantics, where $\vect{x} = x_1, \ldots,
-x_n$:\begin{align*}
+\begin{definition} Let $\mathtt{comp}$ be the operational interpretation of
+$\sem{\mathtt{COMP}}$, having in particular, the following operational
+semantics, where $\vect{x} \triangleq x_1, \ldots, x_n$:\begin{align*}
 %
 \judgement{
 %
@@ -882,6 +885,32 @@ $\sem{\mathtt{COMP}}$, and the {\bfseries \color{red} initial operators}
 O} = \p{\Sigma,\set{\mathtt{COMP}, \mathtt{PROJ}} \cup O}$. \end{theorem}
 
 \begin{proof} \todo{Missing} \end{proof}
+
+\subsubsection{Primitive Recursion}
+
+Motivated by \cite{leivant-1995}, we define the following:
+
+\begin{definition} Let $\mathbf{T} \triangleq T_1 \times \cdots \times T_n$,
+and let $\mathbf{U} \triangleq U_1 \times \cdots \times U_m$, for some $m, n
+\in \mathbb{N}$. For some $k \in \mathbb{N}$, such that $k\leq n$, let
+
+$$\mathtt{PREC} : \p{\mathbf{T} \times \mathbf{U} \times \overbrace{V \times
+\cdots \times V}^{\text{$k$ times}} \rightarrow V}^n \times S \times \mathbf{U}
+\rightarrow V$$
+
+be a generalised \textbf{primitive recursion} operator over a data type $T$,
+where $T$ has the value constructors $v_1,\ldots,v_n$. Let $\mathtt{PREC}$ have
+the denotational semantics $\sem{PREC}\p{g_1,\ldots,g_n} = f$, for some $n \in
+\mathbb{N}$, where\begin{align*}
+%
+f : \\
+%
+f\p{c_1\p{\vect{x}},\vect{y}} = \sem{g_n}\p{\vect{x}, f\p{x_1,
+\vect{y}},\ldots, f\p{x_l, \vect{y}}}
+%
+\end{align*}
+
+\end{definition}
 
 \section{Bounded primitive recursion on notation}
 
@@ -1248,6 +1277,12 @@ the arguments we recur on.\end{remark}
 % given by an algebra closed under composition and bounded primitive recursion.
 % \end{definition}
 
+\subsubsection{Example}
+
+Of course, it remains to prove that the bound indeed is satisfied, which
+segways neatly into the following discussion.
+
+\subsubsection{Discussion}
 
 Although bounded primitive recursion on notation has led to some interesting
 work \cite{cook-1975, buss-phd-1985-6, cook-urquhart-1993}, it is generally
@@ -1328,7 +1363,7 @@ The refinement due in this section is based on the idea that the values we
 recur on in a recursive definition are of a ``different nature'' from the
 rest\cite{caseiro-1996}. Consequently, a segregation of values must commence.
 \todo{Segregation is done on the input values. Distinction between two-tiered
-and many-tiered recursion (and mu measure?).}
+and many-tiered recursion (and mu measure?). See also \cite{leivant-1995}.}
 
 % Two classical examples of an impredicative definition gone rogue are
 % Russell's and the Liar paradoxes: 
@@ -1471,7 +1506,8 @@ operator, having the following semantics:$$
 $$
 
 \item Let $\mathtt{sprn}$ be a \textbf{safe primitive recursion on notation}
-operator, having the following semantics:\begin{align*}
+operator, having the following semantics, where $f \triangleq
+\mathtt{sprn}\p{g, h_0, h_1}$:\begin{align*}
 %
 \judgement{
 %
@@ -1479,28 +1515,36 @@ operator, having the following semantics:\begin{align*}
 %
 }{
 %
-  \mathtt{sprn}\p{g,h_0,h_1}\p{\mathtt{z}, \vect{y} \semic{} \vect{a}} \goesto
-c
+  f\p{\mathtt{z}, \vect{y} \semic{} \vect{a}} \goesto c
 %
 }\end{align*}\begin{align*}
 %
 \judgement{
 %
-  h_i\p{x, \vect{y} \semic{} \vect{a}, \mathtt{sprn}\p{g,h_0,h_1}\p{x,\vect{y}
-\semic{} \vect{a}}} \goesto c
+  h_i\p{x, \vect{y} \semic{} \vect{a}, f\p{x,\vect{y} \semic{} \vect{a}}}
+\goesto c
 %
 }{
 %
-  \mathtt{sprn}\p{g,h_0,h_1}\p{\mathtt{s}_i\p{x}, \vect{y} \semic{} \vect{a}}
-\goesto c
+  f\p{\mathtt{s}_i\p{x}, \vect{y} \semic{} \vect{a}} \goesto c
 %
 }\p{\text{for $i\in\set{0,1}$}}
 %
 \end{align*}
 
+\item For every $f : \mathbb{N}^n \rightarrow \Box\mathbb{N}$, where $n \in
+\mathbb{N}$, there is a corresponding $g : \mathbb{N}^n \rightarrow
+\mathbb{N}$, in accordance with the following axiom:\begin{align*}
+%
+\axiom{f\p{x_1,\ldots,x_n} \goesto g\p{x_1,\ldots,x_n}}
+%
+\end{align*}
+
+This permits the coersion of safe outputs to normal outputs.
+
 \item Let $\mathcal{B} = \p{\set{\mathtt{s}_0, \mathtt{s}_1, \mathtt{p}, \pi_j,
 \mathtt{cond}},\set{\mathtt{comp}, \mathtt{sprn}}} $, where $\mathtt{comp}$ is
-defined as in \refDef{operational-comp}, with $S=\mathbb{N}$ and
+defined as in \refSec{generalised-composition}, with $S=\mathbb{N}$ and
 $T=U=\Box\mathbb{N}$.
 
 \end{enumerate}
@@ -1528,11 +1572,124 @@ $\mathcal{L}$ in $\mathcal{B}$. \todo{Rest of sketch missing.} \end{proof}
 \begin{proof} Follows directly from \refLem{b-fptime-sound} and
 \refLem{b-fptime-complete}. \end{proof}
 
+\subsubsection{Example}
+
+\subsubsection{Discussion}
+
+\subsubsection{$\mu$-measure}
+
+Before we turn to many-tiered recursion..
+
 \subsection{Many-tiered recursion}
 
 The generalization of two-tiered recursion to many-tiered recursion is
-generally attributed to \cite{leivant-1995}. Leivant proved his results in
-terms of single-sorted word algebras.
+generally attributed to \cite{leivant-1995}.
+
+In the style of \cite{leivant-1990}, the motivation for this work is to give an
+algebraic, rather than a numeric, account of tiered recursion, drawing
+parallels to programming with algebraic data types. As a ``technical
+advantage'', the work also boasts an implicit characterisation of
+$O\p{n^k}$-\TIME{} for any given $k\in \mathbb{N}$. This is considered useful
+to Part II.
+
+The characterisation in \cite{leivant-1995} is given in terms of free algebras.
+The proofs of capture are given, ``without loss of generality'', in terms of
+word algebras. Unfortunately, the means of proof do not generalise to tree
+algebras\cite{caseiro-1996, dal-lago-et-al-2010}.
+
+The conference paper \cite{dal-lago-et-al-2010} presents an alternative proof,
+generalising tiered recursion to single-sorted free algebras. Their
+characterisation is given below, equivalent up to choice of words and notation,
+except:
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item we give a (syntax-directed) operational semantics of the oprators to
+emphasise the syntactic nature of the characterisation;
+
+\item we let the tiers be a part of the type system rather than they stand on
+their own, in leau of what we did for two-tiered recursion; and
+
+\item we present the characterisation in terms of a many-sorted, rather than a
+single-sorted signature, in leau of the above, and generalising slightly.
+
+\end{enumerate}
+
+\begin{definition} \cite{dal-lago-et-al-2010}
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item Let $\Sigma$ be a many-sorted signature, decorated with tiers, and let
+$\sigma : \Sigma \rightarrow \mathbb{N}$ give the arities of the symbols in
+$\Sigma$.
+
+\todo{A type signature?}
+
+\item Let $s : S_1^i \times \cdots \times S_n^i \rightarrow T^i$ be the type of
+any symbol $s \in \Sigma$. That is, the constructors of the algebra operate on
+same-tier inputs, and preserve tier.
+
+\item Let $\mathtt{proj}_j$ be a generalised projection operator, as in
+\refSec{generalised-projection},  parametrised by the types $S_1^{i_1}, \ldots,
+S_n^{i_n}$, and $S_j^{i_j}$, where $1 \leq j \leq n$.
+
+\item Let $\mathtt{comp}_j$ be a generalised composition operator, as in
+\refSec{generalised-composition}, parametrised by the types $S_1^{i_1}, \ldots,
+S_n^{i_n}$, $T_1^{j_1}, \ldots, T_m^{j_m}$, and $U^k$.
+
+Note, in particular, that for any $f : V^0 \rightarrow V^1$ and $g : V^0
+\rightarrow V^0$, $\mathtt{comp}\p{f,g}$ is well-typed, whereas
+$\mathtt{comp}\p{g,f}$ is not.
+
+\item Let $\mathtt{trec}$ be a \textbf{tiered primitive recursion} operator,
+having the following semantics: \begin{align*}
+%
+f \triangleq \mathtt{trec}\p{g_1,\ldots,g_m} \quad\quad
+%
+\vect{x} \triangleq x_1, \ldots, x_{\sigma\p{s_k}} \quad\quad
+%
+\vect{y} \triangleq y_1, \ldots, y_n \\
+%
+\judgement{
+%
+  g_l\p{\vect{x}, \vect{y}, f\p{x_1, \vect{y}}, \ldots, f\p{x_{\sigma\p{s_k}},
+\vect{y}}} \goesto z
+%
+}{
+%
+  f\p{s_l\p{\vect{x}},\vect{y}} \goesto z
+%
+}\p{\text{for $k \in \set{1,\ldots,m}$}}
+%
+\end{align*} where, for $i<j$, the types are as follows, having $\mathbf{T}
+\triangleq T_1^{k_1} \times \cdots \times T_n^{k_n}$:\begin{align*}
+%
+f &: S^j \times \mathbf{T} \rightarrow U^i \\
+%
+g_k &:  S_1^j \times \cdots \times S_{\sigma\p{s_l}}^j \times \mathbf{T} \times
+\underbrace{U^i \times \cdots \times U^i}_{\text{$\sigma\p{s_l}$ times}}
+\rightarrow U^i
+%
+\end{align*}
+
+The key point with $\mathtt{trec}$ is that the tier of the value we recur on,
+must be strictly greater than the tier of the value we produce with
+$\mathtt{trec}$ ($i < j$).
+
+\end{enumerate}
+
+\end{definition}
+
+The notable change with the tiered primitive recursion operator
+($\mathtt{trec}$), in contrast to the previously introduced bounded primitive
+recursion operator ($\mathtt{BPRN}$), and safe primitive recursion operator
+($\mathtt{sprn}$), is that $\mathtt{trec}$ makes multiple recursive calls ---
+once for each $x_i$ in $s_i\p{x_1,\ldots,x_n}$.
+
+This streamlines the operational semantics, and does originally appear in
+\cite{leivant-1995}. However, the paper goes on to prove the capture of
+polynomial complexities in terms of word algebras only, i.e. where $\sigma\p{s}
+\leq 1$ for every symbol $s$.
 
 \begin{definition} A \textbf{single-sorted} algebra is an algebra over the
 signature $\p{\set{B}, \mathcal{T}, \mathcal{V}}$, i.e. there is just a single
