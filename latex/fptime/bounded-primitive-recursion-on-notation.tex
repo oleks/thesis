@@ -1,0 +1,410 @@
+\section{Bounded primitive recursion on notation}
+
+Perhaps the most obvious way to characterise \FPTIME{}, is to explicitly bound
+the definable functions to be ``at most as complex to compute'' as some
+polynomial in the size of the input, without further reflections on how such a
+bound may be instated.
+
+Such a general characterisation appears in the seminal conference paper
+\cite{cobham-1965}, which consequently helped to establish computational
+complexity theory as a field\cite{clote-1999}. The original characterisation
+was given in terms of a single-sorted word signature, in particular, the
+natural numbers in decimal notation. The following characterisation equivalent
+up to choice of words and notation. 
+
+\def\smashf{\ensuremath{\mathtt{\#}}}
+\def\cdotnot{\ensuremath{\cdot}}
+
+\begin{definition} \cite{cobham-1965}
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item Let $\sem{s_i} : \mathbb{N} \rightarrow \mathbb{N}$ be a
+\textbf{generalised successor} operator, having the semantics $\sem{s_i\p{x}} =
+10 \cdot \sem{x} + i$. In particular, $\sem{s_0\p{0}} = 0$, $\sem{s_0\p{1}} =
+10$, $\sem{s_5\p{0}} = 5$, $\sem{s_5\p{1}} = 15$, etc. (Recall that $\sem{n} =
+n$ for all $n \in \mathbb{N}$.)
+
+\item Let $\sem{\mathtt{BPRN}}$ be a \textbf{bounded primitive recursion on
+notation} operator, having the semantics
+$\sem{\mathtt{BPRN}\p{g,h_0,\ldots,h_9,k}} = f$, for some $\sem{g} :
+\mathbb{N}^n \rightarrow \mathbb{N}$, $\sem{h_0}, \ldots, \sem{h_9} :
+\mathbb{N} \times \mathbb{N}^n \times \mathbb{N} \rightarrow \mathbb{N}$ and
+$\sem{k} : \mathbb{N} \times \mathbb{N}^n \rightarrow \mathbb{N}$, where $f$
+has type $\mathbb{N} \times \mathbb{N}^n \rightarrow \mathbb{N}$, and $f$ is
+given by the following recursion scheme, where $\vect{y} =
+y_1,\ldots,y_n$:\begin{align*}
+%
+f\p{s_0\p{0}, \vect{y}} &= \sem{g}\p{\vect{y}} \\
+%
+f\p{s_0\p{x}, \vect{y}} &= \sem{h_0}\p{x, \vect{y}, f\p{x, \vect{y}}} &
+\text{if $x\neq 0$}\\
+%
+f\p{s_i\p{x}, \vect{y}} &= \sem{h_i}\p{x, \vect{y}, f\p{x, \vect{y}}} &
+\text{for $i=1,\ldots,9$} \\
+%
+f\p{x, \vect{y}} &\leq \sem{k}\p{x, \vect{y}}.
+%
+\end{align*}
+
+\item Let $\card{\mathrel{}\cdotnot\mathrel{}} : \mathbb{N} \rightarrow
+\mathbb{N}$ be a \textbf{size function} such that $\card{x} =
+\ceil{\log_{10}\p{x+1}}$.
+
+\item Let $\sem{\cdotnot \; \smashf{} \; \cdotnot} : \mathbb{N} \times
+\mathbb{N} \rightarrow \mathbb{N}$ be a \textbf{smash} operator, having the
+semantics $\sem{x \smashf{} y} = \sem{x}^\card{\sem{y}}$.
+
+\item Let $\mathcal{L} = \seq{s_i, \smashf{}, \mathtt{EXTR}, \mathtt{COMP},
+\mathtt{BPRN}}$. That is, $\mathcal{L}$ is the smallest class of functions
+containing the generalised successor and smash functions, closed under the
+operations of explicit transformation, composition, and bounded primitive
+recursion on notation.
+ 
+\end{enumerate}
+
+\end{definition}
+
+The detailed proofs that $\mathcal{L}$ is \FPTIME-sound and \FPTIME-complete,
+appeared later in e.g.  \cite{rose-1984,clote-1999} using binary notation, and
+in \cite{tourlakis-1984} using $n$-ary notation for any $n>1$.  The proofs are
+sketched below. 
+
+Firstly, as we go from decimal to binary, or, in general, to $n$-ary notation,
+we need to adequately change the size function:
+
+\begin{definition} For $n$-ary notation, for any $n>1$, let the size function be
+given as $\card{x} = \ceil{\log_n\p{x+1}}$. As for the special cases, for
+$n=1$, let $\card{x}=x$, and for $n=0$, let $\card{x}=0$.  \end{definition}
+
+Two other prominent changes are often done to the definition of $\mathcal{L}$
+(see e.g. \cite{rose-1984, buss-phd-1985-6, bellantoni-cook-1992, clote-1999},
+but somewhat surprisingly, not \cite{tourlakis-1984}):
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item $\sem{\mathtt{EXTR}}$ is replaced by $\sem{\mathtt{PROJ}}$. In the
+presence of $\sem{\mathtt{COMP}}$, by \refThm{extr-comp-proj}, this is
+admissible.
+
+\item For binary notation, the smash operator, is instead given the semantics
+$\sem{x \smashf{} y} = 2^{\card{\sem{x}} \cdot \card{\sem{y}}}$. For binary
+notation, we have $s^\card{t} = \p{2^{\log_2{s}}}^\card{t} \leq
+\p{2^{\ceil{\log_2\p{s+1}}}}^\card{t} = \p{2^\card{s}}^\card{t} = 2^{\card{s}
+\cdot \card{t}}$, so this too, is admissible\footnote{The diligent reader might
+find it peculiar that polynomial time is stable under small perturbations of
+``smash''; contrast the proofs in \cite{tourlakis-1984} and
+\cite{clote-1999}.}.
+
+\end{enumerate}
+
+The latter choice of smash operator is perhaps best motivated by the fact that,
+for binary notation, $\card{2^{p\p{\card{s}}}} = p\p{\card{s}}$, for any
+monotone polynomial $p$.
+
+Such a smash operator, in the context of $n$-ary notation,  perhaps more
+naturally admits the construction of a value of size $p\p{\card{s}}$, given a
+value of the size $\card{s}$. In particular, with this notion of smash,
+
+$$\card{\sem{\underbrace{x \smashf{} \cdots \smashf{} x}_{\text{$k$ times}}}} =
+\card{\sem{x}}^k.$$
+
+\begin{lemma} \label{lem:l-fptime-sound} $\mathcal{L}$ is \FPTIME{}-sound.
+\end{lemma}
+
+\begin{proof} (Sketch, see also \cite{rose-1984, tourlakis-1984, clote-1999}.)
+Proof by simulation of $\mathcal{L}$ on an \FPTIME{} TM.  \todo{Rest of sketch
+missing.} \end{proof}
+
+\begin{lemma} \label{lem:l-fptime-complete} $\mathcal{L}$ is
+\FPTIME{}-complete. \end{lemma}
+
+\begin{proof} (Sketch, see also \cite{rose-1984}.) Proof by simulation of an
+\FPTIME{} TM in $\mathcal{L}$. Performing primitive recursion on notation on
+$u$, we can simulate $p\p{\card{t}}$-time TM, by simulating the transition
+function of the TM with the step function of the primitive recursion.
+\todo{Rest of sketch missing.} \end{proof}
+
+\begin{theorem} \label{thm:l-captures-fptime} $\mathcal{L}$ captures \FPTIME{}.
+\end{theorem}
+
+\begin{proof} Follows directly from \refLem{l-fptime-sound} and
+\refLem{l-fptime-complete}. \end{proof}
+
+We give the characterisation in terms of the following:
+
+\begin{definition} A \textbf{single-sorted word signature} $\Psi$,
+has $n \in \mathbb{N}$ symbols, $m \in \mathbb{N}$ of which, where $m \leq n$,
+are nullary, and $\p{n-m}$ of which are unary, m.f.
+
+$$\Psi \triangleq \set{s_1 : 0, \; \ldots, \; s_m : 0, \; s_{m+1} : 1, \;
+\ldots, \; s_n : 1}.$$
+
+\end{definition}
+
+Recall that we denote terms over $\Psi$ as $\mathcal{T}\p{\Psi}$, and ground
+terms as $\mathcal{T}_\downarrow\p{\Psi}$. Also, we denote the nullary symbols
+of $\Psi$ as $\Psi^0$ and the unary symbols as $\Psi^1$. In the case of
+single-sorted word signatures, $\Psi^0 \cup \Psi^1 = \Psi$.
+
+\begin{definition} A single-sorted word signature $\Psi$ with $1$ nullary
+symbol and $n \in \mathbb{N}$ unary symbols is referred to as \textbf{$n$-ary
+notation}. $1$-, $2$-, $3$-, and $10$-ary notation is also referred to as
+\textbf{unary}, \textbf{binary}, \textbf{ternary}, and \textbf{decimal},
+respectively.  \end{definition}
+
+\begin{definition} Terms over $n$-ary notation are referred to as
+\textbf{strings}; the term consisting of just the nullary symbol as the
+\textbf{empty string}; the nullary symbol itself is often written as
+$\varepsilon$, if written at all. \end{definition} 
+
+\begin{example} Let $B \triangleq \set{\varepsilon : 0, \; \symb{0} : 1, \;
+\symb{1} : 1}$ be a binary notation, having the context-free grammar
+
+$$B ::= \symb{0} \cdot B \mid \symb{1} \cdot B \mid \varepsilon$$
+
+For instance, $\varepsilon$, $\symb{0}$, $\symb{1}\symb{0}$,
+$\symb{1}\symb{0}\symb{1}$, $\symb{1}\symb{0}\symb{1}\symb{0}\symb{1}\symb{0}$,
+are all in $\mathcal{T}\p{B}$ and $\mathcal{T}_\downarrow\p{B}$.
+
+\end{example}
+
+\begin{definition} \label{def:single-sort-word-term-size} The size of a term $t
+\in \mathcal{T}\p{\Psi}$, written $\card{t} \in \mathbb{N}$, is the number of
+occurrences of symbols and variables in $t$, m.f.
+
+\begin{align*}
+\card{v_i} &= 1 & \text{for all $v_i \in Var$} \\
+\card{s_i} &= 1 & \text{for all $s_i\in \Psi^0$} \\
+\card{s_j\p{x}} &= \card{x} + 1 & \text{for all $s_j \in \Psi^1$}
+\end{align*}
+
+\end{definition}
+
+\begin{example} In case of binary notation, $\card{\varepsilon}=1$,
+$\card{\symb{0}} = 2$, $\card{\symb{1}\symb{0}} = 3$,
+$\card{\symb{1}\symb{0}\symb{1}} = 4$,
+$\card{\symb{1}\symb{0}\symb{1}\symb{0}\symb{1}\symb{0}} = 7$, etc.
+\end{example}
+
+\begin{remark} The fact that an empty string over $n$-ary notation has a
+non-zero size is perhaps peculiar to some audience. The intuition is that
+``even the lack of data is data in itself''. This notion of size corresponds to
+the classical notion length of a term in first-order term rewriting
+\cite{klop-vrijer-2003}. \end{remark}
+
+Key to the \FPTIME{}-completeness of the characterisation in \cite{cobham-1965}
+is to permit the construction of a term polynomial in size in the size of the
+input term.  That is, given a term $t \in \mathcal{T}\p{\Psi}$, to construct a
+term $u \in \mathcal{T}\p{\Psi}$, such that $p\p{\card{t}} \leq \card{u}$, for
+some monotone polynomial
+
+$$p\p{x}=a_0 \cdot x^0 + a_1 \cdot x^1 + \cdots + a_k \cdot x^k,$$
+
+where $a_0$, $a_1$, \ldots, $a_k$ are non-negative constants. This permits to
+simulate a $p\p{\card{t}}$-time TM using primitive recursion on notation over
+$u$, by simulating a TM transition at every step of the recursion.
+
+\begin{remark} The technique of simulating a bounded TM with primitive
+recursion appeared perhaps for the first time in \cite[\textsection
+10.2.1/176]{minsky-1967}.  \end{remark}
+
+The trouble is that for any single-sorted word signature this requires
+superpolynomial means.
+
+
+ 
+To attain this with primitive recursion on notation, which
+permits only a recursive call depth linear in the size of the input, we need a
+superpolynomial mechanism called the ``smash function'': 
+
+
+\begin{definition} Let $\mathcal{T}_\downarrow\p{\Psi}$ denote the
+\textbf{ground terms} over $\Psi$. \end{definition}
+
+\begin{definition} Let $\mathcal{T}_\downarrow\p{\Psi}^{\leq i}$ denote the
+ground terms over $\Psi$ of size at most $i$, m.f.
+
+$$\mathcal{T}_\downarrow\p{\Psi}^{\leq i} = \set{ t \in
+\mathcal{T}_\downarrow\p{\Psi} \st{ \card{t} \leq i }}.$$
+
+\end{definition}
+
+We consider the total number of ground terms over $\Psi$ of size at most $i$,
+for any given $i \in \mathbb{N}$, written
+$\card{\mathcal{T}_\downarrow\p{\Psi}^{\leq i}}$.
+
+Intuitively, the ground terms $\mathcal{T}_\downarrow\p{\Psi}$ of a
+single-sorted word signature $\Psi$ with $m$ nullary symbols and $\p{n-m}$
+unary symbols form the nodes in a forest $\mathcal{F}_\downarrow\p{\Psi}$ of
+$m$ complete $\p{n-m}$-ary trees of unbounded height.
+
+The number of terms of size $i\in\mathbb{N}$ is the number of nodes of tree
+depth at most $i-1$ in $\mathcal{F}_\downarrow\p{\Psi}$. This is also the total
+number of nodes in $\mathcal{F}_\downarrow\p{\Psi}$, when the trees are bounded
+to height $i-1$, written $\mathcal{F}_\downarrow\p{\Psi}^{< i}$.
+
+\begin{theorem} For a single-sorted word signature $\Psi$, having no unary
+symbols, so $\p{n-m}=0$, e.g. the booleans, the number of ground terms of size
+$i>0$ is $m$, m.f.
+
+$$\card{\mathcal{T}_\downarrow\p{\Psi}^{\leq i}} = m \cdot \iverson{i>0}$$
+
+\end{theorem}
+
+\begin{proof} For any $i$, consider the forest
+$\mathcal{F}_\downarrow\p{\Psi}^{< i}$. If $i=0$, the forest has $0$ nodes.  If
+$i>0$, the forest has exactly $m$ nodes. \end{proof}
+ of the methods
+surveyed to conventional data types in general, in particular, 
+\begin{theorem} For a single-sorted word signature $\Psi$, having exactly one
+unary symbol, so $\p{n-m}=1$, e.g. the Peano naturals, we have
+
+$$\card{\mathcal{T}_\downarrow\p{\Psi}^{\leq i}} = m \cdot i$$
+
+\end{theorem}
+
+\begin{proof} For any $i$, consider the forest
+$\mathcal{F}_\downarrow\p{\Psi}^{< i}$. This is a forest of $m$ chains of
+length $i$. The number of nodes in such a chain is $i$.  \end{proof}
+
+\begin{theorem} For a single-sorted word signature $\Psi$, having more than one
+unary symbol, so $\p{n-m}>1$, e.g. binary notation, we have
+
+$$\card{\mathcal{T}_\downarrow\p{\Psi}^{\leq i}} = m \cdot
+\frac{\p{n-m}^i-1}{\p{n - m} - 1}$$
+
+\end{theorem}
+
+\begin{proof} For any $i$, consider the forest
+$\mathcal{F}_\downarrow\p{\Psi}^{< i}$. This is a forest of $m$ complete
+$\p{n-m}$-ary trees of height $i-1$. It is well-known that the number of nodes
+in such a tree is $\frac{\p{n-m}^i-1}{\p{n - m} - 1}$\cite{cormen-et-al-2009}.
+\end{proof}
+
+\begin{example} $\card{\mathcal{T}_\downarrow\p{B}^{\leq i}} = 1 \cdot 2^i$.
+(Recall that we also count the empty string.) \end{example}
+
+
+% \begin{definition} Let the size of a term over $\Sigma$ be the number of
+% symbols involved in the construction of the term:
+
+% \begin{align*}
+% \card{v_0}        &=  0 \\
+% \card{v_1\p{x}}   &=  \card{x} + 1 \\
+%                  &   \vdots \\
+% \card{v_{i}\p{x}} &=  \card{x} + 1
+% \end{align*}
+
+% \end{definition}
+
+% To get a closed form for the size function, we make a simplifying assumption
+% that there is at most 
+
+% \begin{lemma} If $\Sigma$ is a single-sorted signature, then
+% $\card{x}<\card{v_k\p{x}}$ for all $\p{i+1} \leq k \leq j$.  \end{lemma}
+
+\begin{definition} The \textbf{smash function} over a single-sorted word
+signature $\Psi$, with $m$ nullary and $\p{n-m}$ unary symbols, is a binary
+symbol \smashf{}, written in infix notation, with the property that $\card{x
+\smashf{} y} = {\card{x}\cdot\card{y}}$.\end{definition}
+
+The usefulness of the smash function is illustrated by the fact that $\card{x
+\smashf{} y} = 2^3$
+
+\begin{example} The smash function over $B$ has the semantics $\sem{x \smashf{}
+y} = 2^{\card{x} \cdot \card{y}}$. \end{example}
+
+\begin{definition} A single-sorted word signature $\Sigma$, extended with a
+smash function is $\Sigma^\smashf{} \triangleq \Sigma \cup \set { \smashf{} : 2
+}$. \end{definition}
+
+We now define the operator of bounded primitive recursion on notation, written
+$\mathtt{BPRN}$, having the type:
+
+$$\mathtt{BPRN} : \p{T \rightarrow U}^m \rightarrow \p{S \rightarrow T
+\rightarrow U}^\p{n-m} \rightarrow S \rightarrow T \rightarrow U.$$
+
+The operator has the following semantics:
+
+$$\sem{\mathtt{BPRN}\p{g_0, \ldots, g_m, g_{m+1}, \ldots, g_n, k}} = f$$
+
+where
+
+\begin{align*}
+f\p{c_0,y} &= \sem{g_0}\p{y} \\
+          & \vdots \\
+f\p{c_m,y} &= \sem{g_m}\p{y} \\
+f\p{c_{m+1}\p{x},y} &= \sem{g_{m+1}}\p{x,y,f\p{x,y}} \\
+          & \vdots \\
+f\p{c_n\p{x},y} &= \sem{g_n}\p{x,y,f\p{x,y}} \\
+f\p{x,y} &\leq \sem{k}\p{x,y}
+\end{align*}
+
+% In 1964 Cobham [C] gave the first recursion-theoretic characterization of
+% polynomial time, using a recursion whose depth was the binary length of the
+% number being recursed on, and using explicit polynomial bounds to control the
+% size of the output.\cite{bellantoni-phd-1992}.
+
+% recursion scheme over an inductively or coinductively defined data type (an
+% algebra).
+
+\begin{remark} It seems a bit superfluous to deal in the additional argument
+vector $\vect{y}$ which we simply pass down to our base and step functions.
+This could be handled by e.g. partially applying $\vect{y}$ on the given
+functions.  Although not important to the recursion scheme, we will soon take
+the stance that the arguments in $\vect{y}$ are of a different ``nature'' than
+the arguments we recur on.\end{remark}
+
+% It seems straight forward to generalize bounded primitive recursion on notation
+% to many-sorted free algebras.
+
+% \begin{definition} A function is \textbf{bounded primitive recursive} if it is
+% given by an algebra closed under composition and bounded primitive recursion.
+% \end{definition}
+
+\subsubsection{Example}
+
+Of course, it remains to prove that the bound indeed is satisfied, which
+segways neatly into the following discussion.
+
+\subsubsection{Discussion}
+
+Although bounded primitive recursion on notation has led to some interesting
+work \cite{cook-1975, buss-phd-1985-6, cook-urquhart-1993}, it is generally
+discarded\cite{bellantoni-cook-1992}, based on either that:
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item the smash operator is not ``small''; or
+
+\item the bounds are enforced in an ``extensional'' manner, rather than being
+an ``intensional'' property of the system.
+
+\end{enumerate}
+
+The first trouble is perhaps best delineated by \cite{cobham-1965} himself.
+Neither $x^\card{y}$ for $n$-ary notation, nor $2^{\card{x} \cdot \card{y}}$
+for binary notation, is in $\mathcal{E}^2$, i.e. the second level of the
+so-called Grzegorczyk hierarchy\cite{grzegorczyk-1953}. Specifically,
+$\mathcal{E}^2$ is \todo{the smallest class of functions over $n$-ary notation,
+containing multiplication}, and closed under the operations of explicit
+transformation, composition and bounded primitive recursion. In other words, we
+cannot smash in linear space, that is, using an $O\p{\card{x}+\card{y}}$-space
+Turing machine\cite{ritchie-1963}. On the other hand, \cite{buss-phd-1985-6}
+finds the use of \smashf{} ``natural and elegant'', as it has precisely the
+growth rate necessary to fund the \todo{polynomial-time hierarchy}.
+
+As to the other trouble, to put a $\mathtt{BPRN}$ operator to good use, we need
+to prove that the bounding inequality is satisfied.  This leads to grave
+complications in the cited work, but is sometimes outwitted (see e.g.
+\cite{cook-urquhart-1993}) by changing the semantics of $\mathtt{BPRN}$ to
+simply cut off at overflow. This is perhaps indifferent to a classical
+characterisation of \FPTIME{}.
+
+Considering the techniques one might employ for proving such a bound, one
+quickly finds oneself counting and guessing, rather than the bound being
+``guaranteed by construction''.  It is perhaps this quality that makes bounded
+primitive recursion on notation inherently ``inintrinsic'', rather than the
+mere fact that the bounds are stated explicitly, as criticised by e.g.
+\cite{hofmann-2000a}.

@@ -1,3 +1,17 @@
+\part{\FPTIME{}}
+
+\input{fptime/a-generalised-framework}
+
+\input{fptime/bounded-primitive-recursion-on-notation}
+
+\input{fptime/predicative-recursion}
+
+\input{fptime/non-size-increasing-computation}
+
+\input{fptime/discussion}
+
+\input{fptime/polytime}
+
 \chapter{\PTIME{} and \FPTIME{}}
 
 \begin{quotation}
@@ -888,48 +902,67 @@ O} = \p{\Sigma,\set{\mathtt{COMP}, \mathtt{PROJ}} \cup O}$. \end{theorem}
 
 \subsubsection{Primitive Recursion}
 
-\index{base functions}
-\index{step functions}
-\index{recurrence!functions}
-\index{recurrence!argument}
-\index{critical arguments}
-
 Motivated by \cite{leivant-1995}, we introduce a generalised form of primitive
 recursion, also referred to as ``structural recursion''\cite{hofmann-2002}:
 
-\index{recursion!primitive} \index{recursion!structural|see {primitive}}
+\index{recursion!primitive}
+\index{recursion!structural|see {primitive recursion}}
 
-\begin{definition} Let $\mathbf{T} \triangleq T_1 \times \cdots \times T_n$,
-and let $\mathbf{U} \triangleq U_1 \times \cdots \times U_m$, for some $m, n
-\in \mathbb{N}$. For some $k \in \mathbb{N}$, such that $k\leq n$, let
+\begin{definition} Let $\mathtt{PREC}$ be a \textbf{generalised primitive
+recursion} operator over an inductively defined data type $S$, where
+$s_1,\ldots,s_n$ are the value constructors of $S$, with the denotational
+semantics $\sem{\mathtt{PREC}\p{g_{s_1},\ldots,g_{s_n}}} = f$ with the
+type\begin{align*}
+%
+f : S \times T_1 \times \cdots \times T_k \rightarrow U
+%
+\end{align*}and defined as\begin{align*}
+%
+f\p{s_i\p{x_1,\ldots,x_m},y_1,\ldots,y_k} = \sem{g_{s_i}}\p{\vect{x}, \vect{y},
+\vect{f}} & \quad \quad \p{\text{for all $i \in \set{1, \ldots, n}$}}
+%
+\end{align*} where
 
-$$\mathtt{PREC} : \p{\mathbf{T} \times \mathbf{U} \times \overbrace{V \times
-\cdots \times V}^{\text{$k$ times}} \rightarrow V}^n \times S \times \mathbf{U}
-\rightarrow V$$
+\begin{enumerate}
 
-be a generalised \textbf{primitive recursion} operator over a data type $T$,
-where $T$ has the value constructors $v_1,\ldots,v_n$. Let $\mathtt{PREC}$ have
-the denotational semantics $\sem{PREC}\p{g_1,\ldots,g_n} = f$, for some $n \in
-\mathbb{N}$, where\begin{align*}
-%
-f : \\
-%
-f\p{c_1\p{\vect{x}},\vect{y}} = \sem{g_n}\p{\vect{x}, f\p{x_1,
-\vect{y}},\ldots, f\p{x_l, \vect{y}}}
-%
-\end{align*}
+\item $\vect{x}$ is a subsequence of $x_1,\ldots,x_m$;
+
+\item $\vect{y}$ is a subsequence of $y_1,\ldots,y_k$; and
+
+\item $\vect{f}$ is a subsequence of $f\p{x_1, \vect{y}},\ldots, f\p{x_m,
+\vect{y}}$.
+
+\end{enumerate}
 
 \end{definition}
 
-\todo{base function}
+In order to talk about primitive recursion, we also introduce the following
+terminology:
 
-\todo{step function}
+\begin{itemize}
 
-\todo{recurrence argument}
+\item We say that the $s_i\p{x_1,\ldots,x_m}$ on the left hand side is the
+\textbf{recurrence argument}, and $\vect{f}$ on the right hand side are
+\textbf{critical arguments}.
 
-\todo{critical arguments}
+\index{recurrence!argument}
+\index{arguments!critical}
 
-\todo{recurrence functions}
+\item We als call the $g_{s_i}$'s above \textbf{recurrence functions}, where
+$g_{s_i}$ is a \textbf{base function} if it takes no critical arguments, and is
+a \textbf{step function} otherwise.
+
+\index{recurrence!functions}
+\index{functions!base|see {recurrence functions}}
+\index{functions!step|see {recurrence functions}}
+
+\item We say that the recurrence argument \textbf{drives} the recursion.
+
+\index{recurrence!(drives a)}
+
+\end{itemize}
+
+\todo{All primitive recursions over inductive data types bottom out.}
 
 \section{Bounded primitive recursion on notation}
 
@@ -1367,21 +1400,19 @@ That which we call ``predicative'' recursion is also referred to as
 ``tiered''\cite{leivant-1990}, ``stratified''\cite{leivant-1993}, or
 ``ramified''\cite{leivant-1995} recursion. (The conflation of these terms
 appears prevalent in mathematics.) Our motivation is due to
-\cite{hofmann-2000a}, categorising in one fell swoop, both the seminal works
+\cite{hofmann-2000a}, categorising in this fell swoop, both the seminal works
 \cite{bellantoni-cook-1992} and \cite{leivant-1995}. Hofmann was in turn
 motivated by \cite{bellantoni-phd-1992}.
 
 The use of the term ``predicative'' itself is due to \cite{russell-1907}, who
 suggested a ``predicative'' theory of sets to deal with the plaguing paradoxes
-in na\"ive set theory. Informally, the definition of an entity is
-``impredicative''\cite{goedel-1944}, if it refers (directly, or indirectly) to
-a totality to which the entity being defined itself belongs. Recursive
-definitions fall squarely into such totalities. 
+in na\"ive set theory, e.g. Russell's or liar paradox. Informally, the
+definition of an entity is ``impredicative''\cite{goedel-1944}, if it refers
+(directly, or indirectly) to a totality to which the entity being defined
+itself belongs.  Many recursive definitions fall squarely into such totalities. 
 
 \todo{It is forbidden to do recursion on a critical argument, i.e.
 specifically, the result of a self-recursive call.}
-
-\todo{Set theory moved away from predicativity by restricting comprehension.}
 
 The refinement due in this section is based on the idea that the values we
 recur on in a recursive definition are of a ``different nature'' from the
@@ -1404,8 +1435,6 @@ and many-tiered recursion (and mu measure?). See also \cite{leivant-1995}.}
 % Paradox by direct self-reference.
 
 % \end{description} 
-
-
 
 \subsection{Two-tiered recursion}
 
@@ -1607,7 +1636,9 @@ Before we turn to many-tiered recursion..
 \subsection{Many-tiered recursion}
 
 The generalization of two-tiered recursion to many-tiered recursion is
-generally attributed to \cite{leivant-1995}.
+generally attributed to \cite{leivant-1995}. The intuition is that inputs come
+bearing varying computational weights --- some are too heavy to drive a
+recurrence.
 
 In the style of \cite{leivant-1990}, the motivation for this work is to give an
 algebraic, rather than a numeric, account of tiered recursion, drawing
@@ -1790,11 +1821,6 @@ either, in lieu of softer restrictions one could impose on set comprehension
 (for more, see \cite{feferman-1964}). An adequate choice of axioms for a theory
 of sets, remains a context-dependent question.
 
-% What makes the techniques presented in this section ``impredicative'', is
-% that we abandon the onset that the inputs we recur on, are of a ``different
-% nature'' from the rest, and reinstate the point of view that all inputs are
-% created equal, but do differ in how they're used.
-
 An early investigation into when impredicative recursion causes trouble is
 perhaps due to \cite{caseiro-1996}. She notes that ``the real problem [...] is
 not that [...] recurs on its input, but that [...] \emph{doubles} its input''.
@@ -1803,11 +1829,24 @@ Criticals'' (DDC), where the critical arguments are inferred automatically, and
 the recurrence function is \emph{semantically} prohibited in doubling the
 result of a recursive call. A proof that DDC captures \FPTIME{} does appear in
 \cite{caseiro-1996}, but the work was never published. Instead, in its attempt
-to ``investigate how to treat critical arguments linearly'', it inspired the
-many works of others.
+to ``investigate how to treat critical arguments linearly'', it has inspired
+the many works of others \cite{bellantoni-et-al-2000,
+aehlig-schwichtenberg-2002, hofmann-2003}.
+
+At roughly the same time, \cite[\textsection~24]{jones-1997}, characterised
+\PTIME{} using first-order read-only programs. The characterisation was later
+published in \cite{jones-1999}, and extended to arbitrary finite data orders
+and tail-recursive programs in \cite{jones-2001}. The divergent paths later
+conflate in e.g. \cite{hofmann-2002}, as it uses an important proof technique
+of \cite{jones-2001}.
 
 The work we focus on here is \cite{aehlig-schwichtenberg-2002}, which is
 considered an alternate take on the results of \cite{hofmann-2003}.
+
+\begin{definition} Let $\NSIFPTIME{}$ be the class of those functions $f \in
+\FPTIME{}$, where $f : A \rightarrow B$, for which $\card{f\p{a}} \leq
+\card{a}$ for all $a \in A$. That is, the output of the function is no greater
+in size than the input of the function. \end{definition}
 
 \subsection{Discussion}
 
@@ -1817,8 +1856,8 @@ the authors deal in simple algebras, i.e.  algebras with types $\sigma_1 \times
 \cdots \times \sigma_n \rightarrow \sigma$, where each $\sigma_i$ occurs at
 most once among $\sigma_1 \times \cdots \times \sigma_n$ (so a tree algebra is
 not a simple algebra). \todo{The conference paper captures \FPTIME{} with a
-semantic argument, and shows that the given system admits e.g.  $\proc{LCS}$
-and $\proc{Insertion-Sort}$.} The results never made it past the conference,
+semantic argument, and shows that $\proc{LCS}$ and $\proc{Insertion-Sort}$ are
+representable in the system.} The results never made it past the conference,
 perhaps due to the use of simple algebras, in lieu of the more general results
 of e.g.  \cite{aehlig-schwichtenberg-2002} and \cite{hofmann-2003}.
 

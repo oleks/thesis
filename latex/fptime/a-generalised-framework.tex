@@ -1,0 +1,951 @@
+\chapter{A Generalised Framework}
+
+\begin{quotation}
+
+\footnotesize\sffamily\itshape
+
+\begin{flushright}
+
+there is a relationship between the absence and presence of successor-like
+functions and the computational complexity of programs
+
+\smallbreak
+
+\upshape
+
+--- \cite{jones-kristiansen-2009}
+
+\end{flushright}
+
+\end{quotation}
+
+\begin{quotation}
+
+\footnotesize\sffamily\itshape
+
+\begin{flushright}
+
+{\upshape PETER HILTON} \\
+Christ!! What happens now?!\\
+{\upshape ALAN TURING} \\
+It should tell use the day's Enigma settings!\\
+{\upshape HUGH ALEXANDER} \\
+How long!?!
+
+\smallbreak
+
+\upshape
+
+--- Graham More, The Imitaiton Game (2014)
+
+\end{flushright}
+
+\end{quotation}
+
+
+The fundamental insight highlighted by the above quotation underpins much work
+done in \cite{jones-1999, jones-2001, kristiansen-voda-2005, hofmann-2003,
+kristiansen-2008}, and of course, \cite{jones-kristiansen-2009}, among others.
+We draw on this insight in a fundamental and perhaps extreme way, by taking the
+notion of ``successor-like function'' to roughly mean ``enumerator'', and
+consider the presence and absence of both particular successor-like \emph{and}
+predecessor-like functions.
+
+Implicit characterizations of complexity classes, e.g. PTIME, often start out
+by considering first-order programs on natural numbers. That is, the
+computation of (mathematical) functions of type $\mathbb{N} \rightarrow
+\mathbb{N}$. (For a counterexample, see \cite{hofmann-2003}.) 
+
+In lieu of \refThm{tm-total}, such results apply even if we replace
+$\mathbb{N}$ (on either side) by any countable or countably infinite set. That
+is, the results still hold even if we turn to the computation of (mathematical)
+functions of type $A \rightarrow B$ for some countable or countably infinite
+sets $A$ and $B$.
+
+Crucially, \refThm{tm-total} relies on \emph{mathematical} functions, not
+real-world transformations. Realistically, all we get is this: assuming that we
+have a representation of a value of type $A$ as a natural number, we can
+compute a natural number representation of the corresponding value of type $B$,
+within the characterised bounds.
+
+This outset of ``first-order programs on natural numbers'' ignores the
+real-life hurdle of dealing with \emph{data structures} rather than natural
+numbers. So such an exposition is arguably impractical, or more dramatically,
+ignores certain \emph{complexities} involved in dealing with data.
+
+Instead, we formalise a notion of ``successor'' and ``predecessor'', and
+present seminal results in the characterisation of PTIME in terms of this
+general framework. Informally, a successor or predecessor is any operation that
+may change the size of any value in the program (including time?). In practice,
+essentially any conceivable operation, except perhaps stalling.
+
+\section{Programs}
+
+% Many high-level programming languages have data types, and these data types
+% cannot be coerced.
+
+In the interest of capturing a wide range of programming paradigms in one
+discussion, we give only a general specification of what we deem a program to
+be. This specification will later be specialized for more concrete purposes. We
+make no claim however, that in so doing, we capture all conceivable programming
+paradigms.
+
+\begin{specification}
+
+A \textbf{program} $P = \p{P_\mathbf{D}, P_\mathbf{F}}$ is a finite set of
+\textbf{data types} $P_\mathbf{D}$, and a finite set of \textbf{functions}
+$P_\mathbf{F}$, subject to the following laws:
+
+\begin{enumerate}
+
+\item [P-1] Every data type $A \in P_\mathbf{D}$ forms a set.
+
+\item [P-2] Every function $f \in P_\mathbf{F}$ computes a partial function $f
+: A \rightharpoonup B$, for some $A, B\in P_\mathbf{D}$. We write $f : A
+\rightharpoonup B \in P_\mathbf{F}$.
+
+\item [P-3] For every data type $A \in P_\mathbf{D}$ there is a \textbf{size
+function} $\card{\cdot} : A \rightarrow \mathbb{N}$, so for every $a \in A$ we
+have $\card{a} \in \mathbb{N}$.
+
+\end{enumerate}
+
+\end{specification}
+
+\begin{remark} We do not require that a function $f \in P_\mathbf{F}$ can
+compute a partial function $f : A \rightharpoonup B$ between \emph{any} given
+data types $A, B \in P_\mathbf{D}$, merely that it is a partial function
+between \emph{some} given data types $A, B \in P_\mathbf{D}$.  \end{remark}
+
+\begin{remark} The purpose of the size function is primarily semantic, and so
+it need not be in $P_\mathbf{F}$, but of course, it could be. \end{remark}
+
+\subsection{Successors and Predecessors}
+
+\begin{definition} A partial function $s : X \rightharpoonup Y \in
+P_\mathbf{F}$ is a \textbf{successor function} for some $x \in X$ iff $s\p{x}$
+is defined and $\card{x} < \card{s\p{x}}$. \end{definition}
+
+\begin{definition} A partial function $p : X \rightharpoonup Y \in
+P_\mathbf{F}$ is a \textbf{predecesor function} for some $x \in X$ iff $p\p{x}$
+is defined and $\card{p\p{x}} < \card{x}$. \end{definition}
+
+That is, a successor function produces an output \emph{strictly greater} in
+size than its input, and a predecessor function produces an output
+\emph{strictly lesser} in size than its input.
+
+Note in particular, that whether a given partial function $f : X
+\rightharpoonup Y \in P_\mathbf{F}$ is a successor or predecessor function, if
+either, \emph{depends} on the value $x \in X$ which $f$ is applied to. If $X$
+is a countably infinite data type, there may exist functions which are
+successor functions, \emph{independent} of the value that they are applied to.
+
+\begin{definition} A partial function $c : X \rightharpoonup Y \in
+P_\mathbf{F}$, is a \textbf{constructor} iff $X$ is the domain of definition of
+$c$, so $c : X \rightarrow Y \in P_\mathbf{F}$, and $c$ is a successor function
+\emph{for all} $x \in X$. \end{definition}
+
+On the other hand, for any data type $X$, there must exist some value $x \in
+X$, for which any given function is \emph{not} a predecessor function, as
+otherwise there would be a natural number less than $0$.
+
+\subsection{Defining Functions}
+
+For the purposes of a further discussion about programming, we adopt an
+equational programming style, in line with classical recursion theory and
+functional programming.
+
+\begin{definition} For any program $P = \p{P_\mathbf{D}, P_\mathbf{F}}$, let
+$P_\mathbf{F}$ form the \textbf{signature} of $P$, that is, for every $f : X
+\rightharpoonup Y \in P_\mathbf{F}$, we say that $f$ is a \textbf{symbol}, and
+$X \rightharpoonup Y$ is the \textbf{arity} of symbol $f$. \end{definition}
+
+\begin{definition} A \textbf{variable} $v$ of type $Y \in P_\mathbf{D}$, is a
+symbol $v$, which does not occur in $P_\mathbf{F}$. \end{definition}
+
+\begin{definition} A \textbf{term} $t$ of type $Y$, written $t : Y$, is either
+a variable $t \equiv v$, or a \textbf{compound term} $t \equiv f\p{x}$, where
+$f : X \rightharpoonup Y$ and $x \in X$. \end{definition} 
+
+\begin{definition} A \textbf{ground term} $t : Y$, is a either a variable $t
+\equiv v$, or a compound term $t \equiv f\p{x}$, where $f : X \rightharpoonup
+Y$ is a \emph{constructor} and $x : X$ is also a \emph{ground term}.
+\end{definition}
+
+\begin{definition} If $x$ is a ground term and $y$ is a term, then $x \leadsto
+y$ is a \textbf{clause}.  \end{definition}
+
+\begin{remark} We deviate from the classical use of the symbol $=$ (equals),
+frequent in recursion theory and functional programming. We are not concerned
+with any notion of ``equality'' between the left- and right-hand side of a
+clause. Instead, a clause should state how the left-hand side \emph{leads to}
+the right hand side. That is, we have chosen which way evaluation flows. To the
+acute reader this sounds an awful lot like term-rewriting, and though it is, we
+see no need to dive further into term-rewriting terminology. \end{remark}
+
+\begin{definition} A function is given by a finite set of clauses, where no
+pair of left-hand sides unify using the conventional algorithm.
+\end{definition}
+
+\subsection{Examples}
+
+\begin{example} Peano numbers in one programming language or another. Model
+theory? \end{example}
+
+\subsection{Programming with algebraic data types}
+
+To this end we adopt the notation of \cite{marion-2003}.
+
+\begin{definition} A \textbf{sort} $\mathcal{S}$ is a set. \end{definition}
+
+\begin{specification} The set of \textbf{types} $\mathcal{T}$ over a sort
+$\mathcal{S}$ is  built from either the elements of $\mathcal{S}$ or
+\textbf{type constructors}. \end{specification}
+
+\begin{definition} A \textbf{vocabulary} is a set of symbols \end{definition} 
+
+We follow the approach and notation of \cite{clote-1999}, where many of the
+below results are presented using a single-sorted word algebra. We consider
+generalizing the presentation to many-sorted algebras where this has already
+been done by others, and otherwise.
+
+A recursion scheme will be given over a particular algebra, where an algebra is
+given over a signature.
+
+\begin{definition} A \textbf{signature} is a triple $\Sigma = \p{\mathbf{B},
+\mathbf{T}, \mathbf{C}}$, where
+
+\begin{enumerate}
+
+\item [$\mathbf{B}$] is a set of \textbf{base types},
+
+\item [$\mathbf{T}$] is a set of \textbf{type constructors}, and
+
+\item [$\mathbf{V}$] is a set of \textbf{value constructors}.
+
+\end{enumerate}
+
+\end{definition}
+
+The set of base types and type constructors can be deduced from the set of
+value constructors in a signature. We choose to mark these elements in a
+distinct manner to make the following notions straight forward to discuss.
+
+\begin{definition} A signature is \textbf{single-sorted} if it has exactly one
+base type $B$, written $\Sigma = \p{\set{B}, -, -}$. A signature that is not
+single-sorted is \textbf{many-sorted}.  \end{definition}
+
+\begin{definition} For a set of base types $\mathbf{B}$, let $*$ denote any
+base type in $\mathbf{B}$. \end{definition}
+
+\begin{definition} A \textbf{word} signature is a signature having just the
+type constructors $*$ and $* \rightarrow *$, written $\p{\mathbf{B}, \set{*, *
+\rightarrow *}, \mathbf{V}}$.  \end{definition}
+
+% \begin{example} A single-sorted word signature is a signature $\p{\set{B},
+% \set{*, * \rightarrow *}, \mathbf{V}}$. That is, for each $v \in \mathbf{V}$
+% we either have $v : B$ or $v : B\rightarrow B$. \end{example}
+
+As an example, we now turn to the Peano numbers:
+
+\begin{definition} The \textbf{Peano numbers} is the single-sorted word
+signature
+
+$$\Pi \triangleq \p{\set{N}, \set{*, * \rightarrow *}, \set{\mathtt{z} : N,
+\mathtt{s} : N \rightarrow N}}.$$
+
+\end{definition}
+
+% \begin{definition} A \textbf{tree} algebra is an algebra having the type
+% constructors $\mathbf{T} = \set{*, \mathbf{T} \rightarrow \mathbf{T}}$,
+% written $\p{\mathbf{B}, \mathbf{T} = \set{*, \mathbf{T} \rightarrow
+% \mathbf{T}}, \mathbf{V}}$. \end{definition}
+
+% \begin{example} A single-sorted binary tree algebra is an algebra over the
+% signature $\p{\set{B}, \set{*, * \rightarrow * \rightarrow *}, \mathbf{V}}$,
+% where for each $v \in \mathbf{V}$ we either have $v : B$ or $v : B\rightarrow
+% B \rightarrow B$. \end{example}
+
+\begin{definition} The set of \textbf{$n$-ary} value constructors over $\Sigma
+= \p{-, -, \mathbf{V}}$ is
+
+$$\mathbf{V}_n \triangleq \set{v \in \mathbf{V} \st{v : *_0 \rightarrow *_1
+\rightarrow \cdots \rightarrow *_n}}$$
+
+\end{definition}
+
+\begin{definition} The set of \textbf{constructor terms} over
+$\Sigma=\p{-, -, \mathbf{V}}$ is
+
+$$\mathcal{C}_\Sigma \triangleq \set{v\p{t_1,t_2,\ldots,t_n} \st{n \in
+\mathbb{N} \wedge v \in \mathbf{V}_n \wedge t_1,t_2,\ldots,t_n \in
+\mathcal{C}_\Sigma}}$$
+
+\end{definition}
+
+\begin{example} The set of constructor terms over the Peano numbers is
+
+$$\mathcal{C}_\Pi = \set{\mathtt{z}, \mathtt{s}\p{\mathtt{z}},
+\mathtt{s}\p{\mathtt{s}\p{\mathtt{z}}},
+\mathtt{s}\p{\mathtt{s}\p{\mathtt{s}\p{\mathtt{z}}}}, \ldots}$$
+
+\end{example}
+
+% recursive call stack
+
+% purely functional programs? no data other than what you put in.
+
+% Perhaps a neat way of categorise the wealth of data structures 
+
+% We take a programming languages approach, and in the process relax a couple
+% terms from modern programming nomenclature.
+
+% \begin{definition} A \textbf{program} is a countable set of functions.
+% \end{definition}
+
+% \begin{definition} For a given program, let the \textbf{$A$-valued functions}
+% be all the functions in $P$ with codomain $A$. \end{definition}
+
+% \begin{definition} A \textbf{data type} $A$ is given by a subset $S$ of the
+% $A$-valued functions $T$, such that all functions in $T \setminus S$ return
+% values constructed using functions in $S$. The functions in $S$ are called
+% \textbf{value constructors}. \end{definition}
+
+% \begin{remark} Typically, the value constructors are defined in a language
+% using designated syntax. \end{remark}
+
+% \begin{remark} For the functional programmer this is a degeneration of the
+% common term ``value constructor''. For her, a data type is defined by a
+% finite set of well-placed value constructors, and can only be constructed
+% using these value constructors. Value constructors are $O(1)$-time and
+% $O(1)$-space operations, each having an inverse ``value deconstructor'' for
+% use in e.g.  pattern matching. For the imperative programmer, this is a
+% degeneration of the common term ``constructor''. Here we lend the term from
+% C++, where a type can have multiple constructors taking an arbitrarily long
+% time and space, and having at least one common (but perhaps multiple)
+% inverses. \end{remark}
+
+% Typically a value constructor has an inverse: a value deconstructor.
+
+% In the presence of successors without pairing predecessors, we must do away
+% with such notions.
+
+% \begin{notation} Let $P_\mathbf{D}$ denote the data types induced by the
+% functions of program $P$, that is, the set of all codomains in $P$.
+% \end{notation}
+
+% \begin{definition} A value constructor is a \textbf{successor} \end{definition} 
+
+% Cobham: Let a function $f$ be defined by a range of base case clauses, and a
+% range of deconstructor clauses. The recursive clauses may use various
+% predecessor operations.
+
+% Size is always given relative to a particular predecessor operation.
+
+% Consider the predecessor (among those used in the function) that decreases
+% the value by the least amount. Assume that the predecessors are always
+% applicable to a given value, and that by iterated use of the predecessor, we
+% reach a base case. A function is defined by bounded primitive recursion, if
+% the number of applications of this most-basic predecessor is no more than as
+% given by the given bound.
+
+% Also, better suited as an introduction as it doesn't really say anything
+% about the choice of polynomial time from the get go. That's more a
+% coincidence, the following definitions will hold regardless. Perhaps it is
+% worth it calling this a Part I: Introduction and Background
+
+% Fragment of a logic means that we are restricted to a subset of the syntax,
+% but retain the same semantics. If we choose the combination of words -
+% subsystem of system, we are perhaps a little more free, but in either case,
+% we probably have to further specify what we keep and what we take out.
+
+% for the purposes of this thesis, we may regard logical systems equivalent to
+% programming languages - draw inspiration from Types of Crash Prevention - it
+% has a nice, human readable introduction to the whole thing.
+
+% The correspondence between an ICC system and a complexity class is
+% extensional, i.e. the class of function (or problems) representable in the
+% system equals the complexity class.
+
+% by this point we should have more precisely defined the notions of function
+% and problem.
+
+% The systems that we will consider here will be subsystems of a larger base
+% system, in which other functions, besides those in the complexity class of
+% the system can be represented.
+
+% \begin{definition} \textit{Intensional soundness}
+
+% Any program representable in the ICC system, is within the given complexity
+% class. Proven by showing equivalence of the class of problems to a complexity
+% class.
+
+% \end{definition}
+
+% \begin{definition} \textit{Intensional completeness}
+
+% All functions in the complexity class are representable in the ICC system.
+
+% \end{definition}
+
+% \begin{definition} \textit{Extensional soundness}
+
+% All functions in the complexity class are representable in the base system.
+
+% \end{definition}
+
+
+
+
+% we want natural numbers, but we don't want the successor and predecessor
+% operations to always be blindly permitted.
+
+% primitive recursion is really defined in terms of a predecessor operation, at
+% least if we assume the successor operation to merely be something that can
+% construct a "bigger" value. otherwise, it is undefined how in primitive
+% recursion we first compute the lower-order value.
+
+% we run into the same problem with s_1 and s_0! Does it at all make sense to
+% define a successor without a predecessor? At least not if we want to be able
+% to define functions recursively! Any time we define a function computing a
+% bigger value having a lower value, we need to specify it in terms of
+% predecessors!
+
+% decrement on binary notation is a polynomial-time operation if we only assume
+% s_0 and s_1 (or rather, their predecessors). We can assume dec to be a
+% unit-cost operation, and that is where the problems of primitive recursion
+% creep up.
+
+% although we can always convert a unique string to a unique natural number, it
+% may take a long time to do so. Furthermore, the successor operation is a
+% polynomial time oper
+
+% Any more definite attempt at a definition of the natural numbers seems to
+% arrive at a philosophical impasse.
+
+% The natural numbers have never-the-less shown to be of prime importance due to
+% the concept of recursive enumerability.
+
+% Use sets rather than ``language'' to avoid mixing up inputs/outputs of
+% machines and the programming languages that we design. Languages refer
+% specifically to sets of strings.
+
+% \begin{definition}
+
+% Define enumerator.
+
+% \end{definition}
+
+% \begin{definition}
+
+% Define recursively enumerable sets.
+
+% \end{definition}
+
+% Dealing with natural numbers is bad as we would quickly regard the successor
+% (and predecessor) operations to be paired and unit-cost operations.
+
+% You cannot take the successor operation to be a unit-cost operation, nor can
+% you assume that it is paired with a predecessor.
+
+% we are dealing with words? basic data elements on any machine model?
+
+% an element of state in a machine model. it has an initial state, and some
+% succeeding states - preceding states don't really make sense.
+
+% a successor does not lead you to another state
+
+% at least size is not defined in terms of the number states that you've passed.
+
+% for all classical machine models, the class of polynomial-time computable
+% functions is equivalent.
+
+% the values of any practical data structure can be recursively enumerated; so
+% although the fact that a set is recursively enumerable opens a pandoras box,
+% only a practical subset of it will be used in practice.
+
+% this is an explanation of godel encoding.
+
+% strings or states of a data structure?
+
+% due to godel encoding, it is okay to deal in natural numbers, provided that
+% we do not (necessarily) permit a unit-cost unique successor operation.
+
+% so we're actually redefining natural numbers again? - yes.
+
+% the natural numbers that you do have in any programming language, depend on
+% the constructs available in your language. indeed, due to godel encoding, any
+% practical programming languages comes with manifolds of ways of defining
+% natural numbers.
+
+% is all this because we want to deal in the natural numbers?
+
+% In practice, we often deal with recursive sets, as by the Church-Turing thesis,
+% these are  the computable functions. This makes it attractive to deal merely in
+% the natural numbers as introduced above. Although this is perhaps a useful
+% definition of natural numbers, the pairing of a recursively enumerable set with
+% the natural numbers can be a rather complex procedure.
+
+% We intend to model this complexity by permitting a more elaborate definition of
+% natural numbers:
+
+% \begin{notion}
+
+% A \textbf{value} is either $0$, a successor, or a predecessor of a value. A
+% successor and predecessor need not take $O(1)$ to compute.
+
+% \end{notion}
+
+% The notions of successor and predecessor are defined below.
+
+% It is intentional that we do not denote the syntax of $x$.
+
+% what is a data type?
+
+% \begin{definition}
+
+% The \textbf{notation} of a particular data type is a specification of how
+% values of that data type may be constructed and deconstructed.
+
+% \end{definition}
+
+% \section{Successors}
+
+% multiple possible successor and predecessor functions.
+
+% TODO: define <, =, \vdash
+
+% to define <, we need to define size; so < is defined for some measure of size.
+
+% The rules with < occurring so early is not a problem as it is a statement
+% that these rules must hold, either as part of the definition of a successor
+% s, or as an admissible rule.
+
+% \begin{definition}
+
+% A function $s$ is a \textbf{successor} function iff
+
+% \begin{align}
+% &\vdash 0 < s(x) \\
+% x < y &\vdash s(x) < s(y)
+% \end{align}
+
+% \end{definition}
+
+% Successor functions play a key role in the remainder of the thesis, as they
+% form the basis of our measure of the size of a value.
+
+% \begin{definition}
+
+% The \textbf{size} of a value $x$, the minimum number of successor
+% applications necessary to construct $x$.
+
+% \end{definition}
+
+% For instance, a language $\mathcal{B}$ that uses binary notation may have two
+% successors, one that doubles the value, $s_0$, and another that doubles the
+% value and adds a one, $s_1$. The value $5$ is then represented in
+% $\mathcal{B}$ as $s_1\p{s_0\p{s_1\p{0}}}$, and so the size of the value $5$
+% in $\mathcal{B}$ is $3$. Analytically, the size of a value $x$ in
+% $\mathcal{B}$ is $\ceil{\log_2\p{x}}$.
+
+% \section{Predecessors}
+
+% \begin{definition}
+
+% A function $p$ is a \textbf{predecessor} function iff
+
+% no cycles?
+
+% \begin{align}
+% &\vdash p\p{0} = 0 \\
+% &\vdash p\p{x} < x & x \neq 0 \\
+% x < y &\vdash p\p{x} < p\p{y}
+% \end{align}
+
+% \end{definition}
+
+For instance, the language $\mathcal{B}$ above, may have a predecessor function
+$dec$ (read: decrement) defined as follows:
+
+\begin{align}
+dec'\p{x}=y, trim\p{y}=z &\vdash dec\p{x} = z \\
+dec'\p{x} = y &\vdash dec'\p{s_1\p{x}} = s_1\p{y} \\
+dec''\p{x} = y &\vdash dec'\p{s_1\p{x}} = s_0\p{y} \\
+dec'\p{x} = y &\vdash dec'\p{s_0\p{x}} = s_0\p{y} \\
+dec''\p{x} = y &\vdash dec''\p{s_0\p{x}} = s_1\p{y} \\
+&\vdash dec''\p{s_0\p{0}} = s_1\p{0} \\
+&\vdash dec'\p{s_1\p{0}} = s_0\p{0} \\
+&\vdash dec'\p{0} = 0 \\
+trim\p{y} = z &\vdash trim\p{s_0\p{y}} = z \\
+&\vdash trim\p{s_1\p{y}} = s_1\p{y} \\
+&\vdash trim\p{0} = 0
+\end{align}
+
+For instance, $s_1\p{s_0\p{s_1\p{0}}}$, i.e. 5, decremented, is
+$s_1\p{s_0\p{s_0\p{0}}}$, i.e. 4:
+
+$$
+\judgement{
+  \judgement{
+    \judgement{
+      \axiom{
+        dec'\p{s_1\p{0}} = s_0\p{0}
+      }
+    }{
+      dec'\p{s_0\p{s_1\p{0}}} = s_0\p{s_0\p{0}}
+    }
+  }{
+    dec'\p{s_1\p{s_0\p{s_1\p{0}}}} = s_1\p{s_0\p{s_0\p{0}}}
+  }
+  \quad
+  \axiom{
+    trim\p{s_1\p{s_0\p{s_0\p{0}}}} = s_1\p{s_0\p{s_0\p{0}}}
+  }
+}{
+  dec\p{s_1\p{s_0\p{s_1\p{0}}}} = s_1\p{s_0\p{s_0\p{0}}}
+}
+$$
+
+and $s_1\p{s_0\p{s_0\p{0}}}$, i.e. 4, decremented, is $s_1\p{s_1\p{0}}$, i.e. $3$:
+
+$$
+\judgement{
+  \judgement{
+    \judgement{
+      \axiom{
+        dec''\p{s_0\p{0}} = s_1\p{0}
+      }
+    }{
+      dec''\p{s_0\p{s_0\p{0}}} = s_1\p{s_1\p{0}}
+    }
+  }{
+    dec'\p{s_1\p{s_0\p{s_0\p{0}}}} = s_0\p{s_1\p{s_1\p{0}}}
+  }
+  \quad
+  \judgement{
+    \axiom{
+      trim\p{s_1\p{s_1\p{0}}} = s_1\p{s_1\p{0}}
+    }
+  }{
+    trim\p{s_0\p{s_1\p{s_1\p{0}}}} = s_1\p{s_1\p{0}}
+  }
+}{
+  dec\p{s_1\p{s_0\p{s_0\p{0}}}} = s_1\p{s_1\p{0}}
+}
+$$
+
+\section{Successors and predecessors}
+
+\begin{definition}
+
+A predecessor function $p$ is \textbf{paired} with a successor function $s$ iff
+
+\begin{align}
+\vdash p\p{s\p{x}} &= x
+\end{align}
+
+\end{definition}
+
+It is not a requirement for a predecessor to be paired with a successor. A
+language may have predecessors more powerful than any of its successors.
+
+\begin{remark}
+
+A successor or predecessor function may or may not take $O(1)$ time. This
+depends on the machine model.
+
+\end{remark}
+
+\section{Primitive recursion}
+
+\begin{definition}
+
+A function is defined by \textbf{primitive recursion} (PR), from PR functions
+$g$ and $h$, and a PR predecessor function $p$, iff
+
+\begin{align}
+f\p{0,\vect{y}} &= g\p{\vect{y}} \\
+f\p{x, \vect{y}} &= h\p{x, \vect{y}, f\p{p\p{x},\vect{y}}}
+\end{align}
+
+\end{definition}
+
+The running time of a PR function $f$, depends on the running times of $g$,
+$h$, and $p$, as well as how quickly $p$ decreases $x$ to $0$.
+
+Mere primitive recursion is not confined to polytime computation.
+
+\begin{theorem}
+PR is not confined to polytime computation.
+\end{theorem}
+
+\begin{proof} Assume that $g$, $h$, and $p$ are all computed in $O(1)$ time.
+Consider the language $\mathcal{B}$ above, having just the successors $s_0$ and
+$s_1$. Let $p$ be the function $dec$ above.\end{proof}
+
+The trouble is that $p$ does not decrease $x$ fast enough throughout the
+recursion --- the number of times $p$ has to be applied to $x$ to reach $0$, is
+superpolynomial in $x$.
+
+One attempt to mitigate for this could be to have $p$ decrease the value
+faster. For instance, sticking with the language $\mathcal{B}$ above, we could
+let $p$ be a function that halves $x$. This would pair $p$ with $s_0$.
+
+\begin{theorem}
+
+Primitive recursion defined with a predecessor function which is paired with a
+successor function is not confined to polytime computation.
+
+\end{theorem}
+
+\begin{proof} Let a predecessor function $p$ be paired with a successor
+function $s$.
+
+Consider a function $dbl$, which doubles its input:
+
+\begin{align}
+dbl\p{0} &= 0 \\
+dbl\p{x} &= s\p{s\p{dbl\p{p\p{x}}}}
+\end{align}
+
+Consider furthermore a function $iterdbl$, which calls $dbl$ iteratively, the
+same number of times as the length of its input:
+
+\begin{align}
+iterdbl\p{0} &= s\p{0} \\
+iterdbl\p{x} &= dbl\p{iterdbl\p{p\p{x}}}
+\end{align}
+
+Calling $iterdbl$ with a string of length $n$, we obtain a string of length
+$2^n$ due to iterated doubling of the input. It follows that $iterdbl$ does a
+superpolynomial amount of work in the size of its input.\end{proof}
+
+\begin{example}
+We illustrate the above proof with an example:
+\begin{align}
+\underline{iterdbl\p{s\p{s\p{0}}}}
+  &\leadsto dbl\p{iterdbl\p{\underline{p\p{s\p{s\p{0}}}}}} \\
+  &\leadsto dbl\p{\underline{iterdbl\p{s\p{0}}}} \\
+  &\leadsto dbl\p{dbl\p{iterdbl\p{\underline{p\p{s\p{0}}}}}} \\
+  &\leadsto dbl\p{dbl\p{\underline{iterdbl\p{0}}}} \\
+  &\leadsto dbl\p{\underline{dbl\p{s\p{0}}}} \\
+  &\leadsto dbl\p{s\p{s\p{dbl\p{\underline{p\p{s\p{0}}}}}}} \\
+  &\leadsto dbl\p{s\p{s\p{\underline{dbl\p{0}}}}} \\
+  &\leadsto \underline{dbl\p{s\p{s\p{0}}}} \\
+  &\leadsto s\p{s\p{dbl\p{\underline{p\p{s\p{s\p{0}}}}}}} \\
+  &\leadsto s\p{s\p{\underline{dbl\p{s\p{0}}}}} \\
+  &\leadsto s\p{s\p{s\p{s\p{dbl\p{\underline{p\p{s\p{0}}}}}}}} \\
+  &\leadsto s\p{s\p{s\p{s\p{\underline{dbl\p{0}}}}}} \\
+  &\leadsto s\p{s\p{s\p{s\p{0}}}} \\
+\end{align}
+\end{example}
+
+In the proof above, we fall prey to the admission for the function $h$ in a
+primitive recursive function $f$ to generate value larger in size than its
+input.
+
+We could try to mitigate for this, but this would be getting ahead of
+ourselves. Bounded primitive recursion bounds the primitive recursion in a more
+general way, by bounding $f$ itself.
+
+recursion on notation can simulate primitive recursion in the absence of any
+size bounds\cite{bellantoni-phd-1992}.
+
+From this perspective we can fit Cobham's characterization into the pattern of
+most (if not all) definitions of complexity classes: one defines a general
+model of computation and then cuts oôhe computation when certain resource
+bounds are exceeded.
+
+An operator is a mapping from ground terms over a signature to ground terms
+over a signature. An algebra is a signature coupled with a set of operators.
+
+The semantics of composition is given by
+
+$$\sem{\mathtt{COMP}\p{h,g_0,g_1,\ldots,g_i}} = f$$
+
+\begin{align*}
+%
+f\p{\vect{x}} = \sem{h}\p{\sem{g_0}\p{\vect{x}}, \sem{g_1}\p{\vect{x}}, \ldots,
+\sem{g_i}\p{\vect{x}}}
+%
+\end{align*}
+
+\subsubsection{Projection}
+
+\label{sec:generalised-projection}
+
+\begin{definition} Let $\sem{\mathtt{PROJ}_j} : S_1 \times \cdots \times S_n
+\rightarrow T$ be a \textbf{generalised projection} operator, having the
+denotational semantics $\sem{\mathtt{PROJ}_j\p{e_1,\ldots,e_n}} = \sem{e_j}$,
+for some $j,n \in \mathbb{N}$, such that $1 \leq j \leq n$.  \end{definition}
+
+\begin{remark} $\sem{\mathtt{PROJ}}$ is parametric in the type $S_1,\ldots,S_n$
+and $T$. In simpler cases, we might let $S_1 = \cdots S_n = S$, and have
+$\sem{\mathtt{PROJ}}$ parametrized in $S$ and $T$; perhaps even let $S = T$.
+\end{remark}
+
+\begin{definition} Let $\mathtt{proj}_j$ be the operational interpretation of
+$\sem{\mathtt{PROJ}_j}$, having in particular, the following
+semantics:\begin{align*}
+%
+\axiom{ \mathtt{proj}_j\p{x_1,\ldots,x_{n}} \goesto x_j }
+%
+\end{align*}
+
+\end{definition}
+
+\subsubsection{Composition}
+
+\label{sec:generalised-composition}
+
+\begin{definition} Let $\sem{\mathtt{COMP}}$ be a \textbf{composition}
+operator, having the denotational semantics
+$\sem{\mathtt{COMP}\p{h,g_1,\ldots,g_m}} = f$, for some $m,n\in \mathbb{N}$,
+where \begin{align*}
+%
+\sem{h} & : T_1 \times \cdots \times T_m \rightarrow U \\
+%
+\sem{g_1} & : S_1 \times \cdots \times S_n \rightarrow T_1 \\
+%
+& \ldots \\
+%
+\sem{g_m} & : S_1 \times \cdots \times S_n \rightarrow T_m \\
+%
+f & : S_1 \times \cdots \times S_n \rightarrow U
+%
+\end{align*} and $f$ is given by the following recursion scheme, where
+$\vect{x} \triangleq x_1,\ldots,x_n$:\begin{align*}
+%
+f\p{\vect{x}} = \sem{h}\p{\sem{g_1}\p{\vect{x}}, \ldots,
+\sem{g_m}\p{\vect{x}}}.
+%
+\end{align*}
+
+\end{definition}
+
+\begin{remark} $\sem{\mathtt{COMP}}$ is parametric in the types
+$S_1,\ldots,S_n$, $T_1,\ldots,T_m$, and $U$. In simpler cases, we might let
+$S_1 = \cdots = S_n = S$ and let $T_1 = \cdots T_m = T$, and have
+$\sem{\mathtt{COMP}}$ parametrized in $S$, $T$, and $U$; perhaps even let
+$S=T=U$. \end{remark}
+
+\begin{definition} Let $\mathtt{comp}$ be the operational interpretation of
+$\sem{\mathtt{COMP}}$, having in particular, the following operational
+semantics, where $\vect{x} \triangleq x_1, \ldots, x_n$:\begin{align*}
+%
+\judgement{
+%
+  g_1\p{\vect{x}} \goesto y_1 \quad \cdots \quad g_m\p{\vect{x}} \goesto y_m
+\quad h\p{y_1,\ldots, y_m} \goesto z
+%
+}{
+%
+  \mathtt{comp}\p{h,g_1,\ldots,g_m}\p{\vect{x}} \goesto z
+%
+}
+%
+\end{align*}
+
+\end{definition}
+
+\subsubsection{Explicit Transformation}
+
+\begin{definition} \cite[p. 21]{smullyan-1961} Let $\sem{\mathtt{EXTR}}$ be an
+\textbf{explicit transformation} operator, having the semantics
+$\sem{\mathtt{EXTR}\p{h,e_1,\ldots,e_m}} = f$, where $\sem{h} : S^m \rightarrow
+T$ and $\sem{e_1}, \ldots, \sem{e_m} : S + \set{1,\ldots,n}$, for some $m,n \in
+\mathbb{N}$. So $\sem{e_i}$ is either $\mathtt{inl} \; s$ for some $s \in S$,
+or $\mathtt{inr} \; j$ for some $j \in \set{1,\ldots, n}$.
+
+The function $f : S^n \rightarrow S$ itself is given by the following recursion
+scheme:\begin{alignat*}{3}
+%
+f\p{x_1,\ldots,x_n} &= \sem{h}\p{g\p{\sem{e_1}},\ldots,g\p{\sem{e_m}}} \\
+%
+& & \text{where} \; g\p{\mathtt{inl} \; s} &= s \\
+%
+& & g\p{\mathtt{inr} \; j} &= x_j
+%
+\end{alignat*}
+
+\end{definition}
+
+\begin{remark} $\sem{\mathtt{EXTR}}$ is parametric in the types $S$ and $T$.
+\end{remark}
+
+$\sem{\mathtt{EXTR}}$ is a generalised substitution operator. Using
+$\sem{\mathtt{EXTR}}$, we can obtain not only $\sem{\mathtt{PROJ}}$ and
+$\sem{\mathtt{COMP}}$, but also identity and permutation functions.  On the
+other hand, we can obtain $\sem{\mathtt{EXTR}}$ from $\sem{\mathtt{PROJ}}$,
+$\sem{\mathtt{COMP}}$, and the {\bfseries \color{red} initial operators}
+\cite{rose-1984}. The theorem follows:
+
+\begin{theorem}\label{thm:extr-comp-proj} $\p{\Sigma,\set{\mathtt{EXTR}} \cup
+O} = \p{\Sigma,\set{\mathtt{COMP}, \mathtt{PROJ}} \cup O}$. \end{theorem}
+
+\begin{proof} \todo{Missing} \end{proof}
+
+\subsubsection{Primitive Recursion}
+
+Motivated by \cite{leivant-1995}, we introduce a generalised form of primitive
+recursion, also referred to as ``structural recursion''\cite{hofmann-2002}:
+
+\index{recursion!primitive}
+\index{recursion!structural|see {primitive recursion}}
+
+\begin{definition} Let $\mathtt{PREC}$ be a \textbf{generalised primitive
+recursion} operator over an inductively defined data type $S$, where
+$s_1,\ldots,s_n$ are the value constructors of $S$, with the denotational
+semantics $\sem{\mathtt{PREC}\p{g_{s_1},\ldots,g_{s_n}}} = f$ with the
+type\begin{align*}
+%
+f : S \times T_1 \times \cdots \times T_k \rightarrow U
+%
+\end{align*}and defined as\begin{align*}
+%
+f\p{s_i\p{x_1,\ldots,x_m},y_1,\ldots,y_k} = \sem{g_{s_i}}\p{\vect{x}, \vect{y},
+\vect{f}} & \quad \quad \p{\text{for all $i \in \set{1, \ldots, n}$}}
+%
+\end{align*} where
+
+\begin{enumerate}
+
+\item $\vect{x}$ is a subsequence of $x_1,\ldots,x_m$;
+
+\item $\vect{y}$ is a subsequence of $y_1,\ldots,y_k$; and
+
+\item $\vect{f}$ is a subsequence of $f\p{x_1, \vect{y}},\ldots, f\p{x_m,
+\vect{y}}$.
+
+\end{enumerate}
+
+\end{definition}
+
+In order to talk about primitive recursion, we also introduce the following
+terminology:
+
+\begin{itemize}
+
+\item We say that the $s_i\p{x_1,\ldots,x_m}$ on the left hand side is the
+\textbf{recurrence argument}, and $\vect{f}$ on the right hand side are
+\textbf{critical arguments}.
+
+\index{recurrence!argument}
+\index{arguments!critical}
+
+\item We als call the $g_{s_i}$'s above \textbf{recurrence functions}, where
+$g_{s_i}$ is a \textbf{base function} if it takes no critical arguments, and is
+a \textbf{step function} otherwise.
+
+\index{recurrence!functions}
+\index{functions!base|see {recurrence functions}}
+\index{functions!step|see {recurrence functions}}
+
+\item We say that the recurrence argument \textbf{drives} the recursion.
+
+\index{recurrence!(drives a)}
+
+\end{itemize}
+
+\todo{All primitive recursions over inductive data types bottom out.}

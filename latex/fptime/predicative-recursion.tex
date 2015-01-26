@@ -1,0 +1,433 @@
+\chapter{Predicative Recursion}
+
+\begin{quotation}
+
+\footnotesize\sffamily\itshape
+
+\begin{flushright}
+
+What's in a name? that which we call a rose \\
+By any other name would smell as sweet;
+
+\smallbreak
+
+\upshape
+
+--- WILLIAM SHAKESPEARE, \emph{Romeo and Juliet}, Act II, Scene II
+
+\end{flushright}
+
+\end{quotation}
+
+That which we call ``predicative'' recursion is also referred to as
+``tiered''\cite{leivant-1990}, ``stratified''\cite{leivant-1993}, or
+``ramified''\cite{leivant-1995} recursion. (The conflation of these terms
+appears prevalent in mathematics.) Our motivation is due to
+\cite{hofmann-2000a}, categorising in this fell swoop, both the seminal works
+\cite{bellantoni-cook-1992} and \cite{leivant-1995}. Hofmann was in turn
+motivated by \cite{bellantoni-phd-1992}.
+
+The use of the term ``predicative'' itself is due to \cite{russell-1907}, who
+suggested a ``predicative'' theory of sets to deal with the plaguing paradoxes
+in na\"ive set theory, e.g. Russell's or liar paradox. Informally, the
+definition of an entity is ``impredicative''\cite{goedel-1944}, if it refers
+(directly, or indirectly) to a totality to which the entity being defined
+itself belongs.  Many recursive definitions fall squarely into such totalities. 
+
+\todo{It is forbidden to do recursion on a critical argument, i.e.
+specifically, the result of a self-recursive call.}
+
+The refinement due in this section is based on the idea that the values we
+recur on in a recursive definition are of a ``different nature'' from the
+rest\cite{caseiro-1996}. Consequently, a segregation of values must commence.
+\todo{Segregation is done on the input values. Distinction between two-tiered
+and many-tiered recursion (and mu measure?). See also \cite{leivant-1995}.}
+
+% Two classical examples of an impredicative definition gone rogue are
+% Russell's and the Liar paradoxes: 
+
+% \begin{description}
+
+% \item [Russell's paradox] Define the set $R$ to be the set of all sets which
+% are not members of themselves. If $R$ is a member of itself, then it should
+% not be a member of itself; if it is not a member of itself, then it should be
+% a member of itself. Paradox by indirect self-reference.
+
+% \item [Liar paradox] Define the liar sentence ``This sentence is false.'' If
+% the sentence is true, then it is false; if it is false, then it is true.
+% Paradox by direct self-reference.
+
+% \end{description} 
+
+\subsection{Two-tiered recursion}
+
+Two-tiered recursion, also referred to as ``safe'' or ``controlled'' recursion,
+was independently introduced in \cite{simmons-1988}, \cite{leivant-1990}, and
+\cite{bellantoni-cook-1992}, and generally attributed to the latter.
+
+The idea, as indicated above, is to segregate the values into ``normal'' and
+``safe'' values. The normal values are assumed known in their totality. The
+safe values are those (perhaps) obtained by impredicative means, i.e. via
+recursion\cite{bellantoni-cook-1992, clote-1999}. Safely, as in, without
+exceeding \FPTIME{}.
+
+The variables are segregated purely syntactically, e.g. using a semicolon. In
+particular, if $f$ is an $m+n$-ary symbol, with $m$ normal inputs and $n$ safe
+inputs, it is written as $f\p{x_1,\ldots,x_m \semic{} x_{m+1},\ldots,x_{m+n}}$,
+where $x_1,\ldots,x_m$ are the $m$ normal inputs, and $x_{m+1},\ldots,x_{m+n}$
+are the $n$ safe inputs. If the eloquent programmer finds the explicit
+segregation ineloquent, the segregation can be inferred from how the values
+$x_1,\ldots,x_n$ are used\cite{caseiro-1996}.
+
+The characterisation in \cite{bellantoni-cook-1992} is again given in terms of
+a single-sorted word signature, in particular, the natural numbers in binary
+notation. We give a characterisation equivalent up to choice of words and
+notation, except that
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item we give a (syntax-directed) operational semantics of the operators to
+emphasise the syntactic nature of the characterisation; and
+
+\item we make the distinction between normal and safe inputs explicit in the
+type system, as suggested in \cite[\textsection\ 5]{bellantoni-cook-1992}.
+
+\end{enumerate}
+
+\begin{definition} \cite{bellantoni-cook-1992}
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item Let $\mathbb{N}$ and $\Box\mathbb{N}$ denote the normal and safe data
+types, respectively.
+
+\item Let $\mathtt{z} : \Box\mathbb{N}$ be a \textbf{constant} operator, having
+the following semantics:$$
+%
+\axiom{ \mathtt{z} \goesto \repr{0} }
+%
+$$
+
+\item Let $\mathtt{s}_0,\mathtt{s}_1 : \Box\mathbb{N} \rightarrow
+\Box\mathbb{N}$ be (binary) \textbf{successor} operators, having the following
+semantics:$$
+%
+\judgement{ a \goesto \repr{n} }{
+%
+  \mathtt{s}_0\p{\semic{} a} \goesto \repr{2n}
+%
+} \quad
+%
+\judgement{ a \goesto \repr{n} }{
+%
+  \mathtt{s}_1\p{\semic{} a} \goesto \repr{2n + 1}
+%
+}
+%
+$$
+
+\item Let $\mathtt{p} : \Box\mathbb{N} \rightarrow \Box\mathbb{N}$ be a
+(binary) \textbf{predecessor} operator, having the following semantics: $$
+%
+\axiom{
+%
+  \mathtt{p}\p{\semic{} \mathtt{z}} \goesto \repr{0}
+%
+}
+%
+\quad\axiom{
+%
+  \mathtt{p}\p{\semic{} \mathtt{s}_i\p{\semic{} a}} \goesto a
+%
+}\p{\text{for $i \in \set{0,1}$}}
+%
+$$
+
+\item Let $\pi_j : \mathbb{N}^m \times \Box\mathbb{N}^n \rightarrow
+\Box\mathbb{N}$ be a generalised (safe) \textbf{projection} operator, for all
+$1 \leq j \leq m+n$, given by the following semantics:$$
+%
+\axiom{ \pi_j\p{x_1,\ldots,x_m \semic{} x_{m+1},\ldots,x_{m+n}} \goesto x_j }
+%
+$$
+
+Note, in particular, $\pi_j$ projects the input safe, and so $\pi_j$ is
+\emph{not} a mere operational interpretation of the generalised projection
+operator $\sem{\mathtt{PROJ}_j}$.
+
+\item Let $\mathtt{cond} : \Box\mathbb{N} \times \Box\mathbb{N} \times
+\Box\mathbb{N} \rightarrow \Box\mathbb{N}$ be a (safe) \textbf{conditional}
+operator, having the following semantics:$$
+%
+\judgement{
+%
+  a \goesto \repr{n} \quad b \goesto m
+%
+}{
+%
+  \mathtt{cond}\p{\semic{} a, b, c} \goesto m
+%
+}\p{n \bmod 2 = 0}
+%
+\quad\judgement{
+%
+  a \goesto \repr{n} \quad c \goesto m
+%
+}{
+%
+  \mathtt{cond}\p{\semic{} a, b, c} \goesto m
+%
+}\p{n \bmod 2 \neq 0}
+%
+$$
+
+\item Let $\mathtt{sprn}$ be a \textbf{safe primitive recursion on notation}
+operator, having the following semantics, where $f \triangleq
+\mathtt{sprn}\p{g, h_0, h_1}$:\begin{align*}
+%
+\judgement{
+%
+  g\p{\vect{y} \semic{} \vect{a}} \goesto c
+%
+}{
+%
+  f\p{\mathtt{z}, \vect{y} \semic{} \vect{a}} \goesto c
+%
+}\end{align*}\begin{align*}
+%
+\judgement{
+%
+  h_i\p{x, \vect{y} \semic{} \vect{a}, f\p{x,\vect{y} \semic{} \vect{a}}}
+\goesto c
+%
+}{
+%
+  f\p{\mathtt{s}_i\p{x}, \vect{y} \semic{} \vect{a}} \goesto c
+%
+}\p{\text{for $i\in\set{0,1}$}}
+%
+\end{align*}
+
+\item For every $f : \mathbb{N}^n \rightarrow \Box\mathbb{N}$, where $n \in
+\mathbb{N}$, there is a corresponding $g : \mathbb{N}^n \rightarrow
+\mathbb{N}$, in accordance with the following axiom:\begin{align*}
+%
+\axiom{f\p{x_1,\ldots,x_n} \goesto g\p{x_1,\ldots,x_n}}
+%
+\end{align*}
+
+This permits the coersion of safe outputs to normal outputs.
+
+\item Let $\mathcal{B} = \p{\set{\mathtt{s}_0, \mathtt{s}_1, \mathtt{p}, \pi_j,
+\mathtt{cond}},\set{\mathtt{comp}, \mathtt{sprn}}} $, where $\mathtt{comp}$ is
+defined as in \refSec{generalised-composition}, with $S=\mathbb{N}$ and
+$T=U=\Box\mathbb{N}$.
+
+\end{enumerate}
+
+\end{definition}
+
+\begin{remark} The size function is defined as before. In particular, for
+binary notation, $\card{n}=\ceil{\log_2\p{n+1}}$ for all $n \in \mathbb{N}$.
+\end{remark}
+
+\begin{lemma} \label{lem:b-fptime-sound} $\mathcal{B}$ is \FPTIME{}-sound.
+\end{lemma}
+
+\begin{proof} (Sketch, see also \cite{bellantoni-cook-1992}.) By simulating
+$\mathcal{B}$ in $\mathcal{L}$.  \todo{Rest of sketch missing.} \end{proof}
+
+\begin{lemma} \label{lem:b-fptime-complete} $\mathcal{B}$ is
+\FPTIME{}-complete.  \end{lemma}
+
+\begin{proof} (Sketch, see also \cite{bellantoni-cook-1992}.) By simulating
+$\mathcal{L}$ in $\mathcal{B}$. \todo{Rest of sketch missing.} \end{proof}
+
+\begin{theorem} $\mathcal{B}$ captures \FPTIME{}. \end{theorem}
+
+\begin{proof} Follows directly from \refLem{b-fptime-sound} and
+\refLem{b-fptime-complete}. \end{proof}
+
+\subsubsection{Example}
+
+\subsubsection{Discussion}
+
+\subsubsection{$\mu$-measure}
+
+Before we turn to many-tiered recursion..
+
+\subsection{Many-tiered recursion}
+
+The generalization of two-tiered recursion to many-tiered recursion is
+generally attributed to \cite{leivant-1995}. The intuition is that inputs come
+bearing varying computational weights --- some are too heavy to drive a
+recurrence.
+
+In the style of \cite{leivant-1990}, the motivation for this work is to give an
+algebraic, rather than a numeric, account of tiered recursion, drawing
+parallels to programming with algebraic data types. As a ``technical
+advantage'', the work also boasts an implicit characterisation of
+$O\p{n^k}$-\TIME{} for any given $k\in \mathbb{N}$. This is considered useful
+to Part II.
+
+The characterisation in \cite{leivant-1995} is given in terms of free algebras.
+The proofs of capture are given, ``without loss of generality'', in terms of
+word algebras. Unfortunately, the means of proof do not generalise to tree
+algebras\cite{caseiro-1996, dal-lago-et-al-2010}.
+
+The conference paper \cite{dal-lago-et-al-2010} presents an alternative proof,
+generalising tiered recursion to single-sorted free algebras. Their
+characterisation is given below, equivalent up to choice of words and notation,
+except:
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item we give a (syntax-directed) operational semantics of the oprators to
+emphasise the syntactic nature of the characterisation;
+
+\item we let the tiers be a part of the type system rather than they stand on
+their own, in leau of what we did for two-tiered recursion; and
+
+\item we present the characterisation in terms of a many-sorted, rather than a
+single-sorted signature, in leau of the above, and generalising slightly.
+
+\end{enumerate}
+
+\begin{definition} \cite{dal-lago-et-al-2010}
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item Let $\Sigma$ be a many-sorted signature, decorated with tiers, and let
+$\sigma : \Sigma \rightarrow \mathbb{N}$ give the arities of the symbols in
+$\Sigma$.
+
+\todo{A type signature?}
+
+\item Let $s : S_1^i \times \cdots \times S_n^i \rightarrow T^i$ be the type of
+any symbol $s \in \Sigma$. That is, the constructors of the algebra operate on
+same-tier inputs, and preserve tier.
+
+\item Let $\mathtt{proj}_j$ be a generalised projection operator, as in
+\refSec{generalised-projection},  parametrised by the types $S_1^{i_1}, \ldots,
+S_n^{i_n}$, and $S_j^{i_j}$, where $1 \leq j \leq n$.
+
+\item Let $\mathtt{comp}_j$ be a generalised composition operator, as in
+\refSec{generalised-composition}, parametrised by the types $S_1^{i_1}, \ldots,
+S_n^{i_n}$, $T_1^{j_1}, \ldots, T_m^{j_m}$, and $U^k$.
+
+Note, in particular, that for any $f : V^0 \rightarrow V^1$ and $g : V^0
+\rightarrow V^0$, $\mathtt{comp}\p{f,g}$ is well-typed, whereas
+$\mathtt{comp}\p{g,f}$ is not.
+
+\item Let $\mathtt{trec}$ be a \textbf{tiered primitive recursion} operator,
+having the following semantics: \begin{align*}
+%
+f \triangleq \mathtt{trec}\p{g_1,\ldots,g_m} \quad\quad
+%
+\vect{x} \triangleq x_1, \ldots, x_{\sigma\p{s_k}} \quad\quad
+%
+\vect{y} \triangleq y_1, \ldots, y_n \\
+%
+\judgement{
+%
+  g_l\p{\vect{x}, \vect{y}, f\p{x_1, \vect{y}}, \ldots, f\p{x_{\sigma\p{s_k}},
+\vect{y}}} \goesto z
+%
+}{
+%
+  f\p{s_l\p{\vect{x}},\vect{y}} \goesto z
+%
+}\p{\text{for $k \in \set{1,\ldots,m}$}}
+%
+\end{align*} where, for $i<j$, the types are as follows, having $\mathbf{T}
+\triangleq T_1^{k_1} \times \cdots \times T_n^{k_n}$:\begin{align*}
+%
+f &: S^j \times \mathbf{T} \rightarrow U^i \\
+%
+g_k &:  S_1^j \times \cdots \times S_{\sigma\p{s_l}}^j \times \mathbf{T} \times
+\underbrace{U^i \times \cdots \times U^i}_{\text{$\sigma\p{s_l}$ times}}
+\rightarrow U^i
+%
+\end{align*}
+
+The key point with $\mathtt{trec}$ is that the tier of the value we recur on,
+must be strictly greater than the tier of the value we produce with
+$\mathtt{trec}$ ($i < j$).
+
+\end{enumerate}
+
+\end{definition}
+
+The notable change with the tiered primitive recursion operator
+($\mathtt{trec}$), in contrast to the previously introduced bounded primitive
+recursion operator ($\mathtt{BPRN}$), and safe primitive recursion operator
+($\mathtt{sprn}$), is that $\mathtt{trec}$ makes multiple recursive calls ---
+once for each $x_i$ in $s_i\p{x_1,\ldots,x_n}$.
+
+This streamlines the operational semantics, and does originally appear in
+\cite{leivant-1995}. However, the paper goes on to prove the capture of
+polynomial complexities in terms of word algebras only, i.e. where $\sigma\p{s}
+\leq 1$ for every symbol $s$.
+
+\begin{definition} A \textbf{single-sorted} algebra is an algebra over the
+signature $\p{\set{B}, \mathcal{T}, \mathcal{V}}$, i.e. there is just a single
+base type, $B$. \end{definition}
+
+\begin{definition} A \textbf{word} algebra is an algebra over the signature
+$\p{\mathbf{B}, \set{\rightarrow}, \mathcal{V}}$, where each $v \in
+\mathcal{V}$ either has the kind $v : *$ or $v : *\rightarrow *$.
+\end{definition}
+
+\begin{example} A single-sorted word algebra is an algebra over the signature
+$\p{\set{B},\set{\rightarrow}, \mathcal{V}}$, where for each $v \in
+\mathcal{V}$ we either have $v : B$ or $v : B\rightarrow B$. \end{example}
+
+\begin{definition} A \textbf{Peano numbers} algebra is a single-sorted word
+algebra over the signature $\p{\set{N}, \set{\rightarrow},\set{\mathtt{0} : N,
+\mathtt{s} : N \rightarrow N}}$. \end{definition}
+
+
+This is sufficient to deal in all finite types and string types, e.g.  the
+peano numbers or binary strings. Making our way towards mixed data types and
+tuples, \cite{marion-2003} generalised tiered recursion to simple algebras.
+
+\begin{definition} A \textbf{simple algebra} is an algebra over the signature
+$\p{\mathbf{B}, \set{\rightarrow}, \mathcal{C}}$, where each value constructor
+$c \in \mathcal{C}$ has the type $\tau_1 \rightarrow \tau_2 \rightarrow \cdots
+\rightarrow \tau_n \rightarrow \tau$, for some $n\in \mathbb{N}$, such that
+$\tau$ occurs at most once amongst the $\tau_i$.  \end{definition}
+
+If we curry our eyes a bit, we can see how this leads way to ``simple'' tuples.
+Indeed, \cite{marion-2003} employs the more concise notation
+$\p{\tau_1,\tau_2,\cdots,\tau_n}\rightarrow \tau$ instead.  Although this
+admits a slightly more eloquent class of data types, we need more ``complex''
+tuples to even model good old trees.
+
+Worse yet, the results in \cite{leivant-1995} rely on a size function where the
+size of a term is the ``height of the parse-tree'' of the term. Leading to the
+plausible deniability that tiered recursion still captures $\mathtt{FPTIME}$
+when defined over any free algebra\cite{caseiro-1996}.
+
+The generalization to \emph{any} free algebra comes about in
+\cite{dal-lago-et-al-2010}. Their insight is that there is no need to copy (or
+recompute) a value if it appears more than once in a term --- we could just
+\emph{refer} to the same value. In a programming language without destructive
+assignment, this is perhaps a natural optimization technique. Hence ``trees''
+are really represented as graphs.
+
+\begin{remark} With this generalisation we move away from the conventional
+notion of the \emph{length} of a term $t$ being the cumulative number of
+occurrences of symbols and variables in $t$, as in first-order term
+rewriting\cite{klop-vrijer-2003}. \end{remark}
+
+\begin{example} \cite{dal-lago-et-al-2003} Consider a program $\p{\p{\p{N,T}, N
+\cup T, \set{z : N, s : N \rightarrow N, \mathtt{leaf} : T, \mathtt{node} : T
+\times T \rightarrow T}}, \set{f}}$, where $f$ is given by the following set of
+clauses:
+
+\begin{align}
+f\p{\symb{z}}       &\leadsto \symb{leaf} \\
+f\p{\symb{s}\p{w}}  &\leadsto \symb{node}\p{f\p{w}, f\p{w}}
+\end{align}
+
+\end{example}
