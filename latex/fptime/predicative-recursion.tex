@@ -29,19 +29,31 @@ motivated by \cite{bellantoni-phd-1992}.
 
 The use of the term ``predicative'' itself is due to \cite{russell-1907}, who
 suggested a ``predicative'' theory of sets to deal with the plaguing paradoxes
-in na\"ive set theory, e.g. Russell's or liar paradox. Informally, the
+of na\"ive set theory, e.g. Russell's or liar paradox. Informally, the
 definition of an entity is ``impredicative''\cite{goedel-1944}, if it refers
 (directly, or indirectly) to a totality to which the entity being defined
 itself belongs.  Many recursive definitions fall squarely into such totalities. 
 
-\todo{It is forbidden to do recursion on a critical argument, i.e.
-specifically, the result of a self-recursive call.}
-
 The refinement due in this section is based on the idea that the values we
 recur on in a recursive definition are of a ``different nature'' from the
 rest\cite{caseiro-1996}. Consequently, a segregation of values must commence.
-\todo{Segregation is done on the input values. Distinction between two-tiered
-and many-tiered recursion (and mu measure?). See also \cite{leivant-1995}.}
+It is here, that the use of (some of) the terminology introduced in
+\refSec{primitive-recursion} comes to light:
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item first, we call the critical arguments ``safe'', while the recurrence
+argument is ``normal''; and
+
+\item later, we say that the critical arguments are of a ``lower tier'' than
+the recurrence argument.
+
+\end{enumerate}
+
+First, the segregation, i.e. the identification of critical arguments, is done
+purely syntactically. Later, the segregation is done by a (syntax-directed)
+semantical judgement. \cite{caseiro-1996} also presented an automatic procedure
+for identifying the critical arguments.
 
 % Two classical examples of an impredicative definition gone rogue are
 % Russell's and the Liar paradoxes: 
@@ -59,7 +71,7 @@ and many-tiered recursion (and mu measure?). See also \cite{leivant-1995}.}
 
 % \end{description} 
 
-\subsection{Two-tiered recursion}
+\section{Two-tiered recursion}
 
 Two-tiered recursion, also referred to as ``safe'' or ``controlled'' recursion,
 was independently introduced in \cite{simmons-1988}, \cite{leivant-1990}, and
@@ -248,15 +260,13 @@ $\mathcal{L}$ in $\mathcal{B}$. \todo{Rest of sketch missing.} \end{proof}
 \begin{proof} Follows directly from \refLem{b-fptime-sound} and
 \refLem{b-fptime-complete}. \end{proof}
 
-\subsubsection{Example}
+\subsection{Examples}
 
-\subsubsection{Discussion}
-
-\subsubsection{$\mu$-measure}
+\subsection{$\mu$-measure}
 
 Before we turn to many-tiered recursion..
 
-\subsection{Many-tiered recursion}
+\section{Many-tiered recursion}
 
 The generalization of two-tiered recursion to many-tiered recursion is
 generally attributed to \cite{leivant-1995}. The intuition is that inputs come
@@ -431,3 +441,7 @@ f\p{\symb{s}\p{w}}  &\leadsto \symb{node}\p{f\p{w}, f\p{w}}
 \end{align}
 
 \end{example}
+
+\subsection{Examples}
+
+\section{Discussion}

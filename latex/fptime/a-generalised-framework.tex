@@ -23,6 +23,7 @@ How long!?!
 
 \end{quotation}
 
+\todo{Stop reading here and go to \refSec{generalised-projection}.}
 
 The fundamental insight highlighted by the above quotation underpins much work
 done in \cite{jones-1999, jones-2001, kristiansen-voda-2005, hofmann-2003,
@@ -741,34 +742,160 @@ bounds are exceeded.
 An operator is a mapping from ground terms over a signature to ground terms
 over a signature. An algebra is a signature coupled with a set of operators.
 
-The semantics of composition is given by
+\begin{definition} A \textbf{single-sorted word signature} $\Psi$,
+has $n \in \mathbb{N}$ symbols, $m \in \mathbb{N}$ of which, where $m \leq n$,
+are nullary, and $\p{n-m}$ of which are unary, m.f.
 
-$$\sem{\mathtt{COMP}\p{h,g_0,g_1,\ldots,g_i}} = f$$
+$$\Psi \triangleq \set{s_1 : 0, \; \ldots, \; s_m : 0, \; s_{m+1} : 1, \;
+\ldots, \; s_n : 1}.$$
+
+\end{definition}
+
+Recall that we denote terms over $\Psi$ as $\mathcal{T}\p{\Psi}$, and ground
+terms as $\mathcal{T}_\downarrow\p{\Psi}$. Also, we denote the nullary symbols
+of $\Psi$ as $\Psi^0$ and the unary symbols as $\Psi^1$. In the case of
+single-sorted word signatures, $\Psi^0 \cup \Psi^1 = \Psi$.
+
+\begin{definition} A single-sorted word signature $\Psi$ with $1$ nullary
+symbol and $n \in \mathbb{N}$ unary symbols is referred to as \textbf{$n$-ary
+notation}. $1$-, $2$-, $3$-, and $10$-ary notation is also referred to as
+\textbf{unary}, \textbf{binary}, \textbf{ternary}, and \textbf{decimal},
+respectively.  \end{definition}
+
+\begin{definition} Terms over $n$-ary notation are referred to as
+\textbf{strings}; the term consisting of just the nullary symbol as the
+\textbf{empty string}; the nullary symbol itself is often written as
+$\varepsilon$, if written at all. \end{definition} 
+
+\begin{example} Let $B \triangleq \set{\varepsilon : 0, \; \symb{0} : 1, \;
+\symb{1} : 1}$ be a binary notation, having the context-free grammar
+
+$$B ::= \symb{0} \cdot B \mid \symb{1} \cdot B \mid \varepsilon$$
+
+For instance, $\varepsilon$, $\symb{0}$, $\symb{1}\symb{0}$,
+$\symb{1}\symb{0}\symb{1}$, $\symb{1}\symb{0}\symb{1}\symb{0}\symb{1}\symb{0}$,
+are all in $\mathcal{T}\p{B}$ and $\mathcal{T}_\downarrow\p{B}$.
+
+\end{example}
+
+\section{Size}
+
+\label{sec:size}
+
+\begin{definition} \label{def:single-sort-word-term-size} The size of a term $t
+\in \mathcal{T}\p{\Psi}$, written $\card{t} \in \mathbb{N}$, is the number of
+occurrences of symbols and variables in $t$, m.f.
 
 \begin{align*}
-%
-f\p{\vect{x}} = \sem{h}\p{\sem{g_0}\p{\vect{x}}, \sem{g_1}\p{\vect{x}}, \ldots,
-\sem{g_i}\p{\vect{x}}}
-%
+\card{v_i} &= 1 & \text{for all $v_i \in Var$} \\
+\card{s_i} &= 1 & \text{for all $s_i\in \Psi^0$} \\
+\card{s_j\p{x}} &= \card{x} + 1 & \text{for all $s_j \in \Psi^1$}
 \end{align*}
 
-\subsubsection{Projection}
+\end{definition}
+
+\begin{example} In case of binary notation, $\card{\varepsilon}=1$,
+$\card{\symb{0}} = 2$, $\card{\symb{1}\symb{0}} = 3$,
+$\card{\symb{1}\symb{0}\symb{1}} = 4$,
+$\card{\symb{1}\symb{0}\symb{1}\symb{0}\symb{1}\symb{0}} = 7$, etc.
+\end{example}
+
+\begin{remark} The fact that an empty string over $n$-ary notation has a
+non-zero size is perhaps peculiar to some audience. The intuition is that
+``even the lack of data is data in itself''. This notion of size corresponds to
+the classical notion length of a term in first-order term rewriting
+\cite{klop-vrijer-2003}. \end{remark}
+
+\section{Types}
+
+Every value has a type. The typing judgement is syntax-directed.
+
+language: a collection of types and operators
+
+are they really values?
+
+\pagebreak
+
+\section{Function Algebras and Hierarchies}
+
+It is of principle interest to mathematicians et al. to categorise functions
+into classes and hierarchies. Some classes of functions are defined
+\emph{extrinsically}, e.g.  the functions computable by means of a Turing
+machine, while others are defined \emph{intrinsically}, e.g. by means of a
+function algebra.
+
+A \textbf{function algebra}, $\mathcal{F}$, is a superset of a chosen set of
+\textbf{initial functions} $\mathcal{F}_I$, closed under a chosen set of
+operations, $\mathcal{F}_O$. An \textbf{operation} is a function, which takes
+functions in $\mathcal{F}$ as input. A class $\mathcal{F}$ is \textbf{closed
+under} an operation, if the operation also yields a function in $\mathcal{F}$
+as output.
+
+For instance, one classical function algebra, which we'll call $\mathcal{P}$,
+is a function algebra containing a zero and successor function as initial
+functions, and is closed under the operation of composition.
+
+\begin{remark} That which we call a function ``algebra'' is often also simply
+called a ``class''. This is typically in the absence of an intended distinction
+between an intrinsic and extrinsic definitions of a class, which is prevalent
+throughout this document. For our intents and purposes, every function algebra
+is a class, but not every function class is an algebra. \end{remark} 
+
+A function in $\mathcal{C}$ admits an interpretation as a \textbf{construction
+tree}. A leaf is a particular initial function. An internal node is a
+particular operation. The outgoing edges (of an internal node) model the
+application of the operation to particular functions in $\mathcal{C}$,
+interpreted as the respective, outbound subtrees.
+
+\todo{A \textbf{hierarchy of functions}, successively takes a class of
+functions as initial functions and closes it under a set of operations.}
+
+% That is, for all $f
+%\in \mathcal{C}_I$, we have $f \in \mathcal{C}$, and for all $g \in \mathcal{C}_O$, 
+
+
+% initial functions: the set of functions which form the leafs of a computation
+% tree; it is however up to interepretation what one regards as the leafs of
+% this computation tree, except for perhaps the 0-ary functions, which lead to
+% no subsequent function calls. On the other hand, our definition of the
+% successor function also leads to no 
+
+% in classical recursion theory, we define functions over the natural numbers;
+% we designate some functions as initial, and others as operators. The
+% operators combine the initial functions and operators to construct new
+% values. This induces a construction tree. Given sufficiently simple initial
+% functions, and sufficiently simple constructions -- we can superimpose a
+% computation model on top of a function algebra. Here, sufficiently simple
+% means computable, and typically, easily computable.
+
+\todo{One classical example of a function algebra is the Grzegorzcyk hierarchy.}
+
+\pagebreak
+
+\section{Semantics}
+
+Inspired by \cite{hofmann-2003}, we sometimes give the set-theoretic
+denotational semantics of the operators in a programming language. To this end,
+for every base type $A$, we assume a set $\sem{A}$, e.g. $\mathtt{N} =
+\mathbb{N}$.
+
+\section{Projection}
 
 \label{sec:generalised-projection}
 
-\begin{definition} Let $\sem{\mathtt{PROJ}_j} : S_1 \times \cdots \times S_n
+\begin{definition} Let $\mathtt{PROJ}_j : S_1 \times \cdots \times S_n
 \rightarrow T$ be a \textbf{generalised projection} operator, having the
-denotational semantics $\sem{\mathtt{PROJ}_j\p{e_1,\ldots,e_n}} = \sem{e_j}$,
+denotational semantics $\sem{\mathtt{PROJ}_j\p{x_1,\ldots,x_n}} = \sem{x_j}$,
 for some $j,n \in \mathbb{N}$, such that $1 \leq j \leq n$.  \end{definition}
 
-\begin{remark} $\sem{\mathtt{PROJ}}$ is parametric in the type $S_1,\ldots,S_n$
+\begin{remark} $\mathtt{PROJ}_j$ is parametric in the types $S_1,\ldots,S_n$
 and $T$. In simpler cases, we might let $S_1 = \cdots S_n = S$, and have
-$\sem{\mathtt{PROJ}}$ parametrized in $S$ and $T$; perhaps even let $S = T$.
-\end{remark}
+$\mathtt{PROJ}_j$ parametrized in $S$ and $T$. We may even let $S = T = A$, for
+some given type $A$, written $\mathtt{PROJ}_j^A$, giving perhaps the more
+comprehensible type, $\mathtt{PROJ}_j^A : A^n \rightarrow A$. \end{remark}
 
 \begin{definition} Let $\mathtt{proj}_j$ be the operational interpretation of
-$\sem{\mathtt{PROJ}_j}$, having in particular, the following
-semantics:\begin{align*}
+$\mathtt{PROJ}_j$, having in particular, the following semantics:\begin{align*}
 %
 \axiom{ \mathtt{proj}_j\p{x_1,\ldots,x_{n}} \goesto x_j }
 %
@@ -776,53 +903,60 @@ semantics:\begin{align*}
 
 \end{definition}
 
-\subsubsection{Composition}
+\section{Composition}
 
 \label{sec:generalised-composition}
 
-\begin{definition} Let $\sem{\mathtt{COMP}}$ be a \textbf{composition}
-operator, having the denotational semantics
-$\sem{\mathtt{COMP}\p{h,g_1,\ldots,g_m}} = f$, for some $m,n\in \mathbb{N}$,
-where \begin{align*}
+\begin{definition} Let $\mathtt{COMP}$ be a \textbf{composition} operator,
+having the denotational semantics $\sem{\mathtt{COMP}\p{f,g_1,\ldots,g_m}} =
+h$, for some $m,n\in \mathbb{N}$, where \begin{align*}
 %
-\sem{h} & : T_1 \times \cdots \times T_m \rightarrow U \\
+f & : T_1 \times \cdots \times T_m \rightarrow U \\
 %
-\sem{g_1} & : S_1 \times \cdots \times S_n \rightarrow T_1 \\
+g_1 & : S_1 \times \cdots \times S_n \rightarrow T_1 \\
 %
 & \ldots \\
 %
-\sem{g_m} & : S_1 \times \cdots \times S_n \rightarrow T_m \\
+g_m & : S_1 \times \cdots \times S_n \rightarrow T_m \\
 %
-f & : S_1 \times \cdots \times S_n \rightarrow U
+h & : S_1 \times \cdots \times S_n \rightarrow U.
 %
-\end{align*} and $f$ is given by the following recursion scheme, where
-$\vect{x} \triangleq x_1,\ldots,x_n$:\begin{align*}
+\end{align*} $h$ itself is given as follows, where $\vect{x} \triangleq
+x_1,\ldots,x_n$:\begin{align*}
 %
-f\p{\vect{x}} = \sem{h}\p{\sem{g_1}\p{\vect{x}}, \ldots,
+h\p{\vect{x}} = \sem{f}\p{\sem{g_1}\p{\vect{x}}, \ldots,
 \sem{g_m}\p{\vect{x}}}.
 %
 \end{align*}
 
 \end{definition}
 
-\begin{remark} $\sem{\mathtt{COMP}}$ is parametric in the types
-$S_1,\ldots,S_n$, $T_1,\ldots,T_m$, and $U$. In simpler cases, we might let
-$S_1 = \cdots = S_n = S$ and let $T_1 = \cdots T_m = T$, and have
-$\sem{\mathtt{COMP}}$ parametrized in $S$, $T$, and $U$; perhaps even let
-$S=T=U$. \end{remark}
+\begin{remark} $\mathtt{COMP}$ is parametric in the types $S_1,\ldots,S_n$,
+$T_1,\ldots,T_m$, and $U$. In simpler cases, we might let $S_1 = \cdots = S_n =
+S$, and let $T_1 = \cdots T_m = T$, and have $\mathtt{COMP}$ parametrized in
+$S$, $T$, and $U$. We may even let $S=T=U=A$, for some given type $A$, written
+$\mathtt{COMP}_A$, giving the more comprehensible type:\begin{align*}
+%
+\mathtt{COMP}_A : \p{A^m \rightarrow A} \rightarrow \p{A^n \rightarrow A}^m
+\rightarrow A^n \rightarrow A.
+%
+\end{align*}\end{remark}
+
+\begin{notation} $\mathtt{COMP}\p{f, \vect{g}}$, where $\vect{g} \triangleq
+g_1,\ldots,g_m$, is also written as $f\p{\vect{g}}$. \end{notation}
 
 \begin{definition} Let $\mathtt{comp}$ be the operational interpretation of
-$\sem{\mathtt{COMP}}$, having in particular, the following operational
-semantics, where $\vect{x} \triangleq x_1, \ldots, x_n$:\begin{align*}
+$\mathtt{COMP}$, having in particular, the following operational semantics,
+where $\vect{x} \triangleq x_1, \ldots, x_n$:\begin{align*}
 %
 \judgement{
 %
   g_1\p{\vect{x}} \goesto y_1 \quad \cdots \quad g_m\p{\vect{x}} \goesto y_m
-\quad h\p{y_1,\ldots, y_m} \goesto z
+\quad f\p{y_1,\ldots, y_m} \goesto z
 %
 }{
 %
-  \mathtt{comp}\p{h,g_1,\ldots,g_m}\p{\vect{x}} \goesto z
+  \mathtt{comp}\p{f,g_1,\ldots,g_m}\p{\vect{x}} \goesto z
 %
 }
 %
@@ -830,19 +964,25 @@ semantics, where $\vect{x} \triangleq x_1, \ldots, x_n$:\begin{align*}
 
 \end{definition}
 
-\subsubsection{Explicit Transformation}
+\section{Explicit Transformation}
 
-\begin{definition} \cite[p. 21]{smullyan-1961} Let $\sem{\mathtt{EXTR}}$ be an
+\label{sec:explicit-transformation}
+
+\begin{definition} \cite[p. 21]{smullyan-1961} Let $\mathtt{EXTR}$ be an
 \textbf{explicit transformation} operator, having the semantics
-$\sem{\mathtt{EXTR}\p{h,e_1,\ldots,e_m}} = f$, where $\sem{h} : S^m \rightarrow
-T$ and $\sem{e_1}, \ldots, \sem{e_m} : S + \set{1,\ldots,n}$, for some $m,n \in
-\mathbb{N}$. So $\sem{e_i}$ is either $\mathtt{inl} \; s$ for some $s \in S$,
-or $\mathtt{inr} \; j$ for some $j \in \set{1,\ldots, n}$.
-
-The function $f : S^n \rightarrow S$ itself is given by the following recursion
-scheme:\begin{alignat*}{3}
+$\sem{\mathtt{EXTR}\p{f,e_1,\ldots,e_m}} = h$, for some $m,n \in \mathbb{N}$,
+where\begin{align*}
 %
-f\p{x_1,\ldots,x_n} &= \sem{h}\p{g\p{\sem{e_1}},\ldots,g\p{\sem{e_m}}} \\
+f & : S^m \rightarrow T \\
+%
+e_1, \ldots, e_m & : S + \set{1,\ldots,n} \\
+%
+h & : S^n \rightarrow S.
+%
+\end{align*} So each $\sem{e_i}$ is either some $s \in S$, or some $j \in
+\set{1,\ldots, n}$. $h$ itself is given as follows:\begin{alignat*}{3}
+%
+h\p{x_1,\ldots,x_n} &= \sem{f}\p{g\p{\sem{e_1}},\ldots,g\p{\sem{e_m}}} \\
 %
 & & \text{where} \; g\p{\mathtt{inl} \; s} &= s \\
 %
@@ -852,12 +992,13 @@ f\p{x_1,\ldots,x_n} &= \sem{h}\p{g\p{\sem{e_1}},\ldots,g\p{\sem{e_m}}} \\
 
 \end{definition}
 
-\begin{remark} $\sem{\mathtt{EXTR}}$ is parametric in the types $S$ and $T$.
-\end{remark}
+\begin{remark} $\mathtt{EXTR}$ is parametric in the types $S$ and $T$. In
+simpler cases, we might let $S=T=A$, for some given type $A$, written
+$\mathtt{EXTR}_A$. \end{remark}
 
-$\sem{\mathtt{EXTR}}$ is a generalised substitution operator. Using
-$\sem{\mathtt{EXTR}}$, we can obtain not only $\sem{\mathtt{PROJ}}$ and
-$\sem{\mathtt{COMP}}$, but also identity and permutation functions.  On the
+$\mathtt{EXTR}$ is a generalised substitution operator. Using
+$\mathtt{EXTR}$, we can obtain not only $\mathtt{PROJ}$ and
+$\mathtt{COMP}$, but also identity and permutation functions.  On the
 other hand, we can obtain $\sem{\mathtt{EXTR}}$ from $\sem{\mathtt{PROJ}}$,
 $\sem{\mathtt{COMP}}$, and the {\bfseries \color{red} initial operators}
 \cite{rose-1984}. The theorem follows:
@@ -867,7 +1008,9 @@ O} = \p{\Sigma,\set{\mathtt{COMP}, \mathtt{PROJ}} \cup O}$. \end{theorem}
 
 \begin{proof} \todo{Missing} \end{proof}
 
-\subsubsection{Primitive Recursion}
+\section{Primitive Recursion}
+
+\label{sec:primitive-recursion}
 
 Motivated by \cite{leivant-1995}, we introduce a generalised form of primitive
 recursion, also referred to as ``structural recursion''\cite{hofmann-2002}:

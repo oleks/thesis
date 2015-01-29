@@ -114,9 +114,10 @@
 \def\goright{\symb{R}}
 
 \DeclareDocumentCommand{\bib}{mmm}{%
-  \bibitem[#1]{#2}\hfill\newline\vspace{-0.18in}
-
-  #3
+  \bibitem[#1]{#2}#3
+%\hfill\newline\vspace{-0.18in}
+%
+%  #3
 
   \backrefprint
 }
@@ -139,6 +140,8 @@
 \DeclareDocumentCommand{\algebra}{mm}{\ensuremath{\seq{#1\mathrel{};\mathrel{}#2}}}
 
 \DeclareDocumentCommand{\todo}{m}{{\bfseries\color{red}#1}}
+
+\DeclareDocumentCommand{\bigOh}{m}{{\ensuremath{\mathcal{O}\p{#1}}}}
 
 \begin{document}
 
