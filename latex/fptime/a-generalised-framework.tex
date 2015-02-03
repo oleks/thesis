@@ -814,38 +814,381 @@ language: a collection of types and operators
 
 are they really values?
 
-\pagebreak
+\section{Functions}
+
+In classical recursion theory, we deal with sets of equations.  The set of
+equations defines a set of functions: the set of functions such that the set .
+We say that a function is given by a set of equations. The sort of equations we
+will deal with here bear a strong resemblance to term rewriting rules in
+classical term rewriting. The left-hand side of an equation is a function
+symbol followed by sequence of patterns enclosed in braces and separated by
+commas. A pattern 
+
+recursion theory..
+recursions schemes..
+recurrence argument..
+
+A \textbf{predecessor function} $p : \mathbb{N} \rightarrow \mathbb{N}$, given
+by\begin{align*}
+%
+p\p{0} = 0
+%
+\end{align*}
 
 \section{Function Algebras and Hierarchies}
 
-It is of principle interest to mathematicians et al. to categorise functions
-into classes and hierarchies. Some classes of functions are defined
+\begin{quotation}
+
+\footnotesize\sffamily\itshape
+
+\begin{flushright}
+
+In principle, we should be able to start with functions [...] that are so
+simple that they will be unequivocally considered computable [...], and combine
+them slowly and patiently through combinators that are also very elementary and
+obviously computable [...] and finally get a class of functions [...] that are
+quite general and nontrivial.
+
+\smallbreak
+
+\upshape
+
+--- Lewis \& Papadimitriou, \emph{Elements of the Theory of Computation} (1998)
+
+\end{flushright}
+
+\end{quotation}
+
+It is perhaps of interest to mathematicians et al. to categorise functions into
+classes and hierarchies. A class of functions can be defined
 \emph{extrinsically}, e.g.  the functions computable by means of a Turing
-machine, while others are defined \emph{intrinsically}, e.g. by means of a
-function algebra.
+machine, or \emph{intrinsically}, e.g. the functions contained in a function
+algebra.
 
-A \textbf{function algebra}, $\mathcal{F}$, is a superset of a chosen set of
-\textbf{initial functions} $\mathcal{F}_I$, closed under a chosen set of
-operations, $\mathcal{F}_O$. An \textbf{operation} is a function, which takes
-functions in $\mathcal{F}$ as input. A class $\mathcal{F}$ is \textbf{closed
-under} an operation, if the operation also yields a function in $\mathcal{F}$
-as output.
-
-For instance, one classical function algebra, which we'll call $\mathcal{P}$,
-is a function algebra containing a zero and successor function as initial
-functions, and is closed under the operation of composition.
+\begin{definition} A \textbf{function algebra}, $\mathcal{F}$, is a smallest
+superset of a chosen set of \textbf{initial functions} $\mathcal{F}_I$, closed
+under a chosen set of operations, $\mathcal{F}_O$. An \textbf{operation} is a
+(non-initial) function, which takes functions as input, and yields a function
+as output. A class $\mathcal{F}$ is \textbf{closed under} an operation, if the
+operation takes functions in $\mathcal{F}$ as input, and yields a function in
+$\mathcal{F}$ as output. \end{definition}
 
 \begin{remark} That which we call a function ``algebra'' is often also simply
 called a ``class''. This is typically in the absence of an intended distinction
-between an intrinsic and extrinsic definitions of a class, which is prevalent
+between an intrinsic and extrinsic definition of a class, which is prevalent
 throughout this document. For our intents and purposes, every function algebra
-is a class, but not every function class is an algebra. \end{remark} 
+defines a class, but not every function class is given by an algebra.
+\end{remark} 
 
-A function in $\mathcal{C}$ admits an interpretation as a \textbf{construction
-tree}. A leaf is a particular initial function. An internal node is a
-particular operation. The outgoing edges (of an internal node) model the
-application of the operation to particular functions in $\mathcal{C}$,
-interpreted as the respective, outbound subtrees.
+\begin{definition} \label{def:function-algebra-p} Let $\mathcal{P}$ be a
+function algebra with the following initial functions:
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item a (constant) \textbf{zero function} $z : S \rightarrow \mathbb{N}$, for
+any given set $S$, given by $z\p{x} = 0$, for all $x \in S$;
+
+\item a \textbf{successor function} $s : \mathbb{N} \rightarrow \mathbb{N}$, given by
+$s\p{x} = x + 1$; and
+
+% \item a \textbf{projection function} $\pi_j^n : \mathbb{N}^n \rightarrow
+% \mathbb{N}$, given by $\pi_j^n\p{x_1,\ldots,x_n} = x_j$.\
+
+% projection is also called identity
+
+\end{enumerate}
+
+Furthermore, let $\mathcal{P}$ be closed under the following operation:
+
+\begin{enumerate}[label=(\arabic*),start=3]
+
+\item a \textbf{composition operation}\begin{align*}
+%
+\kappa^n_m : \p{T^m \rightarrow U} \rightarrow \p{S \rightarrow T}^m
+\rightarrow S \rightarrow U,
+%
+\end{align*}takes as input a \textbf{composition operator} function $f : T^m
+\rightarrow U$ and $m$ \textbf{composition operands}, i.e. the functions $g_1,
+\ldots, g_m : S \rightarrow T$, and yields as output the \textbf{composite
+function} $h : S \rightarrow U$, such that\begin{align*}
+%
+h\p{x_1,\ldots,x_n} = f\p{g_1\p{x_1,\ldots,x_n}, \ldots, g_m\p{x_1,
+\ldots,x_n}}
+%
+\end{align*} The composition $\kappa^n_m\p{f,g_1,\ldots,g_m}$ is more simply
+written as $f\p{g_1,\ldots,g_m}$. In the special case that $m=1$, this is also
+written as $f \circ g$.
+
+\end{enumerate}
+
+\end{definition}
+
+For instance, $z$, $s$, $s\p{z}$, $s\p{s\p{z}}$, as well as $z\p{z}$ and
+$s\p{s}$ are all functions in $\mathcal{P}$. (The latter examples are
+discussed below.)
+
+Every function $f \in \mathcal{F}$, in a function algebra $\mathcal{F}$, admits
+an interpretation as a construction tree $\mathcal{T}\p{f}$:
+
+\begin{definition} \label{def:construction-tree} A \textbf{construction tree}
+$\mathcal{T}_\mathcal{F}\p{f}$, of a function $f \in \mathcal{F}$, in a
+function algebra $\mathcal{F}$, is either
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item a leaf, designating an initial function $f \in \mathcal{F}_I$; or
+
+\item an internal node with outbound subtrees
+$\mathcal{T}_\mathcal{P}\p{g_1},\ldots,\mathcal{T}_\mathcal{P}\p{g_n}$,
+designating the application of an operation $o \in \mathcal{F}_O$ to the
+functions $g_1,\ldots,g_n$.
+
+\end{enumerate}
+
+\end{definition}
+
+A leaf which designates a function $f \in \mathcal{F}_I$ is also called an
+\textbf{$f$ leaf}. An internal node which designates the application of an
+operator $o \in \mathcal{F}_O$ is also called an \textbf{$o$ node}.
+
+For instance, the function $s\p{s\p{z}} \in \mathcal{P}$, has the (unique)
+construction tree:
+
+\begin{center}
+\begin{tikzpicture}[-stealth]
+\node { $s\p{s\p{z}}$ }
+  child { node { $s$ } }
+  child { node { $s\p{z}$ }
+    child { node { $s$ } }
+    child { node { $z$ } }
+  }
+;
+\end{tikzpicture}
+\end{center}
+
+As an example of what a construction tree interpretation of a function is good
+for, we consider the important class of ``number-valued'' function algebras,
+and prove by induction on the structure of a construction tree of a function $f
+\in \mathcal{P}$, that $\mathcal{P}$ is number theoretic.
+
+\begin{definition} A function algebra $\mathcal{F}$ is \textbf{number-valued}
+if the codomain of every function $f \in \mathcal{F}$ is $\mathbb{N}$.
+\end{definition}
+
+\begin{theorem} \label{thm:p-number-valued} $\mathcal{P}$ is number-valued.
+\end{theorem}
+
+\begin{proof} By induction on the structure of a construction tree
+$\mathcal{T}\p{f}$ of any $f\in \mathcal{P}$. There are two
+cases:\begin{enumerate}[label=(\arabic*)]
+
+\item $\mathcal{T}_\mathcal{P}\p{f}$ is a leaf, designating an initial function
+$f \in \mathcal{P}_I$.
+
+The zero and successor functions are trivially number-valued.
+
+\item $\mathcal{T}_\mathcal{P}\p{f}$ is an internal node with outbound subtrees
+$\mathcal{T}\p{g_1},\ldots,\mathcal{T}\p{g_n}$, designating the application of
+an operation $o \in \mathcal{F}_O$ to the functions $g_1,\ldots,g_n$.
+
+By IH, $g_1,\ldots,g_n$ are all number-valued. RTS $o\p{g_1,\ldots,g_n}$ is
+number-valued. There is only one operation in $\mathcal{P}_O$: composition,
+where $g_1$ is the \emph{composition operator}, and $g_2,\ldots,g_n$ are the
+\emph{composition operands}. By \refDef{function-algebra-p}, the codomain of
+the composite function is the codomain of the composition operator, which we
+know is number-valued.\end{enumerate}\end{proof}
+
+\refProof{p-number-valued} is an example of an important proof technique called
+``structural induction'', which is useful for proving properties of, among
+other things, function algebras.
+
+% In the case of $\mathcal{P}$, the construction tree is unique. Otherwise,
+% either there is an initial function which gives rise to multiple function in
+% $\mathcal{F}$. which is clearly absurd.
+
+% Such an interpretation gives another view of the initial functions as opposed
+% to operators --- initial function do not depend on their values for smaller
+% arguments --- no that's the nonrecursive functions.
+
+The zero and successor functions, as well as the composition operation above
+are perhaps ``unequivocally'' considered computable, but $\mathcal{P}$ also
+gives rise to a fairly ``trivial'' set of functions. It has already been shown
+that $\mathcal{P}$ is (merely) number-valued. Drastically more stringent
+restrictions are proven below, using similar means.
+
+\begin{lemma} \label{lem:p-tree-leafs} A construction tree
+$\mathcal{T}_\mathcal{P}\p{f}$ has $x=i+j$ leafs, for some $x,i,j \in
+\mathbb{N}$, $j$ of which are zero leafs, and $i$ of which are successor leafs.
+\end{lemma}
+
+\begin{proof} By \refDef{function-algebra-p} and \refDef{construction-tree},
+every leaf of $\mathcal{T}_\mathcal{P}\p{f}$ is either a zero- or successor
+leaf. Any finite tree has a $x=i+j$ leafs for some $x,i,j \in \mathbb{N}$.
+WLOG, let $\mathcal{T}_\mathcal{P}\p{f}$ have $i$ zero leafs, and $j$ successor
+leafs. \end{proof} 
+
+This machinery is useful to questioning the role of zero leafs.
+
+Consider the case with no zero leafs. That is, an $f \in \mathcal{P}$ is merely
+some composition of successor functions, and so for any natural number $n$,
+$f\p{n}=n+i$, where $i$ is the number of (successor) leafs in
+$\mathcal{T}_\mathcal{P}\p{f}$. For instance, both $s\p{s\p{s}}$ and
+$s\p{s}\p{s}$ yield the third successor of the input value. The two
+construction trees are illustrated below:
+
+\begin{center}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\begin{tikzpicture}[-stealth]
+\node { $s\p{s\p{s}}$ }
+  child { node { $s$ } }
+  child { node { $s\p{s}$ }
+    child { node { $s$ } }
+    child { node { $s$ } }
+  }
+;
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+%
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\begin{tikzpicture}[-stealth]
+\node { $s\p{s}\p{s}$ }
+  child { node { $s\p{s}$ }
+    child { node { $s$ } }
+    child { node { $s$ } }
+  }
+  child { node { $s$ } }
+;
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+\end{center}
+
+\begin{lemma} \label{lem:p-no-zero} If $\mathcal{T}_\mathcal{P}\p{f}$ has $j=0$
+zero leafs, and $i$ successor leafs, then $f : \mathbb{N} \rightarrow
+\mathbb{N}$ and $f\p{n} = n + i$ for all $n \in \mathbb{N}$. \end{lemma}
+
+\begin{proof} By induction on the structure of $\mathcal{T}_\mathcal{P}\p{f}$.
+There are two cases:\begin{enumerate}[label=(\arabic*)]
+
+\item $\mathcal{T}_\mathcal{P}\p{f}$ is a leaf. This must be a successor leaf.
+The lemma follows by definition of the successor function, as we have $i = 1$.
+
+\item $\mathcal{T}_\mathcal{P}\p{f}$ is an internal node with outbound subtrees
+$\mathcal{T}_\mathcal{P}\p{g_1},\ldots,\mathcal{T}_\mathcal{P}\p{g_n}$,
+designating the application of an operation $o \in \mathcal{F}_O$ to the
+functions $g_1,\ldots,g_n$. This must be a composition node, and so $n=2$.
+
+By IH, for all $1 \leq k \leq 2$, $g_k : \mathbb{N} \rightarrow \mathbb{N}$ and
+$g_k\p{m} = m + i_k$, for all $m \in \mathbb{N}$, where
+$\mathcal{T}_\mathcal{P}\p{g_k}$ has $j_k = 0$ zero leafs, and $i_k$ successor
+leafs.
+
+By definition of composition, $f : \mathbb{N} \rightarrow \mathbb{N}$, and
+$f\p{m}=g_1\p{g_2\p{m}} = g_1\p{m + i_2} = m + i_2 + i_1 = m + \p{i_1 + i_2}$,
+for all $m \in \mathbb{N}$.  By definition of construction trees, the number of
+leafs in $\mathcal{T}_\mathcal{P}\p{f}$ is $\p{i_1 + j_1} + \p{i_2 + j_2} = i_1
++ i_2$, all of which are successor leafs.  The lemma
+follows.\end{enumerate}\end{proof}
+
+Consider now the case with at least one zero leaf. The case with exactly one
+zero leaf has already been illustrated. The case with multiple zero leafs
+illustrates the usefulness of the ubiquity of the zero function(s).
+
+\begin{lemma} \label{lem:p-at-least-one-zero} If $\mathcal{T}_\mathcal{P}\p{f}$
+has $j \geq 1$ zero leafs, and $i$ successor leafs, then $f : S \rightarrow
+\mathbb{N}$, for some set $S$, and $f\p{s} \leq i$. \end{lemma}
+
+\begin{proof} \end{proof}
+
+\begin{theorem} A function $f \in \mathcal{P}$, has $i+j$ leafs, of which $j$
+leafs are zero leafs, and $i$ leafs are successor leafs. Furthermore,
+either\begin{enumerate}[label=(\arabic*)]
+
+\item $f : \mathbb{N} \rightarrow \mathbb{N}$, and $f\p{n} = n+i$ for all $n
+\in \mathbb{N}$; or
+
+\item $f : S \rightarrow \mathbb{N}$, for some set $S$, and $f\p{s} \leq i$ for
+all $s \in S$.
+
+\end{enumerate}\end{theorem}
+
+\begin{proof} Follows directly from \refLem{p-tree-leafs}, \refLem{p-no-zero},
+and \refLem{p-at-least-one-zero}. \end{proof}
+
+This is a fairly limited set of functions, but it does form the core of many
+much more general function algebras, leading to the notion of function
+hierarchies:
+
+\begin{definition} A \textbf{function hierarchy} $\mathcal{H}$ is a finite
+sequence of function classes, $\mathcal{C}_1, \ldots, \mathcal{C}_n$, such that
+$\mathcal{C}_1 \subseteq \mathcal{C}_2 \subseteq \cdots \subseteq
+\mathcal{C}_{n-1} \subseteq \mathcal{C}_n$. \end{definition}
+
+To get off the ground, we introduce one more initial function: projection, and
+one more operator: primitive recursion, leading to the outset of the so-called
+Grzegorczyk hierarchy which will reappear in later chapters.
+
+The uniqueness property can be relaxed if we let the composition operation be
+transitive. That is, if we let\begin{align*}
+%
+\kappa^n_1\p{f,\kappa^n_1\p{g,h}} = \kappa^n_1\p{\kappa^n_1\p{f,g},h}
+%
+\quad \quad \text{or simply} \quad \quad
+%
+f\p{g\p{h}} = f\p{g}\p{h}
+%
+\end{align*}
+
+\begin{tikzpicture}
+\node { $s\p{s\p{z}}$ }
+  child { node { $s\p{s}$ }
+    child { node { $s$ } }
+    child { node { $s$ } }
+  }
+  child { node { $z$ } }
+;
+\end{tikzpicture}
+
+Note, in particular, that $s\p{s} \in \mathcal{P}$.
+
+The functions above are perhaps ``unequivocally'' considered computable, but
+also give rise only to a fairly ``trivial'' set of functions, adequate for
+little more than the construction of natural number representations, one
+subsequent natural number at a time.
+
+% definition by = scheme
+
+To get off the ground we need to employ the scheme of definition by recursion.
+In a recursive scheme, a function is still given by a set of equations, but the
+function being defined also appears on the right-hand side of the equality
+sign.
+
+Loops are not allowed in a construction tree.
+
+Unfortunately, such a recursion does not terminate. A \emph{primitive} form of recursion 
+
+Any construction tree is finite.
+
+A function is defined by the scheme of primitive recursion over natural numbers
+if it is given by the following recursion scheme: Without loss of generality,
+consider defining a function $f : \mathbb{N} \times \mathbf{A} \rightarrow B$.
+That is, let the first argument of $f$ (the recurrence argument) be a natural
+number, with the remaining arguments (if any) forming an element of some set
+$\mathbf{A}$, and let $f$ yield a value of some set $B$. $f$ is given by
+primitive recursion from functions $g : \mathbf{A} \rightarrow B$ and $h :
+\mathbb{N} \times \mathbf{A} \times B \rightarrow B$ if it satisfies the
+following: \begin{align*}
+%
+f\p{0, \mathbf{y}} &= g\p{\mathbf{y}}\\
+%
+f\p{x+1, \mathbf{y}} &= h\p{x,\mathbf{y},f\p{x,\mathbf{y}}}
+%
+\end{align*}
+
+We are now ready 
 
 \todo{A \textbf{hierarchy of functions}, successively takes a class of
 functions as initial functions and closes it under a set of operations.}
@@ -869,8 +1212,6 @@ functions as initial functions and closes it under a set of operations.}
 % means computable, and typically, easily computable.
 
 \todo{One classical example of a function algebra is the Grzegorzcyk hierarchy.}
-
-\pagebreak
 
 \section{Semantics}
 
@@ -996,12 +1337,14 @@ h\p{x_1,\ldots,x_n} &= \sem{f}\p{g\p{\sem{e_1}},\ldots,g\p{\sem{e_m}}} \\
 simpler cases, we might let $S=T=A$, for some given type $A$, written
 $\mathtt{EXTR}_A$. \end{remark}
 
-$\mathtt{EXTR}$ is a generalised substitution operator. Using
-$\mathtt{EXTR}$, we can obtain not only $\mathtt{PROJ}$ and
-$\mathtt{COMP}$, but also identity and permutation functions.  On the
-other hand, we can obtain $\sem{\mathtt{EXTR}}$ from $\sem{\mathtt{PROJ}}$,
-$\sem{\mathtt{COMP}}$, and the {\bfseries \color{red} initial operators}
-\cite{rose-1984}. The theorem follows:
+$\mathtt{EXTR}$ is a generalised substitution operator. Using $\mathtt{EXTR}$,
+we can obtain not only $\mathtt{PROJ}$ and $\mathtt{COMP}$, but also various
+permutation functions.  On the other hand, we can obtain $\sem{\mathtt{EXTR}}$
+from $\sem{\mathtt{PROJ}}$, $\sem{\mathtt{COMP}}$, and the {\bfseries
+\color{red} initial operators} \cite{rose-1984}. The theorem follows:
+
+% Grzegorzcyk has multiple notions of substitution, maybe it is worthwhile to
+% point out what "generalised substitution" really means.
 
 \begin{theorem}\label{thm:extr-comp-proj} $\p{\Sigma,\set{\mathtt{EXTR}} \cup
 O} = \p{\Sigma,\set{\mathtt{COMP}, \mathtt{PROJ}} \cup O}$. \end{theorem}

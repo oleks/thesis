@@ -36,7 +36,7 @@ else
 fi
 
 (cd $OUTDIR && makeindex $JOBNAME)
-pdflatex -output-directory=$OUTDIR -file-line-error \
+lualatex -output-directory=$OUTDIR -file-line-error \
   -jobname $JOBNAME \
   $COMMAND
 
