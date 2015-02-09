@@ -880,93 +880,90 @@ throughout this document. For our intents and purposes, every function algebra
 defines a class, but not every function class is given by an algebra.
 \end{remark} 
 
-A primitive Peano algebra is an example of a simple function algebra which
-forms the basis of many function algebras going forth.
+\subsection{A simple function algebra}
 
-\begin{definition} \label{def:function-algebra-p} Let a \textbf{primitive Peano
-algebra}, $\mathcal{P}$, be a function algebra having the following initial
-functions:
+The following simple function algebra forms the basis of many function algebras
+going forth. It boasts two simple initial functions:
 
-\begin{enumerate}[label=(\arabic*)]
+\begin{definition} \label{def:zero-function} Let $\mathtt{z} : \mathbf{S}
+\rightarrow \mathbb{N}$ be a (constant) \textbf{zero function}, for any given
+Cartesian product $\mathbf{S}$, given by $\mathtt{z}\p{x} = 0$, for all $x \in
+\mathbf{S}$.  \index{zero function} \end{definition}
 
-\item a (constant) \textbf{zero function} $z : S \rightarrow \mathbb{N}$, for
-any given set $S$, given by $z\p{x} = 0$; and
+\begin{definition} \label{def:successor-function} Let $\mathtt{s} : \mathbb{N}
+\rightarrow \mathbb{N}$ be a \textbf{successor function}, given by
+$\mathtt{s}\p{n} = n + 1$, for all $n \in \mathbb{N}$. \index{successor
+function} \end{definition}
 
-\item a \textbf{successor function} $s : \mathbb{N} \rightarrow \mathbb{N}$, given by
-$s\p{x} = x + 1$; and
+Furthermore, it is closed under the following simple operation:
 
-\end{enumerate}
-
-Furthermore, let $\mathcal{P}$ be closed under the following operation:
-
-\begin{enumerate}[label=(\arabic*),start=3]
-
-\item a \textbf{composition operation}\begin{align*}
+\begin{definition} \label{def:composition-operation} Let\begin{align*}
 %
 \kappa^n_m : \p{T^m \rightarrow U} \rightarrow \p{S \rightarrow T}^m
-\rightarrow S \rightarrow U,
+\rightarrow S \rightarrow U
 %
-\end{align*}takes as input a \textbf{composition operator} function $g : T^m
-\rightarrow U$ and $m$ \textbf{composition operands}, i.e. the functions $h_1,
-\ldots, h_m : S \rightarrow T$, and yields as output the \textbf{composite
-function} $f : S \rightarrow U$, such that\begin{align*}
+\end{align*}be a \textbf{composition operation}, which takes as input a
+\textbf{composition operator} $g : T^m \rightarrow U$ and $m$
+\textbf{composition operands} $h_1, \ldots, h_m : S \rightarrow T$, and yields
+as output the \textbf{composite function} $f : S \rightarrow U$, satisfying the
+equation\begin{align*}
 %
 f\p{x_1,\ldots,x_n} = g\p{h_1\p{x_1,\ldots,x_n}, \ldots, h_m\p{x_1,
 \ldots,x_n}}
 %
-\end{align*} The composition $\kappa^n_m\p{g,h_1, \ldots, h_m}$ is more simply
-written as $g\p{h_1, \ldots, h_m}$. In the special case that $m=1$, this is
-also written as $g \circ h$.
+\end{align*} The composition $\kappa^n_m\p{g,h_1, \ldots, h_m}$ is also written
+as $g \circ \p{h_1, \ldots, h_m}$; in the special case that $m=1$, it is also
+written as $g \circ h$.\end{definition}
 
-\end{enumerate}
+\begin{definition} \label{def:function-algebra-p} Let $\mathcal{PD}$ be a
+\textbf{simple Peano-Dedekind function algebra}, having the zero and successor
+initial functions, and closed under the composition operation.\end{definition}
 
-\end{definition}
+For instance, $z$, $s$, $\p{s \circ z}$, $\p{s \circ \p{s \circ z}}$, as well
+as, the slightly more extravagant, $\p{z \circ z}$ and $\p{s \circ s}$, are all
+functions in $\mathcal{PD}$. (The latter examples are further illuminated
+below.)
 
-For instance, $z$, $s$, $s\p{z}$, $s\p{s\p{z}}$, as well as the slightly more
-extravagant, $z\p{z}$ and $s\p{s}$ are all functions in $\mathcal{P}$. (The
-latter examples are discussed below.)
-
-Every function $f \in \mathcal{F}$, in a function algebra $\mathcal{F}$, admits
-an interpretation as a construction tree $\mathcal{T}_\mathcal{F}\p{f}$:
+More generally, a function $f \in \mathcal{F}$ is either some initial function
+$i \in \mathcal{F}_I$, or the application of some operation $op \in
+\mathcal{F}_O$ to an adequate sequence of functions $g_1, \ldots, g_n \in
+\mathcal{F}$.  Evidently, every function $f$ in a function algebra
+$\mathcal{F}$, admits an interpretation as a construction tree
+$\mathcal{T}_\mathcal{F}\p{f}$:
 
 \begin{definition} \label{def:construction-tree} A \textbf{construction tree}
-$\mathcal{T}_\mathcal{F}\p{f}$, of a function $f \in \mathcal{F}$, in a
-function algebra $\mathcal{F}$, is either
+$\mathcal{T}_\mathcal{F}\p{f}$, is a \textbf{tree interpretation} of a function
+$f \in \mathcal{F}$, in the sense that $\mathcal{T}_\mathcal{F}\p{f}$ is either
 
 \begin{enumerate}[label=(\arabic*)]
 
-\item a leaf, where $f = i$, for some initial function $i \in \mathcal{F}_I$;
-or
+\item an \textbf{$i$ leaf}, for some initial function $i \in \mathcal{F}_I$, where $f =
+i$; or
 
-\item an internal node, with outbound subtrees $\mathcal{T}_\mathcal{F}\p{g_1},
-\ldots, \mathcal{T}_\mathcal{F}\p{g_n}$, where $f = o\p{g_1, \ldots, g_n}$, for
-some operation $o \in \mathcal{F}_O$.
+\item an \textbf{$op$ node}, for some operation $op \in \mathcal{F}_O$, having
+the outbound subtrees $\mathcal{T}_\mathcal{F}\p{g_1}, \ldots,
+\mathcal{T}_\mathcal{F}\p{g_n}$, where $f = op\p{g_1, \ldots, g_n}$.
 
 \end{enumerate}
 
 \end{definition}
 
-A leaf which designates some initial function $i \in \mathcal{F}_I$ is also
-called an \textbf{$i$ leaf}. Similarly, an internal node which designates the
-application of some operator $o \in \mathcal{F}_O$ is also called an
-\textbf{$o$ node}.
-
-For instance, the function $s\p{s\p{z}} \in \mathcal{P}$, has the (unique)
-construction tree as shown below, having two successor leafs, and one zero
-leaf:
+For instance, the function $\p{s \circ \p{s \circ z}} \in \mathcal{PD}$, has
+the (unique) construction tree as in \refFigure{s-s-z}, having one \emph{zero
+leaf}, two \emph{successor leafs}, and two \emph{composition nodes}:
 
 \begin{figure}[h!]
 \centering
 \begin{tikzpicture}[-stealth]
-\node { $s\p{s\p{z}}$ }
+\node { $s \circ \p{s \circ z}$ }
   child { node { $s$ } }
-  child { node { $s\p{z}$ }
+  child { node { $s \circ z$ }
     child { node { $s$ } }
     child { node { $z$ } }
   }
 ;
 \end{tikzpicture}
-\caption[]{The (unique) construction tree of $s\p{s\p{z}} \in \mathcal{P}$.}
+\caption[]{An illustration of $\mathcal{T}_\mathcal{PD}\p{s \circ \p{s \circ z}}$.}
 \label{fig:s-s-z}
 \end{figure}
 
@@ -975,16 +972,16 @@ an example of a \emph{proof by structural induction}, see the following
 theorem:
 
 \begin{theorem} \label{thm:p-functions-unary} Every function $f \in
-\mathcal{P}$ is unary. \end{theorem}
+\mathcal{PD}$ is unary. \end{theorem}
 
 \begin{proof} By induction on the structure of construction tree of
-$\mathcal{T}_\mathcal{P}\p{f}$ of any $f \in \mathcal{P}$. There are two
+$\mathcal{T}_\mathcal{PD}\p{f}$ of any $f \in \mathcal{P}$. There are two
 cases:\begin{enumerate}[label=(\arabic*)]
 
-\item $\mathcal{T}_\mathcal{P}\p{f}$ is a leaf, where $f = i$, for some initial
-function $i \in \mathcal{P}_I$.
+\item $\mathcal{T}_\mathcal{PD}\p{f}$ is a leaf, where $f = i$, for some
+initial function $i \in \mathcal{P}_I$.
 
-By definition of $\mathcal{P}$, $i$ must either be a zero or successor
+By definition of $\mathcal{PD}$, $i$ must either be a zero or successor
 function.
 
 Both are unary.
@@ -1005,37 +1002,39 @@ As an example of a mere \emph{proof by case analysis}, see the following
 theorem:
 
 \begin{theorem} \label{thm:construction-tree-p} A construction tree
-$\mathcal{T}_\mathcal{P}\p{f}$, of a function $f \in \mathcal{P}$, is
-either\begin{enumerate}[label=(\arabic*)]
+$\mathcal{T}_\mathcal{PD}\p{f}$ is either\begin{enumerate}[label=(\arabic*)]
 
 \item a zero- or successor leaf; or
 
-\item a composition node, with outbound subtrees $\mathcal{T}_\mathcal{P}\p{g}$
-and $\mathcal{T}_\mathcal{P}\p{h}$, designating the composite function $f = g
-\circ h$, where $g \in \mathcal{P}$ forms the composition operator, and $h \in
-\mathcal{P}$ the (only) composition operand.
+\item a composition node, having the outbound subtrees
+$\mathcal{T}_\mathcal{PD}\p{g}$ and $\mathcal{T}_\mathcal{PD}\p{h}$,
+designating the composite function $f = g \circ h$, where $g \in \mathcal{PD}$
+forms the \emph{composition operator}, and $h \in \mathcal{PD}$ the (only)
+\emph{composition operand}.
 
 \end{enumerate}\end{theorem}
 
 \begin{proof} By case analysis of the structure of
-$\mathcal{T}_\mathcal{P}\p{f}$.  There are two
+$\mathcal{T}_\mathcal{PD}\p{f}$.  There are two
 cases:\begin{enumerate}[label=(\arabic*)]
 
-\item $\mathcal{T}_\mathcal{P}\p{f}$ is a leaf, where $f=i$, for some initial
-function $i \in \mathcal{P}_I$.
+\item $\mathcal{T}_\mathcal{PD}\p{f}$ is an $i$ leaf, for some initial function
+$i \in \mathcal{PD}_I$, where $f = i$.
 
-By definition of $\mathcal{P}$, $i$ must either be a zero or successor
+By definition of $\mathcal{PD}_I$, $i$ must either be a zero or successor
 function.
 
 Case (1) of the theorem follows.
 
-\item $\mathcal{T}_\mathcal{P}\p{f}$ is an internal node with outbound subtrees
-$\mathcal{T}_\mathcal{P}\p{g_1}, \ldots, \mathcal{T}_\mathcal{P}\p{g_n}$, where
-$f = o\p{g_1, \ldots, g_n}$, for some operation $o \in \mathcal{P}_O$.
+\item $\mathcal{T}_\mathcal{PD}\p{f}$ is an $op$ node, for some operation $op
+\in \mathcal{PD}_O$, having the outbound subtrees
+$\mathcal{T}_\mathcal{PD}\p{g_1}, \ldots, \mathcal{T}_\mathcal{PD}\p{g_n}$,
+where $f = o\p{g_1, \ldots, g_n}$.
 
-By definition of $\mathcal{P}$, $o$ must be a composition operation. We must
-have $f = g_1\p{g_2, \ldots, g_n}$, where $g_1$ forms the \emph{composition
-operator}, and $g_2, \ldots, g_n$ form the \emph{composition operands}.
+By definition of $\mathcal{PD}_O$, $op$ must be a composition operation. We
+must have $f = g_1 \circ \p{g_2, \ldots, g_n}$, where $g_1$ forms the
+\emph{composition operator}, and $g_2, \ldots, g_n$ form the \emph{composition
+operands}.
 
 By definition of composition, the number of composition operands, is equal to
 the arity of the composition operator, which, by \refThm{p-functions-unary},
@@ -1377,7 +1376,11 @@ Grzegorczyk hierarchy, which will reappear in later chapters.
 $\pi_j^n\p{x_1,\ldots,x_n} = x_j$. \end{definition}
 
 We now leave the hearty lands of non-recursive functions, and dive into the
-unwieldy sea of recursion. The general idea of recursion is perhaps as follows:
+unwieldy sea of recursion.
+
+\subsection{Recursion}
+
+The general idea of recursion is perhaps as follows:
 
 \begin{quote}
 
@@ -1389,8 +1392,8 @@ arguments.
 
 This notion demands that the value at a particular argument depends on the
 value of the function at \emph{other} arguments. This is to avoid an obvious
-vicious circle, where the value of a function at particular argument depends on
-the value of that function at that same argument\ldots
+vicious circle, where the value of a function at a particular argument depends
+on the value of that function at that same argument\ldots
 
 Furthermore, this notion demands merely that a function have such a dependency
 at a \emph{particular} argument. Demanding such a dependency at all arguments
@@ -1400,33 +1403,82 @@ non-recursive functions. Demanding it at some, is what we need.
 This latter notice demands that a function definition can partition the domain
 into those arguments at which the value of the function is recursively defined,
 and those at which the value of the function is determined non-recursively.
+Note, such partitioning alone does not avoid vicious circles in general.
 
 \begin{definition} A function $f$ is \textbf{number-theoretic} iff the domain
 of $f$ is $\mathbb{N}$. \end{definition}
 
 For various reasons, the number-theoretic function definitions were perhaps the
-first to obtain such a means of partitioning. Indeed, a natural number has
-perhaps a natural interpretation as either zero, or the successor of a natural
-number\cite{beman-1901, rose-1984, odifreddi-1989}. In our case,
-\refThm{p-generates-all-N} states that $\mathcal{P}$ can generate all the
-natural numbers.
+first to obtain such a means of partitioning. Indeed, the natural numbers admit
+perhaps a very natural interpretation:
 
-Owing to this intuition, consider first number-theoretic primitive recursion:
+\begin{quote}
+
+A natural number is either \emph{zero}, written $0$, or the \emph{successor} of
+a natural number $x$, written $x+1$.\cite{dedekind-1888, rose-1984,
+odifreddi-1989}.
+
+\end{quote}
+
+% In our case, \refThm{p-generates-all-N} states that $\mathcal{P}$ can
+% generate all the natural numbers.
+
+Owing to this intuition, consider first number-theoretic primitive recursion.
+The partitioning here is to define the function non-recursively at $0$, and
+(perhaps) recursively at any given $x+1$. The value of the function at $x+1$
+then (perhaps) depends on the value of \emph{that} function at the ``smaller''
+argument, $x$.
+
+This notion of ``natural number'' superimposes an order on the natural numbers,
+where $0$ forms a least element. It is this superimposition that guarantees the
+absence of a vicious circle with number-theoretic primitive recursion --- the
+recursion always ``bottoms out'' at (at most) $0$. This notion will be made
+precise later on.
 
 \begin{definition} A function $f : \mathbb{N} \times \mathbf{S} \rightarrow T$
 is defined by \textbf{number-theoretic primitive recursion} from functions $g :
 \mathbf{S} \rightarrow T$ and $h : \mathbb{N} \times \mathbf{S} \times T
-\rightarrow T$ if it satisfies the following equations: \begin{align*}
+\rightarrow T$, if $f$ satisfies the following set of equations:\begin{align*}
 %
 f\p{0, \mathbf{y}} &= g\p{\mathbf{y}}\\
 %
 f\p{x+1, \mathbf{y}} &= h\p{x,\mathbf{y},f\p{x,\mathbf{y}}}
 %
-\end{align*} \end{definition}
+\end{align*}\end{definition}
 
-That is, let the first argument of $f$ (the recurrence argument) be a natural
-number, with the remaining arguments (if any) forming an element of some set
-$\mathbf{A}$, and let $f$ yield a value of some set $B$. 
+\begin{remark} The above definition slightly abuses the term
+``number-theoretic''. The domain of the function so defined is $\mathbb{N}
+\times \mathbf{S}$, not $\mathbb{N}$. It is possible to simulate any
+multivariate primitive recursion by a univariate primitive
+recursion\cite{rose-1984}.  In modern terms, it is well-known that those
+arguments, besides the natural number, can be partially applied --- they play
+no role in the recursion.  \end{remark}
+
+\begin{remark} The definition of number-theoretic primitive recursion is very
+similar to the classical definition as it appears in \cite{dedekind-1888,
+goedel-1944, rose-1984, odifreddi-1989}, among many others. The main difference
+is that classically, we let $\mathbf{S}=\mathbb{N}^k$ for some $k \in
+\mathbb{N}$, and let $T = \mathbb{N}$. That is, we consider only perhaps
+``purely'' number-theoretic and number-valued functions. \end{remark}
+
+\begin{definition} A \textbf{number-theoretic primitive recursion operation}
+%
+$$\mathtt{nprec} : \p{\mathbf{S} \rightarrow T} \rightarrow \p{\mathbb{N}
+\times \mathbf{S} \times T \rightarrow T} \rightarrow \p{\mathbb{N} \times
+\mathbf{S} \rightarrow T},$$
+%
+takes as input the functions $g : \mathbf{S} \rightarrow T$ and $h : \mathbb{N}
+\times \mathbf{S} \times T \rightarrow T$, and yields as output a function $f :
+\mathbb{N} \times \mathbf{S} \rightarrow T$, defined by number-theoretic
+primitive recursion from $g$ and $h$.\end{definition}
+
+\begin{definition} Let $\mathcal{PR}$ be a \textbf{primitive recursive function
+algebra}, extending $\mathcal{P}$ with the projection initial function and
+number-theoretic primitive recursion operation.\end{definition}
+
+% That is, let the first argument of $f$ (the recurrence argument) be a natural
+% number, with the remaining arguments (if any) forming an element of some set
+% $\mathbf{A}$, and let $f$ yield a value of some set $B$. 
 
 Perhaps the simplest form of recursion is that of iteratively applying a
 particular function a given number of times.  That is, an $f : S \rightarrow S$
@@ -1437,7 +1489,12 @@ about time to jump to something a bit more handy.
 
 \begin{definition} \end{definition}
 
+% primitive recursive functions before Grzegorczyk.
 
+% primitive recursion is rather powerful from a complexity-theoretic point of
+% view: the sequence of prime numbers is primitive recursive.
+
+% predecessor is primitive recursive.
 
 % definition by = scheme
 
