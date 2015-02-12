@@ -74,11 +74,12 @@ by``simple'' is clarified at the end of this section.} operation:
 \rightarrow T_1} \times \cdots \times \p{S \rightarrow T_m} \rightarrow \p{S
 \rightarrow U}
 %
-\end{align*}be a \textbf{composition operation}, which takes as input a
-\textbf{composition operator} $g : T_1 \times \cdots \times T_m \rightarrow U$
-and $m$ \textbf{composition operands} $h_1 : S \rightarrow T_1$, \ldots, $h_m :
-S \rightarrow T_m$, and yields as output the \textbf{composite function} $f : S
-\rightarrow U$, satisfying the equation\begin{align*}
+\end{align*}be a \textbf{composition} (also called substitution)
+\textbf{operation}, which takes as input a \textbf{composition operator} $g :
+T_1 \times \cdots \times T_m \rightarrow U$ and $m$ \textbf{composition
+operands} $h_1 : S \rightarrow T_1$, \ldots, $h_m : S \rightarrow T_m$, and
+yields as output the \textbf{composite function} $f : S \rightarrow U$,
+satisfying the equation\begin{align*}
 %
 f\p{x_1,\ldots,x_n} = g\p{h_1\p{x_1,\ldots,x_n}, \ldots, h_m\p{x_1,
 \ldots,x_n}}
@@ -531,9 +532,14 @@ well-known general-purpose (unbounded) model of computation.
 Before leaving the hearty lands of ``simple'' functions, and diving into the
 unwieldy sea of recursion, another ``simple'' initial function is projection:
 
+\subsection{Projection}
+
 \begin{definition} A \textbf{projection} (also called identity)
-\textbf{function} $\pi_j^n : S_1 \times \cdots \times S_n \rightarrow S_j$, is
-given by $\pi_j^n\p{x_1,\ldots,x_n} = x_j$. \end{definition}
+\textbf{function} $\mathtt{proj}^n_j : S_1 \times \cdots \times S_n \rightarrow
+S_j$, is given by $\mathtt{proj}^n_j\p{x_1,\ldots,x_n} = x_j$. \end{definition}
+
+For instance, $\mathtt{proj}^1_1 : S \rightarrow S$ and $\mathtt{proj}^1_1\p{x}
+= x$ for all $x \in S$.
 
 \todo{substitution} and \todo{explicit transformation}
 
@@ -594,10 +600,11 @@ absence of a vicious circle with number-theoretic primitive recursion --- the
 recursion always ``bottoms out'' at (at most) $0$. This notion will be made
 precise later on.
 
-\begin{definition} A function $f : \mathbb{N} \times \mathbf{S} \rightarrow T$
-is defined by \textbf{number-theoretic primitive recursion} from functions $g :
-\mathbf{S} \rightarrow T$ and $h : \mathbb{N} \times \mathbf{S} \times T
-\rightarrow T$, if $f$ satisfies the following set of equations:\begin{align*}
+\begin{definition} \label{def:number-theoretic-primitive-recursion} A function
+$f : \mathbb{N} \times \mathbf{S} \rightarrow T$ is defined by
+\textbf{number-theoretic primitive recursion} from functions $g : \mathbf{S}
+\rightarrow T$ and $h : \mathbb{N} \times \mathbf{S} \times T \rightarrow T$,
+if $f$ satisfies the following set of equations:\begin{align*}
 %
 f\p{0, \mathbf{y}} &= g\p{\mathbf{y}}\\
 %
@@ -634,6 +641,299 @@ primitive recursion from $g$ and $h$.\end{definition}
 \begin{definition} Let $\mathcal{PR}$ be a \textbf{primitive recursive function
 algebra}, extending $\mathcal{P}$ with the projection initial function and
 number-theoretic primitive recursion operation.\end{definition}
+
+\section{Some functions in $\mathcal{PR}$}
+
+It has earlier been noted that another good use of function algebras is in the
+design of programming languages. The class of primitive recursive functions is
+claimed to be expressive enough to express a wide range of mathematical
+functions. This section exemplifies how various well-known mathematical
+functions can be given in terms of functions in $\mathcal{PR}$.
+
+\subsection{Predecessor}
+
+Having a successor function, it is natural to consider a (total) predecessor
+function, $\mathtt{pred} : \mathbb{N} \times () \rightarrow \mathbb{N}$.
+Mathematically, predecessor can be given as follows:\begin{align*}
+%
+\mathtt{pred}\p{0,()} &= 0 \\
+%
+\mathtt{pred}\p{x+1,()} &= x
+%
+\end{align*}
+
+Predecessor function as given above, partitions the domain as in
+number-theoretic primitive recursion (with $S = ()$), and so predecessor can be
+expressed as $\mathtt{nprec}\p{g,h}$, for some suitable $g$ and $h$:
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item We must have $g\p{} = 0$. That is, $g$ must yield the constant value $0$.
+
+Let  $g=\mathtt{z}$.
+
+\item We must have $h\p{x,(),\mathtt{pred}\p{n,()}}=x$. That is, $h$ must yield
+the first projection of the input triple.
+
+Let $h = \mathtt{proj^3_1}$.
+
+\end{enumerate}
+
+The equation follows:\begin{align*}
+%
+\mathtt{pred} = \mathtt{nprec}\p{\mathtt{z}, \mathtt{proj}^3_1}
+%
+\end{align*}
+
+\subsection{Addition}
+
+It is perhaps natural to consider addition, $\mathtt{sum} : \mathbb{N} \times
+\mathbb{N} \rightarrow \mathbb{N}$, as defined in terms of an iterated
+application of a successor function, an adequate number of times.
+Mathematically, addition can be given as follows:\begin{align*}
+%
+\mathtt{sum}\p{0, y} &= y \\
+%
+\mathtt{sum}\p{x+1, y} &= \mathtt{sum}\p{x,y} + 1 
+%
+\end{align*}
+
+Addition as given above, partitions the domain as in number-theoretic primitive
+recursion (with $S = \mathbb{N}$), and so addition can be expressed as
+$\mathtt{nprec}\p{g,h}$, for some suitable $g$ and $h$:
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item We must have $g\p{y} = y$. That is, $g$ must yield the input value.
+
+Let $g = \mathtt{proj}^1_1$.
+
+\item We must have $h\p{x,y,\mathtt{sum}\p{x,y}} = \mathtt{sum}\p{x,y} + 1$.
+That is, $h$ must yield the successor of the 3\textsuperscript{rd} projection
+of the input triple.
+
+Let $h = \mathtt{s} \circ \mathtt{proj}^3_3$.
+
+\end{enumerate}
+
+The equation follows:\begin{align*}
+%
+\mathtt{sum} = \mathtt{nprec}\p{\mathtt{proj}^1_1, \mathtt{s} \circ
+\mathtt{proj}^3_3}
+%
+\end{align*}
+
+\subsection{Multiplication}
+
+In lieu of addition as iterated successor, it is perhaps natural to consider
+multiplication, $\mathtt{mult} : \mathbb{N} \times \mathbb{N} \rightarrow
+\mathbb{N}$, as iterated addition. Mathematically, multiplication can be given
+as follows:\begin{align*}
+%
+\mathtt{mult}\p{0, y} &= 0 \\
+%
+\mathtt{mult}\p{x+1,y} &= \mathtt{sum}\p{y, \mathtt{mult}\p{x,y}}
+%
+\end{align*}
+
+Multiplication as given above, partitions the domain as in number-theoretic
+primitive recursion (with $S = \mathbb{N}$), and so multiplication can be
+expressed as $\mathtt{nprec}\p{g,h}$, for some suitable $g$ and $h$:
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item We must have $g\p{y} = 0$. That is, $g$ must yield the constant value $0$.
+
+Let $g = \mathtt{z}$.
+
+\item We must have $h\p{x,y,\mathtt{mult}\p{x,y}} =
+\mathtt{sum}\p{y,\mathtt{mult}\p{x,y}}$. That is, $h$ must yield $\mathtt{sum}$
+applied to the 2\textsuperscript{nd} and 3\textsuperscript{rd} projections of
+the input triple.
+
+Let $h = \mathtt{sum} \circ \seq{\mathtt{proj}^3_2, \mathtt{proj}^3_3}$.
+
+\end{enumerate}
+
+The equation follows:\begin{align*}
+%
+\mathtt{mult} = \mathtt{nprec}\p{\mathtt{z}, \mathtt{sum} \circ
+\seq{\mathtt{proj}^3_2, \mathtt{proj}^3_3}}
+%
+\end{align*}
+
+\subsection{Exponentiation}
+
+In lieu of multiplication as iterated addition, it is perhaps natural to
+consider exponentiation, $\mathtt{exp} : \mathbb{N} \times \mathbb{N}
+\rightarrow \mathbb{N}$, as iterated multiplication.  Mathematically,
+exponentiation can be given as follows:\begin{align*}
+%
+\mathtt{exp}\p{0, y} &= 1 \\
+%
+\mathtt{exp}\p{x+1, y} &= \mathtt{mult}\p{y, \mathtt{exp}\p{x,y}}
+%
+\end{align*}
+
+Exponentiation as given above, partitions the domain as in number-theoretic
+primitive recursion (with $S = \mathbb{N}$), and so exponentiation can be
+expressed as $\mathtt{nprec}\p{g,h}$, for some suitable $g$ and $h$:
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item We must have $g\p{y} = 1$. That is, $g$ must yield the constant value $1$.
+
+Let $g = \mathtt{s} \circ \mathtt{z}$.
+
+\item We must have $h\p{x,y,\mathtt{exp}\p{x,y}} = \mathtt{mult}\p{y,
+\mathtt{exp}\p{x,y}}$. That is, $h$ must yield $\mathtt{mult}$ applied to the
+2\textsuperscript{nd} and 3\textsuperscript{rd} projections of the input
+triple.
+
+Let $h = \mathtt{mult} \circ \seq{\mathtt{proj}^3_2,\mathtt{proj}^3_3}$.
+
+\end{enumerate}
+
+The equation follows:\begin{align*}
+%
+\mathtt{exp} = \mathtt{nprec}\p{\mathtt{s} \circ \mathtt{z}, \mathtt{mult}
+\circ \seq{\mathtt{proj}^3_2, \mathtt{proj}^3_3}}
+%
+\end{align*}
+
+\subsection{Factorial}
+
+A go-to function in any new and exciting programming language is perhaps the
+factorial function, $\mathtt{fact} : \mathbb{N} \times () \rightarrow
+\mathbb{N}$.  Mathematically, it can be given as follows:\begin{align*}
+%
+\mathtt{fact}\p{0,()} &= 1 \\
+%
+\mathtt{fact}\p{x+1,()} &= \mathtt{mult}\p{\p{x+1}, \mathtt{fact}\p{x,()}}
+%
+\end{align*}
+
+Again, the factorial function partitions the domain as in number-theoretic
+primitive recursion (with $S = ()$), and so the factorial function can be expressed as
+$\mathtt{nprec}\p{g,h}$ for some suitable $g$ and $h$:
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item We must have $g\p{} = 1$. That is, $g$ must yield a constant value $1$.
+
+Let $g = \mathtt{s} \circ \mathtt{z}$.
+
+\item We must have $h\p{x,(),\mathtt{fact}\p{x,()}} = \mathtt{mult}\p{\p{x+1},
+\mathtt{fact}\p{x,()}}$. That is, $h$ must yield $\mathtt{mult}$ applied to the
+successor of the 1\textsuperscript{st} projection, and the
+3\textsuperscript{rd} projection of the input triple.
+
+Let $h = \mathtt{mult} \circ \seq{\mathtt{z} \circ \mathtt{proj}^3_1,
+\mathtt{proj^3_3}}$.
+
+\end{enumerate}
+
+The equation follows:\begin{align*}
+%
+\mathtt{fact} = \mathtt{nprec}\p{\mathtt{s} \circ \mathtt{z},
+\mathtt{mult} \circ \seq{\mathtt{z} \circ \mathtt{proj}^3_1, \mathtt{proj^3_3}}}
+%
+\end{align*}
+
+\subsection{Tetration and beyond}
+
+Tetration, $\mathtt{exp}^2 : \mathbb{N} \times \mathbb{N} \rightarrow
+\mathbb{N}$, is iterated exponentiation. Mathematically, tetration can be given
+as follows:\begin{align*}
+%
+\mathtt{exp}^2\p{0,y} &= 1 \\
+%
+\mathtt{exp}^2\p{x+1, y} &= \mathtt{exp}\p{y,\mathtt{exp}^2\p{x,y}}
+%
+\end{align*}
+
+Tetration as given above, partitions the domain as in number-theoretic
+primitive recursion (with $S = \mathbb{N}$), and so tetration can be expressed
+as $\mathtt{nprec}\p{g,h}$, for some suitable $g$ and $h$:
+
+\begin{enumerate}[label=(\arabic*)]
+
+\item We must have $g\p{y} = 1$. That is, $g$ must yield the constant value $1$.
+
+Let $g = \mathtt{s} \circ \mathtt{z}$.
+
+\item We must have $h\p{x,y,\mathtt{exp}^2\p{x,y}} = \mathtt{exp}\p{y,
+\mathtt{exp}^2\p{x,y}}$. That is, $h$ must yield $\mathtt{exp}$ applied to the
+2\textsuperscript{nd} and 3\textsuperscript{rd} projections of the input
+triple.
+
+Let $h = \mathtt{exp} \circ \seq{\mathtt{proj}^3_2,\mathtt{proj}^3_3}$.
+
+\end{enumerate}
+
+The equation follows:\begin{align*}
+%
+\mathtt{exp}^2 = \mathtt{nprec}\p{\mathtt{s} \circ \mathtt{z}, \mathtt{exp}
+\circ \seq{\mathtt{proj}^3_2, \mathtt{proj}^3_3}}
+%
+\end{align*}
+
+If we let $\mathtt{exp}^0 = \mathtt{mult}$ (and let $\mathtt{exp}^1 =
+\mathtt{exp}$), it is straight-forward to generalise from $\mathtt{exp}^1$ and
+$\mathtt{exp}^2$ to $\mathtt{exp}^k$ for any given $k \in
+\mathbb{N}$:\begin{align*}
+%
+\mathtt{exp}^0 &= \mathtt{mult} \\
+%
+\mathtt{exp}^{k+1} &= \mathtt{nprec}\p{\mathtt{s} \circ \mathtt{z},
+\mathtt{exp}^k \circ \seq{\mathtt{proj}^3_2, \mathtt{proj}^3_3}}
+%
+\end{align*}
+
+Although this seems to take the shape of a primitive recursion wrt. $k$, this
+is a (number-theoretic) primitive recursion over functions (construction trees)
+rather than over values --- a higher-order primitive recursion. This is perhaps
+better illustrated if we consider the purely mathematical definition of
+$\mathtt{exp}^{k+1}$:\begin{align*}
+%
+\mathtt{exp}^{k+1}\p{0,y} &= 1 \\
+%
+\mathtt{exp}^{k+1}\p{x+1,y} &= \mathtt{exp}^k\p{y,\mathtt{exp}^{k+1}\p{x,y}}
+%
+\end{align*}
+
+Reshaping this (trivially) as a ternary function $\mathtt{arr} : \mathbb{N}
+\times \mathbb{N} \times \mathbb{N} \rightarrow \mathbb{N}$, so that
+$\mathtt{exp}^{k+1}\p{x,y} = \mathtt{arr}\p{k+1,x,y}$, we get the
+following:\begin{align*}
+%
+\mathtt{arr}\p{k+1, 0,y} &= 1 \\
+%
+\mathtt{arr}\p{k+1,x+1,y} &= \mathtt{arr}\p{k,y,\mathtt{arr}\p{k+1,x,y}}
+%
+\end{align*}
+
+Clearly, a base case is missing for if $k$ reaches $0$.  Noting that we had let
+$\mathtt{exp}^0 = \mathtt{mult}$, we get the following complete
+definition:\begin{align*}
+%
+\mathtt{arr}\p{0,x,y} &= \mathtt{mult}\p{x,y} \\
+%
+\mathtt{arr}\p{k+1, 0,y} &= 1 \\
+%
+\mathtt{arr}\p{k+1,x+1,y} &= \mathtt{arr}\p{k,y,\mathtt{arr}\p{k+1,x,y}}
+%
+\end{align*}
+
+\begin{remark} The name $\mathtt{arr}$ is a reference to Knuth's up-arrow
+notation\cite{knuth-1976}. Knuth had let $x \uparrow y = \mathtt{exp}\p{x,y}$,
+$x \uparrow \uparrow y = \mathtt{exp}^2\p{x,y}$, and more generally, $x
+\underbrace{\uparrow \cdots \uparrow}_{\text{$k$ times}} y =
+\mathtt{exp}^k\p{x,y} = \mathtt{arr}\p{k,x,y}$. \end{remark}
+
+\section{A function not in $\mathcal{PR}$}
+
+\todo{Ackermann function}
 
 % That is, let the first argument of $f$ (the recurrence argument) be a natural
 % number, with the remaining arguments (if any) forming an element of some set
