@@ -142,7 +142,7 @@
 
 \DeclareDocumentCommand{\semic}{}{\ensuremath{\mathrel{};\mathrel{}}}
 
-\DeclareDocumentCommand{\algebra}{mm}{\ensuremath{\seq{#1\mathrel{};\mathrel{}#2}}}
+\DeclareDocumentCommand{\algebra}{mm}{\ensuremath{\seq{\mathrel{}#1\mathrel{};\mathrel{}#2\mathrel{}}}}
 
 \DeclareDocumentCommand{\todo}{m}{{\bfseries\color{red}#1}}
 
@@ -155,15 +155,15 @@
 
 \setcounter{chapter}{-1}
 
-%\input{introduction/root}
+\input{introduction/root}
 
 \input{background/root}
 
-%\input{fptime/root}
+\input{fptime/root}
 
-%\input{subpolynomialism/root}
+\input{subpolynomialism/root}
 
-%\input{appendix/root}
+\input{appendix/root}
 
 \input{references}
 

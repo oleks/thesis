@@ -23,15 +23,10 @@ quite general and nontrivial.
 \end{quotation}
 
 It is perhaps of interest to mathematicians et al. to categorise functions into
-classes and hierarchies.
+classes and hierarchies:
 
-\begin{definition} A \textbf{function class}, $\mathcal{C}$, is a set of
-functions. \index{function!class} \end{definition}
-
-\begin{definition} A \textbf{function hierarchy}, $\mathcal{H}$, is a finite
-sequence of $n$ classes $\mathcal{C}_1, \ldots, \mathcal{C}_n$, such that
-$\mathcal{C}_1 \subseteq \cdots \subseteq \mathcal{C}_n$.
-\index{function!hierarchy}\end{definition}
+\begin{definition} A \textbf{function class} is a set of
+functions.\index{function!class}\end{definition}
 
 A class of functions can be defined \emph{extrinsically}, e.g.  the functions
 computable by means of a Turing machine, or \emph{intrinsically}, e.g. the
@@ -45,52 +40,69 @@ as output. A class $\mathcal{F}$ is \textbf{closed under} an operation, if the
 operation takes functions in $\mathcal{F}$ as input, and yields a function in
 $\mathcal{F}$ as output. \index{function!algebra}\end{definition}
 
-\begin{remark} That which is here called a ``function algebra'' is often simply
-called a ``function class''. This is usually in the absence of an intended
-distinction between an intrinsic and extrinsic definition of a function class,
-which is prevalent here. For our intents and purposes, every function algebra
-$\mathcal{F}$ defines a function class $\mathcal{C}$, but not every function
-class is given by a function algebra.  \end{remark} 
+\begin{notation} Assume a notation as in \cite{clote-1999}, where a function
+algebra having the initial functions $\mathcal{F}_I = \set{i_1,i_2,\ldots}$,
+and closed under the operations $\mathcal{F}_O = \set{o_1, o_2, \ldots}$ is
+written as $\algebra{i_1, i_2, \ldots}{o_1, o_2, \ldots}$.\end{notation}
+
+\begin{remark} That which here is called a ``function algebra'', is often
+simply called a ``function class''. This is perhaps in the absence of an
+intended distinction between an intrinsic and extrinsic definition of a
+function class, which is prevalent here. For our intents and purposes, every
+function algebra defines a function class, but not every function class is
+given by a function algebra.  \end{remark} 
+
+\begin{remark} Outside the context of function algebras, that which here is
+called an ``operation'' is also called a ``functional'', or a ``higher-order
+function''.\end{remark}
+
+\begin{definition} A \textbf{function hierarchy} is a sequence of function
+classes $\mathcal{C}_1 \subseteq \mathcal{C}_2 \subseteq \cdots$, such that
+each preceding class is a (non-strict) subset of the
+next.\index{function!hierarchy}\end{definition}
 
 \section{A ``simple'' function algebra}
 
 The following simple function algebra forms the basis of many function classes
-and hierarchies going forth. It boasts two ``simple'' initial functions:
+and hierarchies going forth. It boasts two ``simple''\footnote{What is meant
+by``simple'' is clarified at the end of this section.} initial functions:
 
-\begin{definition} \label{def:zero-function} Let $z : S \rightarrow \mathbb{N}$
-be a (constant) \textbf{zero function}, for any given set $S$, given by $z\p{x}
-= 0$, for all $x \in S$.  \index{function!zero} \end{definition}
+\begin{definition} \label{def:zero-function} Let $\mathtt{z} : S \rightarrow
+\mathbb{N}$ be the (constant) \textbf{zero function}, for any given set $S$,
+given by $\mathtt{z}\p{x} = 0$, for all $x \in S$.  \index{function!zero}
+\end{definition}
 
-\begin{definition} \label{def:successor-function} Let $s : \mathbb{N}
-\rightarrow \mathbb{N}$ be a \textbf{successor function}, given by $s\p{n} = n
-+ 1$, for all $n \in \mathbb{N}$. \index{function!successor} \end{definition}
+\begin{definition} \label{def:successor-function} Let $\mathtt{s} : \mathbb{N}
+\rightarrow \mathbb{N}$ be a \textbf{successor function}, given by
+$\mathtt{s}\p{x} = x + 1$, for all $x \in \mathbb{N}$.
+\index{function!successor} \end{definition}
 
-Furthermore, it is closed under the following ``simple''\footnote{What is meant
-by``simple'' is clarified at the end of this section.} operation:
+Furthermore, it is closed under function composition:
 
-\begin{definition} \label{def:composition-operation} Let\begin{align*}
+\begin{definition} \label{def:composition-operation} For any given sets $S$,
+$T_1, \ldots, T_m$, and $U$, let\begin{align*}
 %
-\circ^n_m : \p{T_1 \times \cdots \times T_m \rightarrow U} \rightarrow \p{S
+\mathtt{comp} : \p{T_1 \times \cdots \times T_m \rightarrow U} \rightarrow \p{S
 \rightarrow T_1} \times \cdots \times \p{S \rightarrow T_m} \rightarrow \p{S
 \rightarrow U}
 %
-\end{align*}be a \textbf{composition} (also called substitution)
-\textbf{operation}, which takes as input a \textbf{composition operator} $g :
-T_1 \times \cdots \times T_m \rightarrow U$ and $m$ \textbf{composition
-operands} $h_1 : S \rightarrow T_1$, \ldots, $h_m : S \rightarrow T_m$, and
-yields as output the \textbf{composite function} $f : S \rightarrow U$,
-satisfying the equation\begin{align*}
+\end{align*}be a \textbf{composition operation}, which takes as input a
+\textbf{composition operator} $g : T_1 \times \cdots \times T_m \rightarrow U$
+and $m$ \textbf{composition operands} $h_1 : S \rightarrow T_1$, \ldots, $h_m :
+S \rightarrow T_m$, and yields as output the \textbf{composite function} $f : S
+\rightarrow U$, satisfying the following equation, for all $x \in
+S$:\begin{align*}
 %
-f\p{x_1,\ldots,x_n} = g\p{h_1\p{x_1,\ldots,x_n}, \ldots, h_m\p{x_1,
-\ldots,x_n}}
+f\p{x} = g\p{h_1\p{x}, \ldots, h_m\p{x}}
 %
-\end{align*} The composition $\circ^n_m\p{g,h_1, \ldots, h_m}$ is also written
-as $g \circ \seq{h_1, \ldots, h_m}$; in the special case that $m=1$, it is also
-written as $g \circ h$.\end{definition}
+\end{align*} The composition $\mathtt{comp}\p{g,h_1, \ldots, h_m}$ is also
+written as $g \circ \seq{h_1, \ldots, h_m}$, read as ``$g$ after $h_1$ to
+$h_m$''. In the special case that $m=1$, it is simply written $g \circ h$, and
+read ``$g$ after $h$''.\end{definition}
 
 To better guide the intuition about composition, it is worth noting the
 following properties of any composite function $f = g \circ \seq{h_1, \ldots,
-h_m}$:
+h_m}$, which follow directly from the definition of composition:
 
 \begin{enumerate}
 
@@ -102,9 +114,17 @@ h_m}$:
 
 \end{enumerate}
 
-\begin{definition} \label{def:function-algebra-p} Let $\mathcal{PD}$ be a
-\textbf{simple Peano-Dedekind function algebra}, having the zero and successor
-initial functions, and closed under the composition operation.\end{definition}
+\begin{remark} ``Composition'' is sometimes also called ``substitution''
+\cite{kleene-1936, robinson-1947}. Often times, it is merely a specialisation
+of a more general operation of ``substitution'' (German:
+Einsetzung)\cite{goedel-1931, peter-1935}, or ``explicit
+transformation''\cite{smullyan-1961}.  See also
+\refSec{other-simple-initial-functions}.\end{remark}
+
+\begin{definition} \label{def:function-algebra-p} Let $\mathcal{PD} =
+\algebra{\mathtt{z}, \mathtt{s}}{\mathtt{comp}}$, be a \textbf{simple
+Peano-Dedekind} function algebra, having the zero and successor initial
+functions, and closed under the composition operation.\end{definition}
 
 For instance, $z$, $s$, $\p{s \circ z}$, $\p{s \circ \p{s \circ z}}$, as well
 as, the slightly more extravagant, $\p{z \circ z}$, $\p{s \circ s}$ and $\p{z
@@ -529,17 +549,26 @@ well-known general-purpose (unbounded) model of computation.
 
 \section{Some other ``simple'' initial functions}
 
+\label{sec:other-simple-initial-functions}
+
 Before leaving the hearty lands of ``simple'' functions, and diving into the
 unwieldy sea of recursion, another ``simple'' initial function is projection:
 
 \subsection{Projection}
 
-\begin{definition} A \textbf{projection} (also called identity)
-\textbf{function} $\mathtt{proj}^n_j : S_1 \times \cdots \times S_n \rightarrow
-S_j$, is given by $\mathtt{proj}^n_j\p{x_1,\ldots,x_n} = x_j$. \end{definition}
+\begin{definition} A \textbf{projection function} $\mathtt{proj}^n_j : S_1
+\times \cdots \times S_n \rightarrow S_j$, is given by
+$\mathtt{proj}^n_j\p{x_1,\ldots,x_n} = x_j$. \end{definition}
 
 For instance, $\mathtt{proj}^1_1 : S \rightarrow S$ and $\mathtt{proj}^1_1\p{x}
 = x$ for all $x \in S$.
+
+\begin{remark} ``Projection'' is sometimes also called ``identity''
+\cite{kleene-1936, robinson-1947, odifreddi-1989, lewis-papadimitriou-1998},
+reiterated perhaps by other authors using the letter $i$ to denote
+projection\cite{rose-1984}. This notion of ``identity'' is at odds with the
+common notion of an ``identity function'' $i$, as given already in
+\cite{dedekind-1888} as $i\p{x} = x$, for all $x \in dom\p{i}$.\end{remark}
 
 \todo{substitution} and \todo{explicit transformation}
 
